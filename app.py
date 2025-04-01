@@ -673,6 +673,16 @@ st.set_page_config(
 # Modernes Supermarkt-Design anwenden
 apply_modern_supermarket_style()
 
+# Meta-Tag für Viewport korrigieren (Barrierefreiheit verbessern)
+st.markdown("""
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=yes">
+    <style>
+        [data-testid="stMetricValue"] {
+            font-size: 1rem;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 # Session State für Chatverlauf initialisieren
 if "messages" not in st.session_state:
     st.session_state.messages = [
