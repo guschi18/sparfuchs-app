@@ -884,9 +884,9 @@ if submit_button or (user_input and user_input != st.session_state.get("previous
             
             # API-Anfrage senden
             with st.spinner("Suche nach passenden Angeboten..."):
-                # Nur DeepseekV3 Base Modell verwenden
+                # Qwen2.5 VL 32B Instruct Modell verwenden
                 model_variants = [
-                    "deepseek/deepseek-chat",  # DeepSeek V3 Base
+                    "qwen/qwen2.5-vl-32b-instruct:free",  # Qwen2.5 VL 32B Instruct (Multimodal Vision-Language Model)
                 ]
                 
                 success = False
