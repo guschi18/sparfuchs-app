@@ -15,6 +15,11 @@ client = OpenAI(
     base_url="https://openrouter.ai/api/v1"  # OpenRouter API-Basis-URL
 )
 
+# Funktion zur Überprüfung, ob die App online läuft
+def is_app_online():
+    # Überprüfe, ob STREAMLIT_SHARING oder STREAMLIT_CLOUD_ENV gesetzt ist
+    return os.getenv('STREAMLIT_SHARING') == 'true' or os.getenv('STREAMLIT_CLOUD_ENV') is not None
+
 # CSS für modernes Design
 def apply_modern_supermarket_style():
     st.markdown("""
@@ -870,6 +875,10 @@ if submit_button or (user_input and user_input != st.session_state.get("previous
                 
                 for model_name in model_variants:
                     try:
+                        # Bestimme den richtigen Referer-Header
+                        referer = "https://sparfuchs.streamlit.app" if is_app_online() else "https://localhost:8501"
+                        
+                        # Versuche API-Aufruf
                         stream = client.chat.completions.create(
                             model=model_name,
                             messages=[
@@ -877,7 +886,7 @@ if submit_button or (user_input and user_input != st.session_state.get("previous
                                 for m in messages_with_context
                             ],
                             extra_headers={
-                                "HTTP-Referer": "https://localhost:8501",
+                                "HTTP-Referer": referer,
                                 "X-Title": "SparFuchs.de"
                             },
                             max_tokens=1200,
@@ -893,15 +902,29 @@ if submit_button or (user_input and user_input != st.session_state.get("previous
                         break  # Bei Erfolg Schleife beenden
                     except Exception as e:
                         error_messages.append(f"Fehler mit {model_name}: {str(e)}")
+                        # Logging für bessere Diagnose bei Problemen
+                        print(f"API-Fehler: {str(e)}")
                         continue
                 
+                # Wenn kein API-Aufruf erfolgreich war, erzeugen wir eine generische Antwort
                 if not success:
                     error_message = "Entschuldigung, ich konnte Ihre Anfrage nicht bearbeiten."
                     st.error(error_message)
-                    full_response = "Entschuldigung, ich konnte Ihre Anfrage nicht bearbeiten. Bitte versuchen Sie es später erneut."
+                    # Füge Debug-Informationen im Fehlerfall hinzu, die nur während der Entwicklung sichtbar sind
+                    if not is_app_online():
+                        st.error(f"Debug-Informationen: {error_messages}")
                     
+                    # Generische Antwort basierend auf dem Prompt erzeugen
+                    keywords = ["angebot", "preis", "aldi", "obst", "gemüse", "fleisch", "milch"]
+                    if any(keyword in prompt.lower() for keyword in keywords):
+                        full_response = "Entschuldigung, ich konnte aktuell keine Informationen zu deiner Anfrage finden. Ich kann dir aber zu einem späteren Zeitpunkt gerne bei der Suche nach Angeboten helfen!"
+                    else:
+                        full_response = "Entschuldigung, ich konnte deine Anfrage nicht bearbeiten. Bitte versuche es später noch einmal oder stelle eine andere Frage zu Angeboten."
         except Exception as e:
             st.error("Ein Fehler ist aufgetreten.")
+            # Füge Debug-Informationen im Fehlerfall hinzu, die nur während der Entwicklung sichtbar sind
+            if not is_app_online():
+                st.error(f"Debug-Exception: {str(e)}")
             full_response = "Entschuldigung, ein unerwarteter Fehler ist aufgetreten."
         
         # Nur erfolgreiche Antworten zum Verlauf hinzufügen
