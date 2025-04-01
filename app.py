@@ -694,7 +694,7 @@ with col1:
             color: #FF6600 !important;
         }
     </style>
-    <p style="font-size: 18px; color: #666666; margin-bottom: 0px; margin-top: 0px;">Dein KI-Assistent für Supermarkt-Schnäppchen</p>
+    <p style="font-size: 18px; color: #666666; margin-bottom: 0px; margin-top: 0px;">Dein KI-Assistent für Supermarkt-Angebote</p>
     """
     st.markdown(html_code, unsafe_allow_html=True)
 
