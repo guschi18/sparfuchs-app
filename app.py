@@ -510,6 +510,11 @@ def apply_modern_supermarket_style():
         .stTextArea {
             max-width: 100% !important;
         }
+        
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
     </style>
     """, unsafe_allow_html=True)
 
@@ -677,6 +682,10 @@ apply_modern_supermarket_style()
 st.markdown("""
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=yes">
     <style>
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
         [data-testid="stMetricValue"] {
             font-size: 1rem;
         }
