@@ -835,11 +835,11 @@ button_cols = st.columns([3, 14, 3, 2])  # Weniger leere Spalte links
 # Button in der zweiten Spalte statt der dritten für weniger Rechtsverschiebung
 with button_cols[1]:
     # Wenn der Button geklickt wird, setze submit_text auf den aktuellen Wert von user_input
-    if st.button("→", type="primary", use_container_width=True, 
-            key=f"submit_button_{st.session_state.key_counter}"):
-        if user_input and user_input.strip():
-            st.session_state["submit_text"] = user_input.strip()
-            st.rerun()
+    submit_button = st.button("→", type="primary", use_container_width=True, 
+            key=f"submit_button_{st.session_state.key_counter}")
+    if submit_button and user_input and user_input.strip():
+        st.session_state["submit_text"] = user_input.strip()
+        st.rerun()
 
 # Reset-Button-Container - nur wenn es AI-Antworten gibt
 has_ai_responses = any(message["role"] == "assistant" for message in st.session_state.messages)
@@ -851,13 +851,18 @@ if has_ai_responses:
             st.session_state.messages = [system_message]
             st.rerun()
 
-# Wenn ein Text zur Übermittlung oder ein Vorschlag ausgewählt wurde
+# Kombiniere beide Ansätze: Explicit submit_text und automatic detection
 submitted_text = st.session_state.get("submit_text")
-if submitted_text:
-    prompt = submitted_text
-    
-    # Zurücksetzen des Übermittlungsflags
-    st.session_state["submit_text"] = None
+automatic_detection = user_input and user_input.strip() and (st.session_state["is_first_input"] or user_input.strip() != st.session_state.get("previous_input", ""))
+
+if submitted_text or automatic_detection:
+    # Verarbeite entweder den explizit gesendeten oder den automatisch erkannten Text
+    if submitted_text:
+        prompt = submitted_text
+        # Zurücksetzen des Übermittlungsflags
+        st.session_state["submit_text"] = None
+    else:
+        prompt = user_input.strip()  # Für automatische Erkennung
     
     # Prüfe ob der Prompt nicht leer ist
     if not prompt:
