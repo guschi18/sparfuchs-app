@@ -731,9 +731,8 @@ if "key_counter" not in st.session_state:
 if "previous_input" not in st.session_state:
     st.session_state["previous_input"] = ""
     
-# Initialisiere eine Variable, die anzeigt, ob es die erste Eingabe ist
-if "is_first_input" not in st.session_state:
-    st.session_state["is_first_input"] = True
+# Setze bei jedem Neustart der App is_first_input zurück
+st.session_state["is_first_input"] = True
 
 # Initialisiere einen direkten Übermittlungsflag
 if "submit_text" not in st.session_state:
@@ -827,7 +826,9 @@ with textfield_cols[1]:
     if "preset_input" in st.session_state:
         # Setze den Text auch in last_input_value, um doppelte Verarbeitung zu vermeiden
         st.session_state["last_input_value"] = st.session_state.get("preset_input", "")
+        st.session_state["submit_text"] = st.session_state.get("preset_input", "")
         del st.session_state.preset_input
+        st.rerun()
 
 # Button-Container - getrennte Spaltenreihe
 button_cols = st.columns([3, 14, 3, 2])  # Weniger leere Spalte links
@@ -851,12 +852,19 @@ if has_ai_responses:
             st.session_state.messages = [system_message]
             st.rerun()
 
+# Verarbeite die Texteingabe
+# Setze submit_text direkt bei der ersten Eingabe
+if user_input and user_input.strip() and st.session_state["is_first_input"]:
+    st.session_state["submit_text"] = user_input.strip()
+    st.session_state["is_first_input"] = False
+    st.rerun()
+    
 # Kombiniere beide Ansätze: Explicit submit_text und automatic detection
 submitted_text = st.session_state.get("submit_text")
-automatic_detection = user_input and user_input.strip() and (st.session_state["is_first_input"] or user_input.strip() != st.session_state.get("previous_input", ""))
+automatic_detection = user_input and user_input.strip() and user_input.strip() != st.session_state.get("previous_input", "")
 
 if submitted_text or automatic_detection:
-    # Verarbeite entweder den explizit gesendeten oder den automatisch erkannten Text
+    # Bestimme den zu verwendenden Text
     if submitted_text:
         prompt = submitted_text
         # Zurücksetzen des Übermittlungsflags
@@ -868,9 +876,6 @@ if submitted_text or automatic_detection:
     if not prompt:
         st.warning("Bitte gib eine Frage oder einen Suchbegriff ein.")
     else:
-        # Markiere, dass die erste Eingabe verarbeitet wurde
-        st.session_state["is_first_input"] = False
-        
         # Speichern der aktuellen Eingabe für Vergleich beim nächsten Mal
         st.session_state["previous_input"] = prompt
         
