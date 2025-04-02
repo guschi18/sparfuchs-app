@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 import os
 import pandas as pd
 import random
-from datetime import datetime, timedelta
 import time
+from datetime import datetime, timedelta
 
 # Umgebungsvariablen laden
 load_dotenv()
@@ -861,9 +861,6 @@ if submit_button or (user_input and user_input != st.session_state.get("previous
             
             # API-Anfrage senden
             with st.spinner("Suche nach passenden Angeboten..."):
-                # Kurze Verzögerung einbauen (300ms), damit die KI Zeit hat zu verarbeiten
-                time.sleep(0.3)
-                
                 # Nur DeepseekV3 Base Modell verwenden
                 model_variants = [
                     "deepseek/deepseek-chat",  # DeepSeek V3 Base
@@ -871,74 +868,45 @@ if submit_button or (user_input and user_input != st.session_state.get("previous
                 
                 success = False
                 error_messages = []
-                max_retries = 2
-                retry_count = 0
                 
-                while not success and retry_count < max_retries:
-                    for model_name in model_variants:
-                        try:
-                            # Kurze Verzögerung vor jedem API-Aufruf
-                            if retry_count > 0:
-                                time.sleep(1)  # Längere Verzögerung bei Wiederholungsversuchen
-                                
-                            stream = client.chat.completions.create(
-                                model=model_name,
-                                messages=[
-                                    {"role": m["role"], "content": m["content"]} 
-                                    for m in messages_with_context
-                                ],
-                                extra_headers={
-                                    "HTTP-Referer": "https://localhost:8501",
-                                    "X-Title": "SparFuchs.de"
-                                },
-                                max_tokens=1200,
-                                stream=True
-                            )
-                            
-                            # Sammle die Antwort mit Feedback
-                            response_started = False
-                            for chunk in stream:
-                                content = chunk.choices[0].delta.content
-                                if content is not None:
-                                    if not response_started:
-                                        response_started = True
-                                        # Zeige an, dass die Antwort begonnen hat
-                                        message_placeholder.markdown("Antwort wird erstellt...", unsafe_allow_html=True)
-                                    
-                                    full_response += content
-                                    # Aktualisiere die sichtbare Antwort während sie generiert wird
-                                    message_placeholder.markdown(full_response + "▌", unsafe_allow_html=True)
-                            
-                            if full_response:
-                                success = True
-                                # Abschließende Anzeige ohne Cursor
-                                message_placeholder.markdown(full_response, unsafe_allow_html=True)
-                                break  # Bei Erfolg Schleife beenden
-                            else:
-                                # Wenn eine leere Antwort kommt, als Fehler behandeln
-                                error_messages.append(f"Leere Antwort von {model_name}")
-                                retry_count += 1
-                                
-                        except Exception as e:
-                            error_messages.append(f"Fehler mit {model_name}: {str(e)}")
-                            retry_count += 1
-                            continue
-                    
-                    if not success and retry_count < max_retries:
-                        # Informiere den Benutzer über einen weiteren Versuch
-                        message_placeholder.markdown("Moment, ich versuche es erneut...", unsafe_allow_html=True)
-                        time.sleep(1)  # Kurze Pause vor dem nächsten Versuch
+                for model_name in model_variants:
+                    try:
+                        # Kurze Verzögerung vor der API-Anfrage
+                        time.sleep(0.5)
+                        
+                        stream = client.chat.completions.create(
+                            model=model_name,
+                            messages=[
+                                {"role": m["role"], "content": m["content"]} 
+                                for m in messages_with_context
+                            ],
+                            extra_headers={
+                                "HTTP-Referer": "https://sparfuchs.streamlit.app/",
+                                "X-Title": "SparFuchs.de"
+                            },
+                            max_tokens=1200,
+                            stream=True
+                        )
+                        
+                        for chunk in stream:
+                            content = chunk.choices[0].delta.content
+                            if content is not None:
+                                full_response += content
+                        
+                        success = True
+                        break  # Bei Erfolg Schleife beenden
+                    except Exception as e:
+                        error_messages.append(f"Fehler mit {model_name}: {str(e)}")
+                        continue
                 
                 if not success:
                     error_message = "Entschuldigung, ich konnte Ihre Anfrage nicht bearbeiten."
                     st.error(error_message)
                     full_response = "Entschuldigung, ich konnte Ihre Anfrage nicht bearbeiten. Bitte versuchen Sie es später erneut."
-                    message_placeholder.markdown(full_response, unsafe_allow_html=True)
                     
         except Exception as e:
-            st.error(f"Ein Fehler ist aufgetreten: {str(e)}")
+            st.error("Ein Fehler ist aufgetreten.")
             full_response = "Entschuldigung, ein unerwarteter Fehler ist aufgetreten."
-            message_placeholder.markdown(full_response, unsafe_allow_html=True)
         
         # Nur erfolgreiche Antworten zum Verlauf hinzufügen
         if full_response:
@@ -947,9 +915,6 @@ if submit_button or (user_input and user_input != st.session_state.get("previous
         # Eingabefeld zurücksetzen
         st.session_state["input_value"] = ""
             
-        # Kurze Verzögerung vor dem Neuladen, um sicherzustellen, dass alle Updates angewendet wurden
-        time.sleep(0.2)
-        
         # Nach der Antwortgenerierung die Seite neu laden, um den aktualisierten Chat anzuzeigen
         st.rerun()
 
