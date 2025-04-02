@@ -830,13 +830,16 @@ if has_ai_responses:
             st.rerun()
 
 # Wenn Button geklickt oder Enter gedrückt wird
-if submit_button or (user_input and user_input != st.session_state.get("previous_input", "")):
-    prompt = user_input
+if submit_button or (user_input and user_input.strip() and user_input != st.session_state.get("previous_input", "")):
+    prompt = user_input.strip()  # Entferne Leerzeichen am Anfang und Ende
     
-    # Speichern der aktuellen Eingabe für Vergleich beim nächsten Mal
-    st.session_state["previous_input"] = user_input
-    
-    if prompt:
+    # Prüfe ob der Prompt nicht leer ist
+    if not prompt:
+        st.warning("Bitte gib eine Frage oder einen Suchbegriff ein.")
+    else:
+        # Speichern der aktuellen Eingabe für Vergleich beim nächsten Mal
+        st.session_state["previous_input"] = prompt
+        
         # Erhöhe den Key-Zähler, um beim nächsten Rendering ein leeres Eingabefeld zu erzeugen
         st.session_state["key_counter"] += 1
         
@@ -869,43 +872,49 @@ if submit_button or (user_input and user_input != st.session_state.get("previous
                 success = False
                 error_messages = []
                 
+                # Gib dem System mehr Zeit, um die Anfrage zu verarbeiten
+                time.sleep(1.5)  # Erhöhte Verzögerung für bessere Stabilität
+                
                 for model_name in model_variants:
-                    try:
-                        # Kurze Verzögerung vor der API-Anfrage
-                        time.sleep(0.5)
-                        
-                        stream = client.chat.completions.create(
-                            model=model_name,
-                            messages=[
-                                {"role": m["role"], "content": m["content"]} 
-                                for m in messages_with_context
-                            ],
-                            extra_headers={
-                                "HTTP-Referer": "https://sparfuchs.streamlit.app/",
-                                "X-Title": "SparFuchs.de"
-                            },
-                            max_tokens=1200,
-                            stream=True
-                        )
-                        
-                        for chunk in stream:
-                            content = chunk.choices[0].delta.content
-                            if content is not None:
-                                full_response += content
-                        
-                        success = True
-                        break  # Bei Erfolg Schleife beenden
-                    except Exception as e:
-                        error_messages.append(f"Fehler mit {model_name}: {str(e)}")
-                        continue
+                    retry_count = 0
+                    max_retries = 2
+                    
+                    while retry_count <= max_retries and not success:
+                        try:
+                            # Zusätzliche Verzögerung zwischen Versuchen
+                            if retry_count > 0:
+                                time.sleep(2)  # Längere Verzögerung bei weiteren Versuchen
+                            
+                            stream = client.chat.completions.create(
+                                model=model_name,
+                                messages=[
+                                    {"role": m["role"], "content": m["content"]} 
+                                    for m in messages_with_context
+                                ],
+                                extra_headers={
+                                    "HTTP-Referer": "https://sparfuchs.streamlit.app/",
+                                    "X-Title": "SparFuchs.de"
+                                },
+                                max_tokens=1200,
+                                stream=True
+                            )
+                            
+                            for chunk in stream:
+                                content = chunk.choices[0].delta.content
+                                if content is not None:
+                                    full_response += content
+                            
+                            success = True
+                            break  # Bei Erfolg Schleife beenden
+                        except Exception as e:
+                            error_messages.append(f"Fehler mit {model_name}: {str(e)}")
+                            retry_count += 1
+                            continue
                 
                 if not success:
-                    error_message = "Entschuldigung, ich konnte Ihre Anfrage nicht bearbeiten."
-                    st.error(error_message)
                     full_response = "Entschuldigung, ich konnte Ihre Anfrage nicht bearbeiten. Bitte versuchen Sie es später erneut."
                     
         except Exception as e:
-            st.error("Ein Fehler ist aufgetreten.")
             full_response = "Entschuldigung, ein unerwarteter Fehler ist aufgetreten."
         
         # Nur erfolgreiche Antworten zum Verlauf hinzufügen
