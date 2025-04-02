@@ -727,6 +727,14 @@ chat_container = st.container()
 if "key_counter" not in st.session_state:
     st.session_state["key_counter"] = 0
 
+# Initialisiere previous_input nur einmal beim Start der App
+if "previous_input" not in st.session_state:
+    st.session_state["previous_input"] = ""
+    
+# Initialisiere eine Variable, die anzeigt, ob es die erste Eingabe ist
+if "is_first_input" not in st.session_state:
+    st.session_state["is_first_input"] = True
+
 # CSS-Styling für verschobenes Layout und verringerter Abstand zum Titel
 st.markdown("""
 <style>
@@ -830,13 +838,16 @@ if has_ai_responses:
             st.rerun()
 
 # Wenn Button geklickt oder Enter gedrückt wird
-if submit_button or (user_input and user_input.strip() and user_input != st.session_state.get("previous_input", "")):
+if submit_button or (user_input and user_input.strip() and (st.session_state["is_first_input"] or user_input != st.session_state.get("previous_input", ""))):
     prompt = user_input.strip()  # Entferne Leerzeichen am Anfang und Ende
     
     # Prüfe ob der Prompt nicht leer ist
     if not prompt:
         st.warning("Bitte gib eine Frage oder einen Suchbegriff ein.")
     else:
+        # Markiere, dass die erste Eingabe verarbeitet wurde
+        st.session_state["is_first_input"] = False
+        
         # Speichern der aktuellen Eingabe für Vergleich beim nächsten Mal
         st.session_state["previous_input"] = prompt
         
