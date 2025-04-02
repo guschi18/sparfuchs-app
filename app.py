@@ -731,12 +731,17 @@ if "key_counter" not in st.session_state:
 if "previous_input" not in st.session_state:
     st.session_state["previous_input"] = ""
     
-# Setze bei jedem Neustart der App is_first_input zurück
-st.session_state["is_first_input"] = True
+# Initialisiere eine Variable, die anzeigt, ob es die erste Eingabe ist
+if "is_first_input" not in st.session_state:
+    st.session_state["is_first_input"] = True
 
 # Initialisiere einen direkten Übermittlungsflag
 if "submit_text" not in st.session_state:
     st.session_state["submit_text"] = None
+
+# Initialisiere einen Indikator für die aktuelle Texteingabe
+if "current_text" not in st.session_state:
+    st.session_state["current_text"] = ""
 
 # CSS-Styling für verschobenes Layout und verringerter Abstand zum Titel
 st.markdown("""
@@ -818,17 +823,14 @@ with textfield_cols[1]:
     user_input = st.text_area("Chat-Eingabe", value=initial_value, placeholder="Was suchst du heute?", 
                           label_visibility="collapsed", key=current_key, height=120)
     
-    # Verfolge Änderungen im Textfeld
-    if user_input and st.session_state.get("last_input_value") != user_input:
-        st.session_state["last_input_value"] = user_input
+    # Verfolge Änderungen im Textfeld und speichere aktuellen Wert im Session State
+    st.session_state["current_text"] = user_input
     
     # Preset-Wert nach Verwendung zurücksetzen
     if "preset_input" in st.session_state:
         # Setze den Text auch in last_input_value, um doppelte Verarbeitung zu vermeiden
-        st.session_state["last_input_value"] = st.session_state.get("preset_input", "")
-        st.session_state["submit_text"] = st.session_state.get("preset_input", "")
+        st.session_state["current_text"] = st.session_state.get("preset_input", "")
         del st.session_state.preset_input
-        st.rerun()
 
 # Button-Container - getrennte Spaltenreihe
 button_cols = st.columns([3, 14, 3, 2])  # Weniger leere Spalte links
@@ -852,30 +854,33 @@ if has_ai_responses:
             st.session_state.messages = [system_message]
             st.rerun()
 
-# Verarbeite die Texteingabe
-# Setze submit_text direkt bei der ersten Eingabe
-if user_input and user_input.strip() and st.session_state["is_first_input"]:
-    st.session_state["submit_text"] = user_input.strip()
-    st.session_state["is_first_input"] = False
-    st.rerun()
-    
 # Kombiniere beide Ansätze: Explicit submit_text und automatic detection
 submitted_text = st.session_state.get("submit_text")
-automatic_detection = user_input and user_input.strip() and user_input.strip() != st.session_state.get("previous_input", "")
+current_text = st.session_state.get("current_text", "").strip()
+previous_text = st.session_state.get("previous_input", "")
 
-if submitted_text or automatic_detection:
+# Klarer Mechanismus für die Texterkennung - besonders bei der ersten Eingabe
+is_new_text = current_text and (st.session_state["is_first_input"] or current_text != previous_text)
+
+if submitted_text or (is_new_text and current_text):
     # Bestimme den zu verwendenden Text
     if submitted_text:
         prompt = submitted_text
         # Zurücksetzen des Übermittlungsflags
         st.session_state["submit_text"] = None
     else:
-        prompt = user_input.strip()  # Für automatische Erkennung
+        prompt = current_text  # Für automatische Erkennung
     
     # Prüfe ob der Prompt nicht leer ist
     if not prompt:
         st.warning("Bitte gib eine Frage oder einen Suchbegriff ein.")
     else:
+        # Debug-Ausgabe (bei Bedarf aktivieren)
+        # st.write(f"Debug: Verarbeite Text: '{prompt}' (erste Eingabe: {st.session_state['is_first_input']})")
+        
+        # Markiere, dass die erste Eingabe verarbeitet wurde
+        st.session_state["is_first_input"] = False
+        
         # Speichern der aktuellen Eingabe für Vergleich beim nächsten Mal
         st.session_state["previous_input"] = prompt
         
