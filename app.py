@@ -887,9 +887,25 @@ if submitted_text:
         
         try:
             # OpenAI API-Aufruf mit neuer Syntax und erweitertem Kontext
-            # Wir müssen eine neue Nachrichtenliste erstellen, die den Kontext enthält
-            messages_with_context = [st.session_state.messages[0], context_message]  # System-Nachricht und Kontext
-            messages_with_context.extend([m for m in st.session_state.messages[1:]])  # Rest der Nachrichten
+            # Systemnachricht immer direkt verwenden (auch wenn sie im Session State geändert wurde)
+            system_prompt = {
+                "role": "system", 
+                "content": "Du bist ein hilfreicher Einkaufsassistent für SparFuchs.de. " +
+                "Benutze NUR die folgenden Produktinformationen, um alle Anfragen zu beantworten. " +
+                "Wenn du nach Produkten gefragt wirst, die nicht in der Datenbank sind, sage deutlich, " +
+                "dass du keine Informationen zu diesen Produkten hast. " +
+                "WICHTIG: Verweise NIEMALS auf Angebotsbroschüren oder externe Quellen. " +
+                "Antworte ausschließlich mit den Daten, die dir zur Verfügung gestellt werden." + 
+                "WICHTIG: Antworte erst, wenn du alle Informationen analysiert hast, um eine korrekte Antwort zu geben."
+            }
+            
+            # Erweitere die Systemnachricht mit dem aktuellen Kontext
+            context_message = {"role": "system", "content": f"Hier sind die aktuellen Produktinformationen:\n\n{products_context}\n\nWICHTIG: Verweise in deinen Antworten NIEMALS auf Angebotsbroschüren, Flyer oder andere externe Quellen. Verwende ausschließlich die oben aufgeführten Produktdaten."}
+            
+            # Erstelle die Nachrichtenliste mit garantierter Systemnachricht
+            messages_with_context = [system_prompt, context_message]
+            # Füge nur user und assistant Nachrichten hinzu
+            messages_with_context.extend([m for m in st.session_state.messages if m["role"] != "system"])
             
             # API-Anfrage senden
             with st.spinner("Suche nach passenden Angeboten..."):
