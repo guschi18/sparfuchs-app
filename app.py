@@ -739,10 +739,6 @@ if "is_first_input" not in st.session_state:
 if "submit_text" not in st.session_state:
     st.session_state["submit_text"] = None
 
-# Initialisiere einen Indikator für die aktuelle Texteingabe
-if "current_text" not in st.session_state:
-    st.session_state["current_text"] = ""
-
 # CSS-Styling für verschobenes Layout und verringerter Abstand zum Titel
 st.markdown("""
 <style>
@@ -823,13 +819,14 @@ with textfield_cols[1]:
     user_input = st.text_area("Chat-Eingabe", value=initial_value, placeholder="Was suchst du heute?", 
                           label_visibility="collapsed", key=current_key, height=120)
     
-    # Verfolge Änderungen im Textfeld und speichere aktuellen Wert im Session State
-    st.session_state["current_text"] = user_input
+    # Verfolge Änderungen im Textfeld
+    if user_input and st.session_state.get("last_input_value") != user_input:
+        st.session_state["last_input_value"] = user_input
     
     # Preset-Wert nach Verwendung zurücksetzen
     if "preset_input" in st.session_state:
         # Setze den Text auch in last_input_value, um doppelte Verarbeitung zu vermeiden
-        st.session_state["current_text"] = st.session_state.get("preset_input", "")
+        st.session_state["last_input_value"] = st.session_state.get("preset_input", "")
         del st.session_state.preset_input
 
 # Button-Container - getrennte Spaltenreihe
@@ -838,11 +835,11 @@ button_cols = st.columns([3, 14, 3, 2])  # Weniger leere Spalte links
 # Button in der zweiten Spalte statt der dritten für weniger Rechtsverschiebung
 with button_cols[1]:
     # Wenn der Button geklickt wird, setze submit_text auf den aktuellen Wert von user_input
-    submit_button = st.button("→", type="primary", use_container_width=True, 
-            key=f"submit_button_{st.session_state.key_counter}")
-    if submit_button and user_input and user_input.strip():
-        st.session_state["submit_text"] = user_input.strip()
-        st.rerun()
+    if st.button("→", type="primary", use_container_width=True, 
+            key=f"submit_button_{st.session_state.key_counter}"):
+        if user_input and user_input.strip():
+            st.session_state["submit_text"] = user_input.strip()
+            st.rerun()
 
 # Reset-Button-Container - nur wenn es AI-Antworten gibt
 has_ai_responses = any(message["role"] == "assistant" for message in st.session_state.messages)
@@ -854,30 +851,18 @@ if has_ai_responses:
             st.session_state.messages = [system_message]
             st.rerun()
 
-# Kombiniere beide Ansätze: Explicit submit_text und automatic detection
+# Wenn ein Text zur Übermittlung oder ein Vorschlag ausgewählt wurde
 submitted_text = st.session_state.get("submit_text")
-current_text = st.session_state.get("current_text", "").strip()
-previous_text = st.session_state.get("previous_input", "")
-
-# Klarer Mechanismus für die Texterkennung - besonders bei der ersten Eingabe
-is_new_text = current_text and (st.session_state["is_first_input"] or current_text != previous_text)
-
-if submitted_text or (is_new_text and current_text):
-    # Bestimme den zu verwendenden Text
-    if submitted_text:
-        prompt = submitted_text
-        # Zurücksetzen des Übermittlungsflags
-        st.session_state["submit_text"] = None
-    else:
-        prompt = current_text  # Für automatische Erkennung
+if submitted_text:
+    prompt = submitted_text
+    
+    # Zurücksetzen des Übermittlungsflags
+    st.session_state["submit_text"] = None
     
     # Prüfe ob der Prompt nicht leer ist
     if not prompt:
         st.warning("Bitte gib eine Frage oder einen Suchbegriff ein.")
     else:
-        # Debug-Ausgabe (bei Bedarf aktivieren)
-        # st.write(f"Debug: Verarbeite Text: '{prompt}' (erste Eingabe: {st.session_state['is_first_input']})")
-        
         # Markiere, dass die erste Eingabe verarbeitet wurde
         st.session_state["is_first_input"] = False
         
