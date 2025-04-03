@@ -1012,7 +1012,7 @@ if len([m for m in st.session_state.messages if m["role"] != "system"]) <= 2:
 # Kleine Info am Seitenende für Mobilgeräte
 st.markdown(
     "<div style='position: fixed; bottom: 10px; left: 0; width: 100%; text-align: center; font-size: 12px; color: #999999;'>"
-    "© SparFuchs.de • AI Made in Germany"
+    "© SparFuchs.de • AI Agent Made in Germany"
     "</div>",
     unsafe_allow_html=True
 )
