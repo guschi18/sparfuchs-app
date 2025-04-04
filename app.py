@@ -231,12 +231,14 @@ with col1:
     # Ein komplett neuer Ansatz mit verschiedenen Styles und mehreren Techniken
     html_code = """
     <div style="margin-bottom: 0px; display: flex; align-items: center;">
-        <span style="font-size: 38px; font-weight: 900; color: #2A2A2A; text-shadow: 0 0 1px #2A2A2A, 0 0 1px #2A2A2A; letter-spacing: -0.02em;">🛒 SparFuchs</span>
-        <span id="orange-text" style="font-size: 38px; font-weight: 900; color: #FF6600 !important; text-shadow: 0 0 1px #FF6600, 0 0 1px #FF6600; letter-spacing: -0.02em;" color="#FF6600">.de</span>
+        <span style="font-size: 38px; font-weight: 700; color: #2A2A2A; text-shadow: 0 0 1px #2A2A2A; letter-spacing: -0.02em;">🛒 SparFuchs</span>
+        <span id="orange-text" style="font-size: 38px; font-weight: 700; color: #FF6600 !important; text-shadow: 0 0 1px #FF6600; letter-spacing: -0.02em;" color="#FF6600">.de</span>
     </div>
     <style>
         #orange-text {
             color: #FF6600 !important;
+            font-weight: 700 !important;
+            -webkit-text-stroke: 0.3px #FF6600;
         }
     </style>
     <p style="font-size: 18px; color: #666666; margin-bottom: 0px; margin-top: 0px;">Dein KI-Assistent für Supermarkt-Angebote</p>
@@ -350,6 +352,232 @@ st.markdown("""
     .main .block-container > div:nth-child(2) {
         margin-top: 0 !important;
     }
+    
+    /* Generelles Padding für den Hauptcontainer entfernen */
+    .main .block-container {
+        padding: 0 25px !important;
+    }
+    
+    /* AppView Container Padding entfernen */
+    [data-testid="stAppViewContainer"] {
+        padding-top: 0 !important;
+    }
+    
+    /* Mobile Anpassungen */
+    @media (max-width: 768px) {
+        .main .block-container {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            margin-top: -20px !important;
+        }
+
+        h1 {
+            font-size: 22px !important;
+            margin-top: 0 !important;
+            margin-bottom: 5px !important;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            margin-top: 0 !important;
+        }
+
+        /* Den gesamten Header nach oben verschieben */
+        .main > div:first-child {
+            margin-top: -20px !important;
+            padding-top: 0 !important;
+        }
+        
+        /* Streamlit Hauptcontainer noch weiter nach oben verschieben */
+        [data-testid="stAppViewContainer"] {
+            padding-top: 0 !important;
+            margin-top: 0 !important;
+        }
+        
+        /* Block-Container nach oben verschieben */
+        .stApp > [class*='block-container'] {
+            padding-top: 0 !important;
+            margin-top: 0 !important;
+        }
+
+        /* Weniger Abstand zwischen Header und Inhalt */
+        .main .block-container > div:first-child {
+            margin-bottom: 0 !important;
+            margin-top: 0 !important;
+        }
+        
+        /* Abstand zwischen Textfeld und KI-Antwort verringern */
+        .stChatMessage {
+            margin-bottom: 0 !important;
+            padding: 8px !important;
+        }
+        
+        /* Extrem reduzierte Abstände zwischen allen Elementen */
+        .element-container {
+            margin-bottom: 0 !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        
+        /* Chat zurücksetzen Button weniger Abstand */
+        [data-testid="baseButton-secondary"] {
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            height: auto !important;
+            padding: 5px !important;
+        }
+        
+        /* Abstand zwischen Chat zurücksetzen und grünem Button */
+        [data-testid="baseButton-secondary"] + div {
+            margin-top: 0 !important;
+        }
+        
+        /* Abstand vor "Du kannst mich auch fragen" reduzieren */
+        p[style*="text-align: center"] {
+            margin-top: 2px !important;
+            margin-bottom: 2px !important;
+        }
+        
+        /* Verkleinere den Abstand zwischen den Buttons/Vorschlägen */
+        button[type="secondary"] {
+            margin-top: 2px !important;
+            margin-bottom: 2px !important;
+            padding: 5px !important;
+        }
+        
+        /* Container für die Vorschläge kompakter */
+        .prompt-suggestion {
+            margin: 2px !important;
+            padding: 5px 8px !important;
+        }
+        
+        /* Verringere den Abstand nach dem Texteingabefeld */
+        [data-testid="stTextArea"] {
+            margin-bottom: 0 !important;
+            margin-top: 0 !important;
+        }
+        
+        /* Grüner Button weniger Abstand nach oben */
+        [data-testid="baseButton-primary"] {
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            height: 40px !important;
+        }
+        
+        /* Abstand für Spalten reduzieren */
+        [data-testid="column"] {
+            padding: 0 !important;
+            gap: 0 !important;
+        }
+        
+        /* Chat-Nachrichten kompakter machen */
+        [data-testid="stChatMessageContent"] {
+            padding: 3px !important;
+        }
+        
+        /* Chat-Container Abstände reduzieren */
+        .chat-container {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        /* Abstände zwischen allen Chat-Elementen minimieren */
+        [data-testid="stChatInput"] {
+            margin: 0 !important;
+        }
+        
+        /* Fußzeile kompakter machen */
+        div[style*="position: fixed; bottom"] {
+            bottom: 2px !important;
+        }
+        
+        /* Alle Abstände zwischen Elementen minimieren */
+        div, p, span, section {
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+        }
+        
+        /* Speziell für den Abstand zwischen letzter KI-Antwort und Textfeld */
+        .stChatMessage + div {
+            margin-top: -5px !important;
+        }
+        
+        /* Für die Positionierung des Chat zurücksetzen Buttons direkt unter dem grünen Button */
+        /* Verstecke regulären Abstand */
+        #reset_chat, [data-testid="baseButton-secondary"] {
+            margin-top: -5px !important;
+            position: relative !important;
+            z-index: 10 !important;
+        }
+        
+        /* Container für Reset-Button */
+        #reset_chat {
+            margin-top: 0 !important;
+        }
+        
+        /* Die Container der Buttons besser positionieren */
+        button#reset_chat {
+            margin-top: 0 !important;
+        }
+        
+        /* Für bessere Ausrichtung des grünen Buttons und Reset-Buttons */
+        [data-testid="baseButton-primary"] + div, 
+        [id="reset_chat"] {
+            margin-top: 0 !important;
+        }
+        
+        /* VERBESSERT: Abstand zwischen Untertitel und Textfeld verringern */
+        /* Direktere Selektoren, die auf die Streamlit-Struktur abzielen */
+        .main .block-container > div:nth-child(1) {
+            margin-bottom: -25px !important;
+        }
+        
+        /* VERBESSERT: Abstände zwischen Texteingabe und vorigen Elementen */
+        .stTextArea {
+            margin-top: -15px !important;
+        }
+        
+        /* Abstand zwischen Logo und erstem Element reduzieren */
+        .main .block-container > div:first-child + div {
+            margin-top: -10px !important;
+        }
+        
+        /* VERBESSERT: Abstand vom grünen Button zu Willkommenstext verringern */
+        h3[style*="text-align: center"] {
+            margin-top: -20px !important;
+        }
+        
+        /* VERBESSERT: Den Willkommenstext und die Vorschläge näher zum grünen Button bringen */
+        [data-testid="baseButton-primary"] + div + div h3,
+        [data-testid="baseButton-primary"] ~ h3 {
+            margin-top: -20px !important;
+            padding-top: 0 !important;
+        }
+        
+        /* Aggressivere Reduzierung aller Abstände zwischen allen Elementen */
+        .element-container + .element-container {
+            margin-top: -10px !important;
+        }
+        
+        /* Willkommenstext und Vorschläge extrem nah am grünen Button */
+        .element-container:has([data-testid="baseButton-primary"]) + .element-container {
+            margin-top: -20px !important;
+        }
+        
+        /* NEU: Abstand zwischen "Suche nach passenden Angeboten..." und dem Textfeld */
+        div:has(> div > .stChatInput),
+        div:has(> span:contains("Suche nach")),
+        div[class*="stChatMessageContent"],
+        .stAlert,
+        div[data-testid="stChatInput"] {
+            margin-bottom: 10px !important;
+        }
+        
+        /* Sicherstellen, dass der Abstand vor dem Textfeld erhalten bleibt */
+        .stTextArea {
+            margin-top: 10px !important; 
+        }
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -389,12 +617,10 @@ with button_cols[1]:
         if user_input and user_input.strip():
             st.session_state["submit_text"] = user_input.strip()
             st.rerun()
-
-# Reset-Button-Container - nur wenn es AI-Antworten gibt
-has_ai_responses = any(message["role"] == "assistant" for message in st.session_state.messages)
-if has_ai_responses:
-    reset_cols = st.columns([3, 3, 3, 1])  # Gleiche Struktur wie beim Button
-    with reset_cols[1]:
+    
+    # Reset-Button direkt unter dem Send-Button platzieren (nur wenn es AI-Antworten gibt)
+    has_ai_responses = any(message["role"] == "assistant" for message in st.session_state.messages)
+    if has_ai_responses:
         if st.button("🔄 Chat zurücksetzen", key="reset_chat", type="secondary", use_container_width=True):
             system_message = st.session_state.messages[0]
             st.session_state.messages = [system_message]
