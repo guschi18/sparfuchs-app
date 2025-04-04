@@ -356,6 +356,11 @@ st.markdown("""
 # Textfeld-Container - nur eine Ebene von Spalten
 textfield_cols = st.columns([1, 20, 3])  # Weniger leere Spalte links, breiteres Textfeld
 
+# Placeholder für Spinner über dem Texteingabefeld
+with textfield_cols[1]:
+    # Platzhalter für Spinner festlegen
+    spinner_placeholder = st.empty()
+
 # Textfeld in der mittleren Spalte
 with textfield_cols[1]:
     current_key = f"custom_chat_input_{st.session_state.key_counter}"
@@ -451,8 +456,35 @@ if submitted_text:
             # Füge nur user und assistant Nachrichten hinzu
             messages_with_context.extend([m for m in st.session_state.messages if m["role"] != "system"])
             
-            # API-Anfrage senden
-            with st.spinner("Suche nach passenden Angeboten..."):
+            # Hier verwenden wir den vorbereiteten Platzhalter für den Spinner über dem Textfeld
+            with spinner_placeholder:
+                # Zeige nur unsere benutzerdefinierte Meldung ohne den Standard-Spinner
+                st.markdown("""
+                <div style="text-align: center; margin-bottom: 12px; font-weight: bold; color: #FF6600; 
+                            background-color: #FFF8F0; padding: 8px; border-radius: 8px; 
+                            border: 1px solid #FFE0C0; box-shadow: 0 2px 4px rgba(255, 102, 0, 0.1);">
+                    <div class="loader-container">
+                        <span style="margin-right: 8px;">🔍</span> 
+                        <span class="loading-text">Suche nach passenden Angeboten</span>
+                        <span class="loading-dots">...</span>
+                    </div>
+                </div>
+                <style>
+                    @keyframes pulse {
+                        0% { opacity: 0.8; }
+                        50% { opacity: 1; }
+                        100% { opacity: 0.8; }
+                    }
+                    .loader-container {
+                        display: inline-flex;
+                        align-items: center;
+                    }
+                    .loading-text, .loading-dots {
+                        animation: pulse 1.5s infinite;
+                    }
+                </style>
+                """, unsafe_allow_html=True)
+                
                 # Nur DeepseekV3 Base Modell verwenden
                 model_variants = [
                     "deepseek/deepseek-chat",  # DeepSeek V3 Base
@@ -502,7 +534,10 @@ if submitted_text:
                 
                 if not success:
                     full_response = "Entschuldigung, ich konnte Ihre Anfrage nicht bearbeiten. Bitte versuchen Sie es später erneut."
-                    
+            
+            # Nach dem API-Aufruf den Spinner entfernen
+            spinner_placeholder.empty()
+            
         except Exception as e:
             full_response = "Entschuldigung, ein unerwarteter Fehler ist aufgetreten."
         
