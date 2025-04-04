@@ -132,7 +132,8 @@ def display_prompt_suggestion(text, icon="✨"):
     # Füge den regulären Streamlit-Button hinzu, aber mache ihn unsichtbar
     # Dieser dient nur dazu, die Aktion auszulösen
     if st.button(text, key=button_id, label_visibility="collapsed"):
-        # Wenn der Button geklickt wird, setze den Text direkt für Verarbeitung
+        # Text ins Textfeld kopieren UND direkt Anfrage senden
+        st.session_state.preset_input = text
         st.session_state.submit_text = text
         # Löse Rerun aus, um die Verarbeitung zu starten
         st.rerun()
@@ -198,7 +199,8 @@ def display_suggestions_row(suggestions):
         
         # Wenn der Button geklickt wird
         if st.button(f"{icon} {text}", key=button_id, type="secondary", use_container_width=True):
-            # Setze den Text direkt für die Verarbeitung
+            # Text ins Textfeld kopieren UND direkt Anfrage senden
+            st.session_state.preset_input = text
             st.session_state.submit_text = text
             # Löse Rerun aus, um die Verarbeitung zu starten
             st.rerun()
@@ -803,14 +805,17 @@ if len([m for m in st.session_state.messages if m["role"] != "system"]) <= 2:
     cols = st.columns(3)
     with cols[0]:
         if st.button("💰 Welche 3 Artikel sind am günstigsten bei Aldi?", type="secondary"):
+            st.session_state.preset_input = "Welche 3 Artikel sind am günstigsten bei Aldi?"
             st.session_state.submit_text = "Welche 3 Artikel sind am günstigsten bei Aldi?"
             st.rerun()
     with cols[1]:
         if st.button("⚖️ Vergleiche Äpfel und Orangen", type="secondary"):
+            st.session_state.preset_input = "Vergleiche Äpfel und Orangen"
             st.session_state.submit_text = "Vergleiche Äpfel und Orangen"
             st.rerun()
     with cols[2]:
         if st.button("🥗 Suche vegetarische Produkte", type="secondary"):
+            st.session_state.preset_input = "Suche vegetarische Produkte"
             st.session_state.submit_text = "Suche vegetarische Produkte"
             st.rerun()
 
