@@ -434,8 +434,8 @@ st.markdown("""
         
         /* Abstand vor "Du kannst mich auch fragen" reduzieren */
         p[style*="text-align: center"] {
-            margin-top: 2px !important;
-            margin-bottom: 2px !important;
+            margin-top: 15px !important;
+            margin-bottom: 5px !important;
         }
         
         /* Verkleinere den Abstand zwischen den Buttons/Vorschlägen */
