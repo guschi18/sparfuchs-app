@@ -53,18 +53,18 @@ def create_minified_css_file():
 
     print("Minimierte CSS-Datei wurde unter static/styles.min.css erstellt")
 
-# Beispielprodukte hinzufügen falls keine CSV-Datei vorhanden ist (behalten für Produktkontext)
+# Beispielprodukte hinzufügen falls keine CSV-Datei vorhanden ist
 def create_sample_data():
     # Beispielprodukte
     products = [
-        {"product_name": "Bio Äpfel", "category": "Obst & Gemüse", "price_value": 2.99, "currency": "€", "unit": "1kg", "image": "apple.jpg"},
-        {"product_name": "Rinderhackfleisch", "category": "Fleisch", "price_value": 5.49, "currency": "€", "unit": "500g", "image": "beef.jpg"},
-        {"product_name": "Bio Vollmilch", "category": "Milchprodukte", "price_value": 1.29, "currency": "€", "unit": "1L", "image": "milk.jpg"},
-        {"product_name": "Mehrkornbrot", "category": "Backwaren", "price_value": 2.19, "currency": "€", "unit": "750g", "image": "bread.jpg"},
-        {"product_name": "Mascarpone", "category": "Milchprodukte", "price_value": 1.79, "currency": "€", "unit": "250g", "image": "cheese.jpg"},
-        {"product_name": "Spanische Orangen", "category": "Obst & Gemüse", "price_value": 3.49, "currency": "€", "unit": "2kg", "image": "orange.jpg"},
-        {"product_name": "Lachsfilet", "category": "Fisch", "price_value": 8.99, "currency": "€", "unit": "300g", "image": "salmon.jpg"},
-        {"product_name": "Avocado", "category": "Obst & Gemüse", "price_value": 1.99, "currency": "€", "unit": "Stück", "image": "avocado.jpg"}
+        {"Produktname": "Bio Äpfel", "Kategorie": "Obst & Gemüse", "Unterkategorie": "Obst", "Preis_EUR": 2.99, "Supermarkt": "Aldi"},
+        {"Produktname": "Rinderhackfleisch", "Kategorie": "Lebensmittel", "Unterkategorie": "Fleisch", "Preis_EUR": 5.49, "Supermarkt": "Aldi"},
+        {"Produktname": "Bio Vollmilch", "Kategorie": "Lebensmittel", "Unterkategorie": "Milchprodukte", "Preis_EUR": 1.29, "Supermarkt": "Lidl"},
+        {"Produktname": "Mehrkornbrot", "Kategorie": "Lebensmittel", "Unterkategorie": "Backwaren", "Preis_EUR": 2.19, "Supermarkt": "Lidl"},
+        {"Produktname": "Mascarpone", "Kategorie": "Lebensmittel", "Unterkategorie": "Milchprodukte/Käse", "Preis_EUR": 1.79, "Supermarkt": "Aldi"},
+        {"Produktname": "Spanische Orangen", "Kategorie": "Lebensmittel", "Unterkategorie": "Obst", "Preis_EUR": 3.49, "Supermarkt": "Lidl"},
+        {"Produktname": "Lachsfilet", "Kategorie": "Lebensmittel", "Unterkategorie": "Fisch/Meeresfrüchte", "Preis_EUR": 8.99, "Supermarkt": "Aldi"},
+        {"Produktname": "Avocado", "Kategorie": "Lebensmittel", "Unterkategorie": "Obst", "Preis_EUR": 1.99, "Supermarkt": "Lidl"}
     ]
     
     # Zufällige Gültigkeitsdaten generieren
@@ -73,11 +73,8 @@ def create_sample_data():
     for product in products:
         valid_from = today - timedelta(days=random.randint(0, 5))
         valid_to = today + timedelta(days=random.randint(3, 14))
-        product["valid_from"] = valid_from.strftime("%Y-%m-%d")
-        product["valid_to"] = valid_to.strftime("%Y-%m-%d")
-        
-        # Badge für spezielle Angebote
-        product["is_special"] = random.choice([True, False, False])
+        product["Startdatum"] = valid_from.strftime("%Y-%m-%d")
+        product["Enddatum"] = valid_to.strftime("%Y-%m-%d")
     
     return pd.DataFrame(products)
 
@@ -85,7 +82,7 @@ def create_sample_data():
 @st.cache_data
 def load_csv_data():
     try:
-        df = pd.read_csv("Aldi_Angebote_Top.csv")
+        df = pd.read_csv("Aldi_Lidl_Angebote.csv")
         if df.empty:
             return create_sample_data()
         return df
@@ -99,15 +96,28 @@ def get_products_context():
     if df.empty:
         return "Keine Produktdaten verfügbar."
     
-    context = "Aktuelle Aldi Angebote:\n\n"
+    context = "Aktuelle Aldi und Lidl Angebote:\n\n"
     for _, row in df.iterrows():
+        # Zugriff auf die deutschen Spaltenbezeichnungen
+        produkt = row.get('Produktname', 'N/A')
+        kategorie = row.get('Kategorie', 'N/A')
+        unterkategorie = row.get('Unterkategorie', 'N/A')
+        preis = row.get('Preis_EUR', 'N/A')
+        start_datum = row.get('Startdatum', 'N/A')
+        end_datum = row.get('Enddatum', 'N/A')
+        supermarkt = row.get('Supermarkt', 'N/A')
+        
+        # Format angepasst, um einfacher in das gewünschte Ausgabeformat umgewandelt werden zu können
         product_info = (
-            f"Produkt: {row.get('product_name', 'N/A')}\n"
-            f"Kategorie: {row.get('category', 'N/A')}\n"
-            f"Preis: {row.get('price_value', 'N/A')} {row.get('currency', 'EUR')}\n"
-            f"Gültig von: {row.get('valid_from', 'N/A')} bis {row.get('valid_to', 'N/A')}\n"
-            f"Einheit: {row.get('unit', 'N/A')}\n\n"
+            f"Produkt: {produkt}\n"
+            f"Kategorie: {kategorie}\n"
+            f"Unterkategorie: {unterkategorie}\n"
+            f"Preis: {preis}\n"
+            f"Startdatum: {start_datum}\n"
+            f"Enddatum: {end_datum}\n"
+            f"Supermarkt: {supermarkt}\n\n"
         )
+        
         context += product_info
     
     return context
@@ -220,11 +230,39 @@ if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "system", "content": "Du bist ein hilfreicher Einkaufsassistent für SparFuchs.de. " +
         "Benutze NUR die folgenden Produktinformationen, um alle Anfragen zu beantworten. " +
+        "WICHTIG: Antworte IMMER auf Deutsch, unabhängig von der Sprache der Anfrage. " +
         "Wenn du nach Produkten gefragt wirst, die nicht in der Datenbank sind, sage deutlich, " +
         "dass du keine Informationen zu diesen Produkten hast. " +
         "WICHTIG: Verweise NIEMALS auf Angebotsbroschüren oder externe Quellen. " +
-        "Antworte ausschließlich mit den Daten, die dir zur Verfügung gestellt werden." + 
-        "WICHTIG: Antworte erst, wenn du alle Informationen analysiert hast, um eine korrekte Antwort zu geben."}
+        "Antworte ausschließlich mit den Daten, die dir zur Verfügung gestellt werden. " + 
+        "WICHTIG: Antworte erst, wenn du alle Informationen analysiert hast, um eine korrekte Antwort zu geben. " +
+        "FORMATIERUNGSANWEISUNG: Formatiere deine Antworten zu Produkten immer in folgendem Format: " +
+        "1. Beginne mit einer kurzen einleitenden Antwort, die die Frage beantwortet. " +
+        "2. Liste dann jedes gefundene Produkt in folgendem klaren Format auf: " +
+        "\n**Produktname (mit Details wie Gewicht, Sorte, etc.):** Preis €" +
+        "\nGültig von [Startdatum] bis [Enddatum]" +
+        "\nSupermarkt: [Supermarktname]" +
+        "\n\n" +
+        "3. Bei Preisvergleichen oder Zusammenfassungen, nutze einen abschließenden Absatz mit einer klaren Kennzeichnung: " +
+        "\n**Preisvergleich:** Das günstigste Produkt ist X für Y € (Z € pro kg/Stück)." +
+        "\n\n" +
+        "4. Wenn ein gesuchtes Produkt nicht verfügbar ist, teile dies explizit mit: " +
+        "\n**Hinweis:** Bei [Produkt] habe ich leider keine aktuellen Angebote bei [Supermarkt] gefunden." +
+        "\n\n" +
+        "5. Verwende fettgedruckten Text für Hervorhebungen und Überschriften, wie im Beispiel gezeigt." +
+        "\n\n" +
+        "Beispiel: " +
+        "\nJa, bei Aldi gibt es aktuell Kartoffeln und Nudeln im Angebot:\n" +
+        "\n**Speisefrühkartoffeln (1,5 kg):** 2,79 €" +
+        "\nGültig von 2025-04-24 bis 2025-04-26" +
+        "\nSupermarkt: Aldi" +
+        "\n\n" +
+        "**CUCINA NOBILE Farfalle Fantasia (versch. Sorten, 250 g):** 1,49 €" +
+        "\nGültig von 2025-04-22 bis 2025-04-26" +
+        "\nSupermarkt: Aldi" +
+        "\n\n" +
+        "**Hinweis:** Bei Reis habe ich leider keine aktuellen Angebote bei Aldi gefunden."
+        }
     ]
 
 # Seitentitel mit Logo-Effekt
@@ -259,12 +297,8 @@ for message in [m for m in st.session_state.messages if m["role"] != "system"]:
         avatar = "🛒"  # Einkaufswagen für den Assistenten
     
     with st.chat_message(message["role"], avatar=avatar):
-        # Text in dunklerer Farbe anzeigen
-        st.markdown(f"""
-        <div style="color: #000000 !important; font-weight: 500 !important;">
-            {message["content"]}
-        </div>
-        """, unsafe_allow_html=True)
+        # Text mit aktiviertem Markdown für Formatierungen
+        st.markdown(message["content"], unsafe_allow_html=False)
 
 st.markdown('</div>', unsafe_allow_html=True)
 
@@ -293,6 +327,19 @@ st.markdown("""
     /* Container-Styling */
     .stTextArea {
         max-width: 100% !important;
+    }
+    
+    /* Verbesserter fett formatierter Text in den Chat-Nachrichten */
+    [data-testid="stChatMessage"] strong,
+    [data-testid="stMarkdownContainer"] strong,
+    .stMarkdown strong {
+        color: #34C759 !important;
+        font-weight: 700 !important;
+    }
+    
+    /* Zusätzlicher Abstand nach den Produktinformationen */
+    [data-testid="stChatMessage"] p {
+        margin-bottom: 6px !important;
     }
     
     /* Primary Button (Senden-Button) */
@@ -595,8 +642,8 @@ with textfield_cols[1]:
 with textfield_cols[1]:
     current_key = f"custom_chat_input_{st.session_state.key_counter}"
     initial_value = st.session_state.get("preset_input", "")
-    user_input = st.text_area("Chat-Eingabe", value=initial_value, placeholder="Was suchst du heute?", 
-                          label_visibility="collapsed", key=current_key, height=120)
+    user_input = st.text_area("Chat-Eingabe", value=initial_value, placeholder="Was möchtest du kaufen? (z.B. Obst, Nudeln, Fleisch, etc...)", 
+                          label_visibility="collapsed", key=current_key, height=95)
     
     # Verfolge Änderungen im Textfeld
     if user_input and st.session_state.get("last_input_value") != user_input:
@@ -669,11 +716,38 @@ if submitted_text:
                 "role": "system", 
                 "content": "Du bist ein hilfreicher Einkaufsassistent für SparFuchs.de. " +
                 "Benutze NUR die folgenden Produktinformationen, um alle Anfragen zu beantworten. " +
+                "WICHTIG: Antworte IMMER auf Deutsch, unabhängig von der Sprache der Anfrage. " +
                 "Wenn du nach Produkten gefragt wirst, die nicht in der Datenbank sind, sage deutlich, " +
                 "dass du keine Informationen zu diesen Produkten hast. " +
                 "WICHTIG: Verweise NIEMALS auf Angebotsbroschüren oder externe Quellen. " +
-                "Antworte ausschließlich mit den Daten, die dir zur Verfügung gestellt werden." + 
-                "WICHTIG: Antworte erst, wenn du alle Informationen analysiert hast, um eine korrekte Antwort zu geben."
+                "Antworte ausschließlich mit den Daten, die dir zur Verfügung gestellt werden. " + 
+                "WICHTIG: Antworte erst, wenn du alle Informationen analysiert hast, um eine korrekte Antwort zu geben. " +
+                "FORMATIERUNGSANWEISUNG: Formatiere deine Antworten zu Produkten immer in folgendem Format: " +
+                "1. Beginne mit einer kurzen einleitenden Antwort, die die Frage beantwortet. " +
+                "2. Liste dann jedes gefundene Produkt in folgendem klaren Format auf: " +
+                "\n**Produktname (mit Details wie Gewicht, Sorte, etc.):** Preis €" +
+                "\nGültig von [Startdatum] bis [Enddatum]" +
+                "\nSupermarkt: [Supermarktname]" +
+                "\n\n" +
+                "3. Bei Preisvergleichen oder Zusammenfassungen, nutze einen abschließenden Absatz mit einer klaren Kennzeichnung: " +
+                "\n**Preisvergleich:** Das günstigste Produkt ist X für Y € (Z € pro kg/Stück)." +
+                "\n\n" +
+                "4. Wenn ein gesuchtes Produkt nicht verfügbar ist, teile dies explizit mit: " +
+                "\n**Hinweis:** Bei [Produkt] habe ich leider keine aktuellen Angebote bei [Supermarkt] gefunden." +
+                "\n\n" +
+                "5. Verwende fettgedruckten Text für Hervorhebungen und Überschriften, wie im Beispiel gezeigt." +
+                "\n\n" +
+                "Beispiel: " +
+                "\nJa, bei Aldi gibt es aktuell Kartoffeln und Nudeln im Angebot:\n" +
+                "\n**Speisefrühkartoffeln (1,5 kg):** 2,79 €" +
+                "\nGültig von 2025-04-24 bis 2025-04-26" +
+                "\nSupermarkt: Aldi" +
+                "\n\n" +
+                "**CUCINA NOBILE Farfalle Fantasia (versch. Sorten, 250 g):** 1,49 €" +
+                "\nGültig von 2025-04-22 bis 2025-04-26" +
+                "\nSupermarkt: Aldi" +
+                "\n\n" +
+                "**Hinweis:** Bei Reis habe ich leider keine aktuellen Angebote bei Aldi gefunden."
             }
             
             # Erweitere die Systemnachricht mit dem aktuellen Kontext
@@ -788,14 +862,15 @@ if len([m for m in st.session_state.messages if m["role"] != "system"]) == 0:
     
     with col1:
         display_suggestions_row([
-            ("Welche Obst-Angebote gibt es aktuell?", "🍎"),
-            ("Wo ist diese Woche Hackfleisch im Angebot?", "🥩")
+            ("Wo ist Coca Cola im Angebot?", "🔍"),
+            ("Wo ist diese Woche Hackfleisch am günstigsten?", "🥩")
         ])
         
     with col2:        
         display_suggestions_row([
-            ("Gibt es bei Aldi Reis, Nudeln und Kartoffeln im Angebot?", "🔍"),
-            ("Wo ist Red Bull im Angebot?", "🔍")
+             ("Welche Obst Angebote gibt es aktuell bei Aldi?", "🍎"),
+            ("Gibt es bei Aldi Reis, Nudeln oder Kartoffeln im Angebot?", "🔍")
+            
         ])
 
 # Zusätzliche Ideen für Anfänger unten anzeigen
@@ -804,20 +879,21 @@ if len([m for m in st.session_state.messages if m["role"] != "system"]) <= 2:
     
     cols = st.columns(3)
     with cols[0]:
-        if st.button("💰 Welche 3 Artikel sind am günstigsten bei Aldi?", type="secondary"):
-            st.session_state.preset_input = "Welche 3 Artikel sind am günstigsten bei Aldi?"
-            st.session_state.submit_text = "Welche 3 Artikel sind am günstigsten bei Aldi?"
+        if st.button("💰 Welche Backwaren sind bei Lidl im Angebot?", type="secondary"):
+            st.session_state.preset_input = "Welche Backwaren sind bei Lidl im Angebot?"
+            st.session_state.submit_text = "Welche Backwaren sind bei Lidl im Angebot?"
             st.rerun()
     with cols[1]:
+        if st.button("🥗 Gib mir 10 vegetarische Produkte, hauptsächlich bitte Gemüse", type="secondary"):
+            st.session_state.preset_input = "Gib mir 10 vegetarische Produkte, hauptsächlich bitte Gemüse"
+            st.session_state.submit_text = "Gib mir 10 vegetarische Produkte, hauptsächlich bitte Gemüse"
+            st.rerun()
+    with cols[2]:
         if st.button("⚖️ Vergleiche Äpfel und Orangen", type="secondary"):
             st.session_state.preset_input = "Vergleiche Äpfel und Orangen"
             st.session_state.submit_text = "Vergleiche Äpfel und Orangen"
             st.rerun()
-    with cols[2]:
-        if st.button("🥗 Suche vegetarische Produkte", type="secondary"):
-            st.session_state.preset_input = "Suche vegetarische Produkte"
-            st.session_state.submit_text = "Suche vegetarische Produkte"
-            st.rerun()
+    
 
 # Kleine Info am Seitenende für Mobilgeräte
 st.markdown(
