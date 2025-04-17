@@ -7,6 +7,7 @@ import random
 import time
 from datetime import datetime, timedelta
 import re
+from pathlib import Path
 
 # Umgebungsvariablen laden
 load_dotenv()
@@ -19,40 +20,70 @@ client = OpenAI(
 
 # CSS für modernes Design
 def apply_modern_supermarket_style():
-    # Kritisches CSS (minimale Stile für das anfängliche Rendering)
-    critical_css = """
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-    :root{--text-color:#2A2A2A;--bg-color:#FDFDFD;--primary:#28A745;--secondary:#FF6600;--border:#E0E0E0}
-    html,body,.stApp,[class*="css"]{font-family:'Poppins',sans-serif;color:var(--text-color);background-color:var(--bg-color)!important}
-    """
-
-    # Restliches minimiertes CSS laden
-    try:
-        with open("static/styles.min.css", "r") as f:
-            minified_css = f.read()
-    except FileNotFoundError:
-        # Fallback auf inline CSS, wenn die Datei nicht existiert
-        minified_css = get_minified_css()
-
-    # Stile anwenden
-    st.markdown(f"<style>{critical_css}{minified_css}</style>", unsafe_allow_html=True)
-
-# Funktion, die minimiertes CSS als Fallback bereitstellt
-def get_minified_css():
-    return """footer,[data-testid="InputFooterHelperText"],[data-testid="InputInstructions"],[data-testid="InputHelpText"],[data-testid="stChatInputFooter"],.streamlit-footer,.stTextInput+div small,.stTextInput+small,.stTextInput~small,small.st-emotion-cache-16txtl3,.st-emotion-cache-16txtl3{display:none!important;visibility:hidden!important;height:0!important;padding:0!important;margin:0!important;opacity:0!important}[data-testid="stForm"] [data-baseweb="input"] div,.stChatInput div,.stChatInput,[data-testid="stChatInput"]{margin-bottom:0!important}.stApp,[data-testid="stAppViewContainer"],[data-testid="stAppViewBlock"],.stApp>header,.stApp>[class*='block-container']{background-color:#FDFDFD!important}[data-testid="stChatInput"]{border-radius:10px!important;overflow:hidden!important;background-color:#FFF!important;border:1px solid #E0E0E0!important;box-shadow:0 2px 5px rgba(0,0,0,0.05)!important;display:flex!important}[data-testid="stChatInput"]>div{background-color:#FFF!important;flex-grow:1!important}[data-testid="stChatInput"] input{color:#2A2A2A!important;background-color:#FFF!important;padding-left:15px!important;border:none!important}[data-testid="stChatInput"] input::placeholder{color:#BBB!important}[data-testid="stChatInput"] button,[data-testid="stChatInput"] [data-testid="baseButton-primaryFormSubmit"]{background-color:#2A2A2A!important;border-radius:0 10px 10px 0!important;color:white!important;min-width:50px!important;height:100%!important;padding:10px!important;border:none!important}[data-testid="stChatInput"] button:hover,[data-testid="stChatInput"] [data-testid="baseButton-primaryFormSubmit"]:hover{background-color:#28A745!important;border:none!important}[data-testid="stChatInput"] button svg,[data-testid="stChatInput"] [data-testid="baseButton-primaryFormSubmit"] svg{fill:white!important;color:white!important}.chat-container{background-color:#FDFDFD!important;border-radius:10px!important}[data-testid="baseButton-secondary"]{background-color:#F8F9FA!important;border:1px solid #E0E0E0!important;border-radius:10px!important;color:#2A2A2A!important;font-size:14px!important;box-shadow:none!important}h1,h2,h3,h4{font-weight:600!important;color:#2A2A2A!important}h1{font-size:26px!important;margin-bottom:20px!important}.main .block-container{padding:25px;max-width:700px;margin:0 auto;background:transparent}.stChatMessage{background:#FFF!important;border-radius:10px!important;padding:18px!important;border:1px solid #E0E0E0!important;box-shadow:0 2px 5px rgba(0,0,0,0.05);margin-bottom:20px!important;color:#000!important;transition:all 0.3s ease}.stChatMessage:hover{box-shadow:0 4px 8px rgba(0,0,0,0.1)}.stChatMessage.user{background:#F5F8FF!important;border:1px solid #E0E8FF!important;color:#000!important}.stMarkdown{color:#000!important}.stMarkdown p,.stMarkdown li,.stMarkdown div,.stMarkdown code{color:#000!important;font-weight:500!important}[data-testid="stChatMessage"] [data-testid="stMarkdownContainer"]>p,[data-testid="stChatMessage"] .stMarkdown>p{color:#000!important;font-weight:500!important;font-size:16px!important;line-height:1.6!important;margin-bottom:12px!important}.stChatMessage p,.stChatMessage span,.stChatMessage div,.stChatMessage li,.stChatMessage a,.stChatMessage code{color:#000!important;font-weight:500!important}[data-testid="stChatMessageContent"],[data-testid="stChatMessageContent"] *{color:#000!important;font-weight:500!important}[data-testid="stMarkdownContainer"] p,[data-testid="stMarkdownContainer"] span,[data-testid="stMarkdownContainer"] div,[data-testid="stMarkdownContainer"] li,[data-testid="stMarkdownContainer"] a,[data-testid="stMarkdownContainer"] code,[data-testid="stMarkdownContainer"] *{color:#000!important;font-weight:500!important}.main .block-container [data-testid="stChatMessage"] *,.main .block-container [data-testid="stChatMessageContent"] *,.element-container .stMarkdownContainer p,.element-container .stMarkdownContainer span{color:#000!important;font-weight:500!important}[data-testid="stChatMessage"]{background-color:#FFF!important;border:1px solid #E0E0E0!important}[data-testid="stChatMessage"] [data-testid="stMarkdownContainer"]{color:#000!important}[data-testid="stSidebar"]{background:#FFF;border-right:1px solid #E0E0E0!important}[data-testid="stSidebar"] h2{color:#2A2A2A;font-size:20px!important;margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid #E0E0E0}button[kind="primary"]{background:#34C759!important;border-radius:10px!important;padding:8px 16px!important;border:none!important;color:white!important;font-weight:500!important;box-shadow:0 2px 5px rgba(52,199,89,0.3)!important;transition:all 0.3s ease!important}button[kind="primary"]:hover{transform:translateY(-2px);background:#28A745!important;box-shadow:0 4px 8px rgba(52,199,89,0.4)!important}button[kind="secondary"]{background:#FFF!important;border-radius:10px!important;padding:8px 16px!important;border:none!important;color:white!important;font-weight:500!important;box-shadow:0 2px 5px rgba(255,102,0,0.3)!important;transition:all 0.3s ease!important}button[kind="secondary"]:hover{transform:translateY(-2px);background:#E55C00!important;box-shadow:0 4px 8px rgba(255,102,0,0.4)!important}.stAlert{border-radius:10px!important;border:1px solid #E0E0E0!important;box-shadow:0 2px 5px rgba(0,0,0,0.05)!important;background-color:#FFF!important}.logo-text{font-size:38px!important;font-weight:700!important;color:#2A2A2A!important;display:inline-block!important;margin-bottom:8px!important;line-height:1.2!important}.logo-highlight{color:#FF6600!important;font-weight:inherit!important}.chat-reset-button{border-radius:10px;background-color:#f8f9fa;border:1px solid #E0E0E0;color:#2A2A2A;padding:8px 12px;text-align:center;text-decoration:none;font-size:14px;cursor:pointer;transition:all 0.3s ease}.chat-reset-button:hover{background-color:#e9ecef;border-color:#ced4da}.prompt-suggestion{background:#FFF;border-radius:8px;padding:10px 15px;margin:10px 5px;border:1px solid #E0E0E0;cursor:pointer;transition:all 0.3s ease;color:#121111;display:inline-block;box-shadow:0 2px 5px rgba(0,0,0,0.05);animation:fadeIn 0.5s ease}.prompt-suggestion:hover{background:#E6F9E6;border-color:#C5E8C5;transform:scale(1.05);box-shadow:0 4px 8px rgba(0,0,0,0.1)}.prompt-icon{color:#28A745;margin-right:5px;font-size:16px;transform:scale(1);transition:transform 0.3s ease}.prompt-suggestion:hover .prompt-icon{transform:scale(1.1)}@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@media (max-width:768px){.main .block-container{padding:15px}h1{font-size:22px!important;margin-bottom:15px!important}.logo-text{font-size:22px}.prompt-suggestion{max-width:100%;font-size:14px;padding:10px}.stChatMessage{padding:15px!important}button[kind="primary"]{padding:10px!important}}[data-testid="stTextArea"]{border:1px solid #E0E0E0!important;border-radius:10px!important;background-color:#FFF!important;padding:0!important;box-shadow:0 2px 5px rgba(0,0,0,0.05)!important}[data-testid="stTextArea"]>div{background-color:#FFF!important}[data-testid="stTextArea"] textarea{padding:12px 15px!important;font-size:14px!important;color:#0d0d0c!important;background-color:#FFF!important;min-height:100px!important;resize:vertical!important;font-size:18px!important;font-weight:500!important}[data-testid="stTextArea"] textarea::placeholder{color:#0d0d0c!important;font-size:18px!important;font-weight:500!important}[data-testid="stTextArea"]:focus-within{border-color:#34C759!important;box-shadow:0 0 0 1px #34C759!important;outline:none!important}[data-testid="stTextArea"] textarea:focus{box-shadow:none!important;outline:none!important;border-color:transparent!important}[data-testid="stForm"] [data-baseweb="textarea"]:focus-within,[data-baseweb="textarea"]:focus,[data-baseweb="textarea"]:focus-within,[data-baseweb="base-input"]:focus,[data-baseweb="base-input"]:focus-within{border-color:#34C759!important;box-shadow:0 0 0 1px #34C759!important;outline-color:#34C759!important}:focus{outline-color:#34C759!important}textarea:focus{border-color:#34C759!important;box-shadow:0 0 0 1px #34C759!important;outline-color:#34C759!important}[data-testid="baseButton-primary"]{margin-top:10px!important;height:45px!important;font-size:24px!important;background-color:#34C759!important;border-radius:10px!important;color:white!important;padding:0!important;border:none!important;box-shadow:0 2px 5px rgba(52,199,89,0.3)!important;max-width:100%!important}[data-testid="baseButton-primary"]:hover{background-color:#28A745!important;box-shadow:0 4px 8px rgba(52,199,89,0.4)!important}[data-testid="baseButton-secondary"]{margin-top:10px!important;max-width:100%!important}.stTextArea{max-width:100%!important}"""
+    # Stelle sicher, dass der static-Ordner existiert
+    static_dir = Path("static")
+    if not static_dir.exists():
+        static_dir.mkdir(exist_ok=True)
+    
+    css_file_path = static_dir / "styles.min.css"
+    
+    # Prüfe, ob die minimierte CSS-Datei existiert
+    if not css_file_path.exists():
+        create_minified_css_file()
+    
+    # CSS aus der Datei laden und anwenden
+    with open(css_file_path, "r", encoding="utf-8") as f:
+        css = f.read()
+    
+    st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
 # Eine neue Datei mit dem minimierten CSS erstellen
 def create_minified_css_file():
-    # Sicherstellen, dass das static-Verzeichnis existiert
-    import os
-    if not os.path.exists("static"):
-        os.makedirs("static")
+    # Stelle sicher, dass der static-Ordner existiert
+    static_dir = Path("static")
+    static_dir.mkdir(exist_ok=True)
+    
+    # Entwicklungs-CSS-Datei lesen
+    dev_css_path = static_dir / "styles.dev.css"
+    if dev_css_path.exists():
+        with open(dev_css_path, "r", encoding="utf-8") as f:
+            css_content = f.read()
+        
+        # Einfache CSS-Minimierung (Entfernung von Kommentaren und Leerzeichen)
+        # In einer produktiven Umgebung könnte man hier ein richtiges CSS-Minimierungstool verwenden
+        css_content = re.sub(r'/\*.*?\*/', '', css_content, flags=re.DOTALL)  # Kommentare entfernen
+        css_content = re.sub(r'\s+', ' ', css_content)  # Mehrfach-Leerzeichen zu einem reduzieren
+        css_content = css_content.strip()
+        
+        # Speichern der minimierten CSS-Datei
+        min_css_path = static_dir / "styles.min.css"
+        with open(min_css_path, "w", encoding="utf-8") as f:
+            f.write(css_content)
+    else:
+        # Fallback: Wenn keine styles.dev.css existiert, erstelle eine leere CSS-Datei
+        # und gib eine Warnung aus
+        min_css_path = static_dir / "styles.min.css"
+        with open(min_css_path, "w", encoding="utf-8") as f:
+            f.write("/* Automatisch generierte leere CSS-Datei. Bitte static/styles.dev.css erstellen und neu laden. */")
+        
+        # Gib eine Warnung im UI aus
+        st.warning("Die CSS-Entwicklungsdatei 'static/styles.dev.css' wurde nicht gefunden. Bitte erstellen Sie diese Datei für ein besseres UI-Design.")
+        
+        # Erstelle eine Basis-Entwicklungsdatei als Vorlage
+        with open(dev_css_path, "w", encoding="utf-8") as f:
+            f.write("""/* == Basis-CSS-Vorlage == */
+:root {
+  --text-color: #2A2A2A;
+  --bg-color: #FDFDFD;
+  --white: #FFF;
+  --primary-color: #28A745;
+  --secondary-color: #FF6600;
+  --border-color: #E0E0E0;
+  --border-radius: 10px;
+}
 
-    # Das minimierte CSS in eine Datei schreiben
-    with open("static/styles.min.css", "w") as f:
-        f.write(get_minified_css())
-
-    print("Minimierte CSS-Datei wurde unter static/styles.min.css erstellt")
+/* Geben Sie hier Ihre CSS-Anpassungen ein */
+""")
 
 # Beispielprodukte hinzufügen falls keine CSV-Datei vorhanden ist
 def create_sample_data():
@@ -342,7 +373,7 @@ def get_filtered_products_context(user_query):
     
     # Hinzufügen von hilfreichen Informationen für die KI zur semantischen Verarbeitung
     context += "WICHTIG FÜR SEMANTISCHE INTERPRETATION: Berücksichtige, dass die folgenden Produkte für die Anfrage relevant sein könnten, auch wenn sie nicht exakt dem Suchbegriff entsprechen. Denke über mögliche semantische Beziehungen nach, wie z.B.:\n"
-    context += "- 'Nudeln' umfasst auch Pasta, Tortelloni, Farfalle, Spaghetti, und andere Pasta-Varianten - jegliche Art von Pasta ist eine Form von Nudeln.\n"
+    context += "- 'Nudeln' umfasst auch Pasta, Tortelloni, Farfalle, Spaghetti, Penne usw. - jegliche Art von Pasta ist eine Form von Nudeln.\n"
     context += "- 'Getränke' umfasst Wasser, Saft, Limonade, Cola, Bier, Wein, etc.\n"
     context += "- 'Süßigkeiten' umfasst Schokolade, Kekse, Fruchtgummi, etc.\n"
     context += "- 'Fleisch' umfasst verschiedene Fleischsorten wie Rind, Schwein, Geflügel, etc.\n"
@@ -466,52 +497,6 @@ def display_prompt_suggestion(text, icon="✨"):
         st.session_state.submit_text = text
         # Löse Rerun aus, um die Verarbeitung zu starten
         st.rerun()
-    
-    # CSS für die Buttons (anstelle von JavaScript)
-    st.markdown("""
-    <style>
-    /* Verstecke die eigentlichen Streamlit-Buttons */
-    [data-testid="baseButton-secondary"] {
-        display: none !important;
-    }
-    
-    /* Style für die Button-Container */
-    .prompt-suggestion-container {
-        display: inline-block;
-        margin: 5px;
-        background: #FFFFFF;
-    }
-    
-    /* Style für die Prompt-Suggestion-Buttons */
-    .prompt-suggestion {
-        background: #FFFFFF;
-        border-radius: 8px;
-        padding: 10px 15px;
-        border: 1px solid #E0E0E0;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        color: #121111;
-        display: inline-block;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        animation: fadeIn 0.5s ease;
-        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
-        font-size: 14px;
-    }
-    
-    .prompt-suggestion:hover {
-        background: #E6F9E6;
-        border-color: #C5E8C5;
-        transform: scale(1.05);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    
-    .prompt-icon {
-        color: #28A745;
-        margin-right: 5px;
-        font-size: 16px;
-    }
-    </style>
-    """, unsafe_allow_html=True)
 
 # Zusätzliche Funktion, die Vorschläge in einer Reihe anzeigt
 def display_suggestions_row(suggestions):
@@ -540,6 +525,41 @@ st.set_page_config(
     page_icon="🛒",
     layout="centered"
 )
+
+# CSS direkt am Anfang der Anwendung einfügen (KRITISCH: Dies muss vor allem anderen sein)
+st.markdown("""
+<style>
+/* Container sind weiß mit beigen Seitenrändern */
+.main .block-container {
+    background-color: #ffffff !important;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 20px;
+}
+
+/* Hintergrund der App bleibt beige */
+body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stAppViewBlock"] {
+    background-color: #E8E0D0 !important;
+}
+
+/* Chat-Nachrichten haben beige Hintergründe für einheitliches Design */
+.stChatMessage, 
+[data-testid="stChatMessage"] {
+    background-color: #F2EEE5 !important;
+    border: 1px solid #E0D8C8 !important;
+    color: #333 !important;
+}
+.stChatMessage.user {
+    background-color: #F7F3EA !important;
+    border: 1px solid #E5DFD0 !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# CSS-Datei neu kompilieren bei jedem Start
+create_minified_css_file()
 
 # Modernes Supermarkt-Design anwenden
 apply_modern_supermarket_style()
@@ -592,25 +612,18 @@ if "messages" not in st.session_state:
 # Seitentitel mit Logo-Effekt
 col1, col2 = st.columns([5, 1])
 with col1:
-    # Ein komplett neuer Ansatz mit verschiedenen Styles und mehreren Techniken
+    # Logo mit CSS-Klassen aus der externen Datei
     html_code = """
-    <div style="margin-bottom: 0px; display: flex; align-items: center;">
-        <span style="font-size: 38px; font-weight: 700; color: #2A2A2A; text-shadow: 0 0 1px #2A2A2A; letter-spacing: -0.02em;">🛒 SparFuchs</span>
-        <span id="orange-text" style="font-size: 38px; font-weight: 700; color: #FF6600 !important; text-shadow: 0 0 1px #FF6600; letter-spacing: -0.02em;" color="#FF6600">.de</span>
+    <div class="logo-container">
+        <span class="logo-main" style="font-size: 38px !important; font-weight: 800 !important; color: var(--text-color) !important;">🛒 SparFuchs</span>
+        <span id="orange-text" style="font-size: 38px !important; color: #FF6600 !important; font-weight: 800 !important; display: inline-block !important; text-shadow: 0 0 1px #FF6600 !important; -webkit-text-stroke: 0.5px #FF6600 !important;">.de</span>
     </div>
-    <style>
-        #orange-text {
-            color: #FF6600 !important;
-            font-weight: 700 !important;
-            -webkit-text-stroke: 0.3px #FF6600;
-        }
-    </style>
-    <p style="font-size: 18px; color: #666666; margin-bottom: 0px; margin-top: 0px;">Dein KI-Assistent für Supermarkt-Angebote</p>
+    <p class="logo-subtitle">Dein KI-Assistent für Supermarkt-Angebote</p>
     """
     st.markdown(html_code, unsafe_allow_html=True)
 
 # Chat-Container mit verbessertem Erscheinungsbild
-st.markdown('<div class="chat-container" style="margin-top: 5px;">', unsafe_allow_html=True)
+st.markdown('<div class="chat-container" style="margin-top: 5px; background-color: transparent !important;">', unsafe_allow_html=True)
 
 # Chatverlauf anzeigen (nur user und assistant Nachrichten)
 for message in [m for m in st.session_state.messages if m["role"] != "system"]:
@@ -620,8 +633,8 @@ for message in [m for m in st.session_state.messages if m["role"] != "system"]:
     else:
         avatar = "🛒"  # Einkaufswagen für den Assistenten
     
+    # Verwende die normale Streamlit-Chat-Komponente für beide Nachrichtentypen
     with st.chat_message(message["role"], avatar=avatar):
-        # Text mit aktiviertem Markdown für Formatierungen
         st.markdown(message["content"], unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
@@ -644,322 +657,6 @@ if "is_first_input" not in st.session_state:
 # Initialisiere einen direkten Übermittlungsflag
 if "submit_text" not in st.session_state:
     st.session_state["submit_text"] = None
-
-# CSS-Styling für verschobenes Layout und verringerter Abstand zum Titel
-st.markdown("""
-<style>
-    /* Container-Styling */
-    .stTextArea {
-        max-width: 100% !important;
-    }
-    
-    /* Verbesserter fett formatierter Text in den Chat-Nachrichten */
-    [data-testid="stChatMessage"] strong,
-    [data-testid="stMarkdownContainer"] strong,
-    .stMarkdown strong {
-        color: #28A745 !important;
-        font-weight: 700 !important;
-    }
-    
-    /* Metainformationen - Gültig vom und Supermarkt */
-    [data-testid="stChatMessage"] strong.meta-info,
-    [data-testid="stMarkdownContainer"] strong.meta-info,
-    .stMarkdown strong.meta-info {
-        color: #000 !important;
-        font-weight: 700 !important;
-    }
-    
-    /* Zusätzlicher Abstand nach den Produktinformationen */
-    [data-testid="stChatMessage"] p {
-        margin-bottom: 6px !important;
-    }
-    
-    /* Primary Button (Senden-Button) */
-    [data-testid="baseButton-primary"] {
-        margin-top: 10px !important;
-        height: 45px !important;
-        font-size: 24px !important;
-        background-color: #28A745 !important;
-        border-radius: 10px !important;
-        color: white !important;
-        padding: 0 !important;
-        border: none !important;
-        box-shadow: 0 2px 5px rgba(40, 167, 69, 0.3) !important;
-        max-width: 100% !important;
-    }
-    
-    [data-testid="baseButton-primary"]:hover {
-        background-color: #218838 !important;
-        box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4) !important;
-    }
-    
-    /* Secondary Button (Reset-Button) */
-    [data-testid="baseButton-secondary"] {
-        margin-top: 10px !important;
-        max-width: 100% !important;
-    }
-    
-    /* Verringerter Abstand für Titel und Untertitel */
-    .main .block-container {
-        padding-top: 0rem !important;
-    }
-    
-    h1, p {
-        margin-bottom: 0rem !important;
-    }
-    
-    /* Abstand zwischen Elementen generell verringern */
-    .element-container {
-        margin-bottom: 0rem !important;
-    }
-    
-    /* Abstand vor dem Texteingabefeld verringern */
-    div[data-testid="column"]:has(.stTextArea) {
-        margin-top: 0rem !important;
-    }
-    
-    /* Aggressivere Reduzierung der Abstände */
-    .main > div:first-child {
-        margin-top: 0 !important;
-        padding-top: 0 !important;
-    }
-    
-    /* Spezifischer Selektor für den Container des Titels */
-    .main .block-container > div:first-child {
-        margin-bottom: 0 !important;
-    }
-    
-    /* Container für Spalten nach dem Titel */
-    .main .block-container > div:nth-child(2) {
-        margin-top: 0 !important;
-    }
-    
-    /* Generelles Padding für den Hauptcontainer entfernen */
-    .main .block-container {
-        padding: 0 25px !important;
-    }
-    
-    /* AppView Container Padding entfernen */
-    [data-testid="stAppViewContainer"] {
-        padding-top: 0 !important;
-    }
-    
-    /* Mobile Anpassungen */
-    @media (max-width: 768px) {
-        .main .block-container {
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-            margin-top: -20px !important;
-        }
-
-        h1 {
-            font-size: 22px !important;
-            margin-top: 0 !important;
-            margin-bottom: 5px !important;
-        }
-
-        .logo-text {
-            font-size: 22px;
-            margin-top: 0 !important;
-        }
-
-        /* Den gesamten Header nach oben verschieben */
-        .main > div:first-child {
-            margin-top: -20px !important;
-            padding-top: 0 !important;
-        }
-        
-        /* Streamlit Hauptcontainer noch weiter nach oben verschieben */
-        [data-testid="stAppViewContainer"] {
-            padding-top: 0 !important;
-            margin-top: 0 !important;
-        }
-        
-        /* Block-Container nach oben verschieben */
-        .stApp > [class*='block-container'] {
-            padding-top: 0 !important;
-            margin-top: 0 !important;
-        }
-
-        /* Weniger Abstand zwischen Header und Inhalt */
-        .main .block-container > div:first-child {
-            margin-bottom: 0 !important;
-            margin-top: 0 !important;
-        }
-        
-        /* Abstand zwischen Textfeld und KI-Antwort verringern */
-        .stChatMessage {
-            margin-bottom: 0 !important;
-            padding: 8px !important;
-        }
-        
-        /* Extrem reduzierte Abstände zwischen allen Elementen */
-        .element-container {
-            margin-bottom: 0 !important;
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-        }
-        
-        /* Chat zurücksetzen Button weniger Abstand */
-        [data-testid="baseButton-secondary"] {
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
-            height: auto !important;
-            padding: 5px !important;
-        }
-        
-        /* Abstand zwischen Chat zurücksetzen und grünem Button */
-        [data-testid="baseButton-secondary"] + div {
-            margin-top: 0 !important;
-        }
-        
-        /* Abstand vor "Du kannst mich auch fragen" reduzieren */
-        p[style*="text-align: center"] {
-            margin-top: 15px !important;
-            margin-bottom: 5px !important;
-        }
-        
-        /* Verkleinere den Abstand zwischen den Buttons/Vorschlägen */
-        button[type="secondary"] {
-            margin-top: 2px !important;
-            margin-bottom: 2px !important;
-            padding: 5px !important;
-        }
-        
-        /* Container für die Vorschläge kompakter */
-        .prompt-suggestion {
-            margin: 2px !important;
-            padding: 5px 8px !important;
-        }
-        
-        /* Verringere den Abstand nach dem Texteingabefeld */
-        [data-testid="stTextArea"] {
-            margin-bottom: 0 !important;
-            margin-top: 0 !important;
-        }
-        
-        /* Grüner Button weniger Abstand nach oben */
-        [data-testid="baseButton-primary"] {
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
-            height: 40px !important;
-        }
-        
-        /* Abstand für Spalten reduzieren */
-        [data-testid="column"] {
-            padding: 0 !important;
-            gap: 0 !important;
-        }
-        
-        /* Chat-Nachrichten kompakter machen */
-        [data-testid="stChatMessageContent"] {
-            padding: 3px !important;
-        }
-        
-        /* Chat-Container Abstände reduzieren */
-        .chat-container {
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-        
-        /* Abstände zwischen allen Chat-Elementen minimieren */
-        [data-testid="stChatInput"] {
-            margin: 0 !important;
-        }
-        
-        /* Fußzeile kompakter machen */
-        div[style*="position: fixed; bottom"] {
-            bottom: 2px !important;
-        }
-        
-        /* Alle Abstände zwischen Elementen minimieren */
-        div, p, span, section {
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
-        }
-        
-        /* Speziell für den Abstand zwischen letzter KI-Antwort und Textfeld */
-        .stChatMessage + div {
-            margin-top: -5px !important;
-        }
-        
-        /* Für die Positionierung des Chat zurücksetzen Buttons direkt unter dem grünen Button */
-        /* Verstecke regulären Abstand */
-        #reset_chat, [data-testid="baseButton-secondary"] {
-            margin-top: -5px !important;
-            position: relative !important;
-            z-index: 10 !important;
-        }
-        
-        /* Container für Reset-Button */
-        #reset_chat {
-            margin-top: 0 !important;
-        }
-        
-        /* Die Container der Buttons besser positionieren */
-        button#reset_chat {
-            margin-top: 0 !important;
-        }
-        
-        /* Für bessere Ausrichtung des grünen Buttons und Reset-Buttons */
-        [data-testid="baseButton-primary"] + div, 
-        [id="reset_chat"] {
-            margin-top: 0 !important;
-        }
-        
-        /* VERBESSERT: Abstand zwischen Untertitel und Textfeld verringern */
-        /* Direktere Selektoren, die auf die Streamlit-Struktur abzielen */
-        .main .block-container > div:nth-child(1) {
-            margin-bottom: -25px !important;
-        }
-        
-        /* VERBESSERT: Abstände zwischen Texteingabe und vorigen Elementen */
-        .stTextArea {
-            margin-top: -15px !important;
-        }
-        
-        /* Abstand zwischen Logo und erstem Element reduzieren */
-        .main .block-container > div:first-child + div {
-            margin-top: -10px !important;
-        }
-        
-        /* VERBESSERT: Abstand vom grünen Button zu Willkommenstext verringern */
-        h3[style*="text-align: center"] {
-            margin-top: -20px !important;
-        }
-        
-        /* VERBESSERT: Den Willkommenstext und die Vorschläge näher zum grünen Button bringen */
-        [data-testid="baseButton-primary"] + div + div h3,
-        [data-testid="baseButton-primary"] ~ h3 {
-            margin-top: -20px !important;
-            padding-top: 0 !important;
-        }
-        
-        /* Aggressivere Reduzierung aller Abstände zwischen allen Elementen */
-        .element-container + .element-container {
-            margin-top: -10px !important;
-        }
-        
-        /* Willkommenstext und Vorschläge extrem nah am grünen Button */
-        .element-container:has([data-testid="baseButton-primary"]) + .element-container {
-            margin-top: -20px !important;
-        }
-        
-        /* NEU: Abstand zwischen "Suche nach passenden Angeboten..." und dem Textfeld */
-        div:has(> div > .stChatInput),
-        div:has(> span:contains("Suche nach")),
-        div[class*="stChatMessageContent"],
-        .stAlert,
-        div[data-testid="stChatInput"] {
-            margin-bottom: 10px !important;
-        }
-        
-        /* Sicherstellen, dass der Abstand vor dem Textfeld erhalten bleibt */
-        .stTextArea {
-            margin-top: 10px !important; 
-        }
-    </style>
-    """, unsafe_allow_html=True)
 
 # Textfeld-Container - nur eine Ebene von Spalten
 textfield_cols = st.columns([1, 20, 3])  # Weniger leere Spalte links, breiteres Textfeld
@@ -1047,29 +744,13 @@ if submitted_text:
             with spinner_placeholder:
                 # Zeige nur unsere benutzerdefinierte Meldung ohne den Standard-Spinner
                 st.markdown("""
-                <div style="text-align: center; margin-bottom: 12px; font-weight: bold; color: #FF6600; 
-                            background-color: #FFF8F0; padding: 8px; border-radius: 8px; 
-                            border: 1px solid #FFE0C0; box-shadow: 0 2px 4px rgba(255, 102, 0, 0.1);">
+                <div class="search-spinner-box">
                     <div class="loader-container">
-                        <span style="margin-right: 8px;">🔍</span> 
+                        <span class="search-icon">🔍</span> 
                         <span class="loading-text">Suche nach passenden Angeboten</span>
                         <span class="loading-dots">...</span>
                     </div>
                 </div>
-                <style>
-                    @keyframes pulse {
-                        0% { opacity: 0.8; }
-                        50% { opacity: 1; }
-                        100% { opacity: 0.8; }
-                    }
-                    .loader-container {
-                        display: inline-flex;
-                        align-items: center;
-                    }
-                    .loading-text, .loading-dots {
-                        animation: pulse 1.5s infinite;
-                    }
-                </style>
                 """, unsafe_allow_html=True)
                 
                 # Gemini 2.0 Flash Experimental Modell verwenden
@@ -1220,9 +901,7 @@ if len([m for m in st.session_state.messages if m["role"] != "system"]) <= 2:
 
 # Kleine Info am Seitenende für Mobilgeräte
 st.markdown(
-    "<div style='position: fixed; bottom: 10px; left: 0; width: 100%; text-align: center; font-size: 12px; color: #999999;'>"
-    "© SparFuchs.de • AI Agent Made in Germany"
-    "</div>",
+    "<div class='app-footer'>© SparFuchs.de • AI Agent Made in Germany</div>",
     unsafe_allow_html=True
 )
 
