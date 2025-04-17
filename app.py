@@ -404,8 +404,8 @@ def process_query(prompt):
             "1. Beginne mit einer kurzen einleitenden Antwort, die die Frage beantwortet. " +
             "2. Liste dann jedes gefundene Produkt in folgendem klaren Format auf: " +
             "\n**Produktname** (mit Details wie Gewicht, Sorte, etc.): Preis €<br>" +
-            "\n**Gültig vom** [DD.MM.YYYY] bis [DD.MM.YYYY]<br>" +
-            "\n**Supermarkt:** [Supermarktname]" +
+            "\n<strong class=\"meta-info\">Gültig:</strong> [DD.MM.YYYY] bis [DD.MM.YYYY]<br>" +
+            "\n<strong class=\"meta-info\">Supermarkt:</strong> [Supermarktname]" +
             "\n\n" +
             "3. Bei Preisvergleichen oder Zusammenfassungen, nutze einen abschließenden Absatz mit einer klaren Kennzeichnung: " +
             "\n**Preisvergleich:** Das günstigste Produkt ist X für Y € (Z € pro kg/Stück)." +
@@ -420,12 +420,12 @@ def process_query(prompt):
             "Beispiel: " +
             "\nJa, bei Aldi gibt es aktuell Kartoffeln und Nudeln im Angebot:\n" +
             "\n**Speisefrühkartoffeln** (1,5 kg): 2,79 €<br>" +
-            "\n**Gültig vom** 24.04.2025 bis 26.04.2025<br>" +
-            "\n**Supermarkt:** Aldi" +
+            "\n<strong class=\"meta-info\">Gültig:</strong> 24.04.2025 bis 26.04.2025<br>" +
+            "\n<strong class=\"meta-info\">Supermarkt:</strong> Aldi" +
             "\n\n" +
             "**CUCINA NOBILE Farfalle Fantasia** (versch. Sorten, 250 g): 1,49 €<br>" +
-            "\n**Gültig vom** 22.04.2025 bis 26.04.2025<br>" +
-            "\n**Supermarkt:** Aldi" +
+            "\n<strong class=\"meta-info\">Gültig:</strong> 22.04.2025 bis 26.04.2025<br>" +
+            "\n<strong class=\"meta-info\">Supermarkt:</strong> Aldi" +
             "\n\n" +
             "**Hinweis:** Bei Reis habe ich leider keine aktuellen Angebote bei Aldi gefunden."
         }
@@ -562,8 +562,8 @@ if "messages" not in st.session_state:
         "1. Beginne mit einer kurzen einleitenden Antwort, die die Frage beantwortet. " +
         "2. Liste dann jedes gefundene Produkt in folgendem klaren Format auf: " +
         "\n**Produktname** (mit Details wie Gewicht, Sorte, etc.): Preis €<br>" +
-        "\n**Gültig vom** [DD.MM.YYYY] bis [DD.MM.YYYY]<br>" +
-        "\n**Supermarkt:** [Supermarktname]" +
+        "\n<strong class=\"meta-info\">Gültig:</strong> [DD.MM.YYYY] bis [DD.MM.YYYY]<br>" +
+        "\n<strong class=\"meta-info\">Supermarkt:</strong> [Supermarktname]" +
         "\n\n" +
         "3. Bei Preisvergleichen oder Zusammenfassungen, nutze einen abschließenden Absatz mit einer klaren Kennzeichnung: " +
         "\n**Preisvergleich:** Das günstigste Produkt ist X für Y € (Z € pro kg/Stück)." +
@@ -578,12 +578,12 @@ if "messages" not in st.session_state:
         "Beispiel: " +
         "\nJa, bei Aldi gibt es aktuell Kartoffeln und Nudeln im Angebot:\n" +
         "\n**Speisefrühkartoffeln** (1,5 kg): 2,79 €<br>" +
-        "\n**Gültig vom** 24.04.2025 bis 26.04.2025<br>" +
-        "\n**Supermarkt:** Aldi" +
+        "\n<strong class=\"meta-info\">Gültig:</strong> 24.04.2025 bis 26.04.2025<br>" +
+        "\n<strong class=\"meta-info\">Supermarkt:</strong> Aldi" +
         "\n\n" +
         "**CUCINA NOBILE Farfalle Fantasia** (versch. Sorten, 250 g): 1,49 €<br>" +
-        "\n**Gültig vom** 22.04.2025 bis 26.04.2025<br>" +
-        "\n**Supermarkt:** Aldi" +
+        "\n<strong class=\"meta-info\">Gültig:</strong> 22.04.2025 bis 26.04.2025<br>" +
+        "\n<strong class=\"meta-info\">Supermarkt:</strong> Aldi" +
         "\n\n" +
         "**Hinweis:** Bei Reis habe ich leider keine aktuellen Angebote bei Aldi gefunden."
         }
@@ -658,6 +658,14 @@ st.markdown("""
     [data-testid="stMarkdownContainer"] strong,
     .stMarkdown strong {
         color: #28A745 !important;
+        font-weight: 700 !important;
+    }
+    
+    /* Metainformationen - Gültig vom und Supermarkt */
+    [data-testid="stChatMessage"] strong.meta-info,
+    [data-testid="stMarkdownContainer"] strong.meta-info,
+    .stMarkdown strong.meta-info {
+        color: #000 !important;
         font-weight: 700 !important;
     }
     
@@ -950,9 +958,8 @@ st.markdown("""
         .stTextArea {
             margin-top: 10px !important; 
         }
-    }
-</style>
-""", unsafe_allow_html=True)
+    </style>
+    """, unsafe_allow_html=True)
 
 # Textfeld-Container - nur eine Ebene von Spalten
 textfield_cols = st.columns([1, 20, 3])  # Weniger leere Spalte links, breiteres Textfeld
@@ -1194,12 +1201,12 @@ if len([m for m in st.session_state.messages if m["role"] != "system"]) <= 2:
     st.markdown("<p style='margin-top: 20px; text-align: center; font-size: 14px; color: #666666;'>Du kannst mich auch fragen:</p>", unsafe_allow_html=True)
     
     cols = st.columns(3)
-    with cols[0]:
+    with cols[1]:
         if st.button("💰 Welche Backwaren sind bei Lidl im Angebot?", type="secondary"):
             st.session_state.preset_input = "Welche Backwaren sind bei Lidl im Angebot?"
             st.session_state.submit_text = "Welche Backwaren sind bei Lidl im Angebot?"
             st.rerun()
-    with cols[1]:
+    with cols[0]:
         if st.button("🥗 Gib mir 10 vegetarische Produkte, hauptsächlich bitte Gemüse", type="secondary"):
             st.session_state.preset_input = "Gib mir 10 vegetarische Produkte, hauptsächlich bitte Gemüse"
             st.session_state.submit_text = "Gib mir 10 vegetarische Produkte, hauptsächlich bitte Gemüse"
