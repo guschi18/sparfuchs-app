@@ -470,4 +470,17 @@ textarea:focus {
 
 .stTextArea {
     max-width: 100% !important;
+}
+
+/* Verbesserter fett formatierter Text in den Chat-Nachrichten */
+[data-testid="stChatMessage"] strong,
+[data-testid="stMarkdownContainer"] strong,
+.stMarkdown strong {
+    color: #34C759 !important;
+    font-weight: 700 !important;
+}
+
+/* Zusätzlicher Abstand nach den Produktinformationen */
+[data-testid="stChatMessage"] p {
+    margin-bottom: 6px !important;
 } 
