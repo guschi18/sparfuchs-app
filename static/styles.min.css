@@ -32,7 +32,7 @@ small.st-emotion-cache-16txtl3,
 [data-testid="stAppViewBlock"],
 .stApp > header,
 .stApp > [class*='block-container'] {
-    background-color: #FDFDFD !important;
+    background-color: #E8E0D0 !important;
 }
 
 /* Chat Input Bereich */
@@ -88,7 +88,7 @@ small.st-emotion-cache-16txtl3,
 
 /* Chat-Container */
 .chat-container {
-    background-color: #FDFDFD !important;
+    background-color: #E8E0D0 !important;
     border-radius: 10px !important;
 }
 
@@ -229,20 +229,20 @@ h1 {
 
 /* Primary Button */
 button[kind="primary"] {
-    background: #34C759 !important;
+    background: #28A745 !important;
     border-radius: 10px !important;
     padding: 8px 16px !important;
     border: none !important;
     color: white !important;
-    font-weight: 500 !important;
-    box-shadow: 0 2px 5px rgba(52, 199, 89, 0.3) !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 5px rgba(40, 167, 69, 0.3) !important;
     transition: all 0.3s ease !important;
 }
 
 button[kind="primary"]:hover {
     transform: translateY(-2px);
-    background: #28A745 !important;
-    box-shadow: 0 4px 8px rgba(52, 199, 89, 0.4) !important;
+    background: #218838 !important;
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4) !important;
 }
 
 /* Secondary Button */
@@ -328,7 +328,7 @@ button[kind="secondary"]:hover {
 }
 
 .prompt-icon {
-    color: #34C759;
+    color: #28A745;
     margin-right: 5px;
     font-size: 16px;
     transform: scale(1);
@@ -413,8 +413,8 @@ button[kind="secondary"]:hover {
 
 /* Fokus-Stile */
 [data-testid="stTextArea"]:focus-within {
-    border-color: #34C759 !important;
-    box-shadow: 0 0 0 1px #34C759 !important;
+    border-color: #28A745 !important;
+    box-shadow: 0 0 0 1px #28A745 !important;
     outline: none !important;
 }
 
@@ -429,19 +429,19 @@ button[kind="secondary"]:hover {
 [data-baseweb="textarea"]:focus-within,
 [data-baseweb="base-input"]:focus,
 [data-baseweb="base-input"]:focus-within {
-    border-color: #34C759 !important;
-    box-shadow: 0 0 0 1px #34C759 !important;
-    outline-color: #34C759 !important;
+    border-color: #28A745 !important;
+    box-shadow: 0 0 0 1px #28A745 !important;
+    outline-color: #28A745 !important;
 }
 
 :focus {
-    outline-color: #34C759 !important;
+    outline-color: #28A745 !important;
 }
 
 textarea:focus {
-    border-color: #34C759 !important;
-    box-shadow: 0 0 0 1px #34C759 !important;
-    outline-color: #34C759 !important;
+    border-color: #28A745 !important;
+    box-shadow: 0 0 0 1px #28A745 !important;
+    outline-color: #28A745 !important;
 }
 
 /* Button Styles */
@@ -449,18 +449,18 @@ textarea:focus {
     margin-top: 10px !important;
     height: 45px !important;
     font-size: 24px !important;
-    background-color: #34C759 !important;
+    background-color: #28A745 !important;
     border-radius: 10px !important;
     color: white !important;
     padding: 0 !important;
     border: none !important;
-    box-shadow: 0 2px 5px rgba(52, 199, 89, 0.3) !important;
+    box-shadow: 0 2px 5px rgba(40, 167, 69, 0.3) !important;
     max-width: 100% !important;
 }
 
 [data-testid="baseButton-primary"]:hover {
-    background-color: #28A745 !important;
-    box-shadow: 0 4px 8px rgba(52, 199, 89, 0.4) !important;
+    background-color: #218838 !important;
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4) !important;
 }
 
 [data-testid="baseButton-secondary"] {
@@ -476,11 +476,23 @@ textarea:focus {
 [data-testid="stChatMessage"] strong,
 [data-testid="stMarkdownContainer"] strong,
 .stMarkdown strong {
-    color: #34C759 !important;
+    color: #28A745 !important;
     font-weight: 700 !important;
 }
 
 /* Zusätzlicher Abstand nach den Produktinformationen */
 [data-testid="stChatMessage"] p {
     margin-bottom: 6px !important;
+}
+
+/* Verbesserte Kontraste für bessere Barrierefreiheit */
+[data-testid="stMarkdownContainer"] p,
+[data-testid="stMarkdownContainer"] span,
+[data-testid="stMarkdownContainer"] div,
+[data-testid="stMarkdownContainer"] li,
+[data-testid="stMarkdownContainer"] a,
+[data-testid="stMarkdownContainer"] code,
+[data-testid="stMarkdownContainer"] * {
+    color: #000 !important;
+    font-weight: 500 !important;
 } 
