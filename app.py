@@ -1,3 +1,19 @@
+"""
+SparFuchs.de - KI-gestützter Assistent für Supermarkt-Angebote.
+
+Diese Anwendung ermöglicht Nutzern, aktuelle Angebote von Aldi und Lidl per Chat-Interface
+abzufragen. Die App nutzt Streamlit für die Benutzeroberfläche, eine CSV-Datei für die
+Produktdaten und OpenRouter für die KI-Antwortgenerierung.
+
+Hauptfunktionen:
+- Laden und Filtern von Produktdaten
+- Chat-Interface für Benutzeranfragen
+- KI-gestützte Antwortgenerierung
+- Erkennung von KI-Halluzinationen
+- Modernes UI mit responsivem Design
+
+Autor: SparFuchs.de Team
+"""
 import streamlit as st
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -20,6 +36,12 @@ client = OpenAI(
 
 # CSS für modernes Design
 def apply_modern_supermarket_style():
+    """
+    Lädt die CSS-Styles aus der minimfizierten CSS-Datei und wendet sie auf die Streamlit-App an.
+    
+    Die Funktion stellt sicher, dass der 'static'-Ordner existiert und dass die CSS-Datei
+    vorhanden ist. Falls die minimierte CSS-Datei nicht existiert, wird sie erstellt.
+    """
     # Stelle sicher, dass der static-Ordner existiert
     static_dir = Path("static")
     if not static_dir.exists():
@@ -39,6 +61,13 @@ def apply_modern_supermarket_style():
 
 # Eine neue Datei mit dem minimierten CSS erstellen
 def create_minified_css_file():
+    """
+    Erstellt eine minimierte Version der CSS-Datei für bessere Performance.
+    
+    Die Funktion liest die Entwicklungs-CSS-Datei (styles.dev.css), minimiert deren Inhalt
+    durch Entfernung von Kommentaren und unnötigen Leerzeichen und speichert das Ergebnis als
+    styles.min.css. Wenn die Entwicklungsdatei nicht existiert, wird eine Basisdatei erstellt.
+    """
     # Stelle sicher, dass der static-Ordner existiert
     static_dir = Path("static")
     static_dir.mkdir(exist_ok=True)
@@ -87,6 +116,13 @@ def create_minified_css_file():
 
 # Beispielprodukte hinzufügen falls keine CSV-Datei vorhanden ist
 def create_sample_data():
+    """
+    Erstellt Beispieldaten für Produkte, falls keine CSV-Datei vorhanden ist.
+    
+    Returns:
+        DataFrame: Ein Pandas DataFrame mit Beispielprodukten, inklusive zufällig
+                  generierter Gültigkeitsdaten.
+    """
     # Beispielprodukte
     products = [
         {"Produktname": "Bio Äpfel", "Kategorie": "Obst & Gemüse", "Unterkategorie": "Obst", "Preis_EUR": 2.99, "Supermarkt": "Aldi"},
@@ -113,6 +149,15 @@ def create_sample_data():
 # CSV-Datei laden
 @st.cache_data
 def load_csv_data():
+    """
+    Lädt die Produktdaten aus der CSV-Datei oder erstellt Beispieldaten, wenn die Datei nicht existiert.
+    
+    Die Funktion ist mit @st.cache_data dekoriert, um Mehrfachladungen zu vermeiden und die
+    Performance zu verbessern.
+    
+    Returns:
+        DataFrame: Ein Pandas DataFrame mit den Produktdaten.
+    """
     try:
         df = pd.read_csv("Aldi_Lidl_Angebote.csv")
         if df.empty:
@@ -126,6 +171,9 @@ def load_csv_data():
 def detect_hallucinations(response, df):
     """
     Prüft, ob die KI-Antwort möglicherweise halluzinierte Produkte enthält.
+    
+    Die Funktion analysiert die KI-Antwort und vergleicht erwähnte Produkte mit den
+    tatsächlich in der Datenbank vorhandenen Produkten, um Halluzinationen zu erkennen.
     
     Args:
         response (str): Die Antwort des KI-Modells
@@ -206,6 +254,15 @@ def detect_hallucinations(response, df):
 
 # Daten in String umwandeln für den Kontext
 def get_products_context():
+    """
+    Wandelt die Produktdaten in einen formatierten Textstring für den KI-Kontext um.
+    
+    Die Funktion lädt die Produktdaten und formatiert sie als Textstring, der als
+    Kontext für die KI-Anfragen verwendet wird.
+    
+    Returns:
+        str: Formatierter Text mit allen Produktinformationen
+    """
     df = load_csv_data()
     if df.empty:
         return "Keine Produktdaten verfügbar."
@@ -241,6 +298,21 @@ def get_products_context():
 
 # Funktion, die Produkte nach Kategorie filtert (für Kontext-Optimierung)
 def get_filtered_products_context(user_query):
+    """
+    Filtert die Produktdaten basierend auf der Benutzeranfrage und erstellt einen optimierten Kontext.
+    
+    Die Funktion analysiert die Benutzeranfrage semantisch, um relevante Produkte zu identifizieren,
+    und erstellt einen optimierten Kontext für die KI. Sie berücksichtigt dabei:
+    - Semantische Gruppen von Produkten (z.B. "Nudeln" umfasst verschiedene Pasta-Arten)
+    - Spezifische Supermarkt-Filter
+    - Kategorie-basierte Filter
+    
+    Args:
+        user_query (str): Die Anfrage des Benutzers
+        
+    Returns:
+        str: Optimierter Kontext mit gefilterten Produktinformationen
+    """
     df = load_csv_data()
     if df.empty:
         return "Keine Produktdaten verfügbar."
@@ -406,6 +478,21 @@ def get_filtered_products_context(user_query):
 
 # AI-Antwort generieren
 def process_query(prompt):
+    """
+    Verarbeitet eine Benutzeranfrage und bereitet den Kontext für die KI-Antwort vor.
+    
+    Die Funktion erstellt einen system_prompt und einen context_message für die KI-Anfrage,
+    basierend auf der Benutzeranfrage und den gefilterten Produktdaten.
+    
+    Args:
+        prompt (str): Die Anfrage des Benutzers
+        
+    Returns:
+        tuple: (system_prompt, context_message, products_context)
+               - system_prompt: Systemnachricht für die KI
+               - context_message: Kontextnachricht mit Produktdaten
+               - products_context: Gefilterte Produktdaten als Text
+    """
     try:
         # OpenAI API-Aufruf mit neuer Syntax und erweitertem Kontext
         # Systemnachricht immer direkt verwenden (auch wenn sie im Session State geändert wurde)
@@ -474,6 +561,13 @@ def process_query(prompt):
 
 # Prompt-Vorschläge erstellen und anzeigen
 def display_prompt_suggestion(text, icon="✨"):
+    """
+    Zeigt einen Vorschlag für eine Benutzeranfrage als Button an.
+    
+    Args:
+        text (str): Der Text des Vorschlags
+        icon (str, optional): Ein Emoji-Icon für den Vorschlag. Standard: "✨"
+    """
     # Erstelle einen Button mit dem Vorschlagstext
     button_id = f"suggestion_{hash(text)}"
     

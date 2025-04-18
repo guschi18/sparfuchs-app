@@ -1,4 +1,18 @@
-/* == Globale Stile & Variablen == */
+/**
+ * SparFuchs.de - Hauptstildatei
+ * 
+ * Diese CSS-Datei enthält alle Stilregeln für die SparFuchs.de Streamlit-Anwendung.
+ * Sie ist in mehrere Abschnitte unterteilt, um die verschiedenen Komponenten und
+ * deren visuelle Darstellung zu organisieren.
+ *
+ * Hinweis: Diese Datei wird von der Anwendung in eine minimierte Version (styles.min.css)
+ * kompiliert, um die Ladezeiten zu optimieren.
+ */
+
+/* == Globale Stile & Variablen == 
+ * Hier werden die CSS-Variablen definiert, die im gesamten Design verwendet werden.
+ * Dies ermöglicht eine einfache Änderung des Farbschemas und anderer Designelemente.
+ */
 :root {
   --text-color: #2A2A2A;
   --bg-color: #E8E0D0;
@@ -15,16 +29,23 @@
   --secondary-hover-shadow: 0 4px 8px rgba(255, 102, 0, 0.4);
 }
 
+/* Import der Google Fonts - Poppins wird als Hauptschriftart verwendet */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-/* == Resets & Basis-Styling == */
+/* == Resets & Basis-Styling == 
+ * Grundlegende Stilregeln, die auf die gesamte Anwendung angewendet werden.
+ * Dies stellt sicher, dass das Design konsistent auf verschiedenen Browsern angezeigt wird.
+ */
 html, body, .stApp, [class*="css"] {
   font-family: 'Poppins', sans-serif;
   color: var(--text-color);
   background-color: var(--bg-color) !important;
 }
 
-/* Verstecke Streamlit Footer und Hilfstexte */
+/* Verstecke Streamlit Footer und Hilfstexte 
+ * Diese Regeln entfernen unerwünschte Streamlit-Standardelemente, 
+ * um ein saubereres Design zu erhalten.
+ */
 footer,
 [data-testid="InputFooterHelperText"],
 [data-testid="InputInstructions"],
@@ -60,7 +81,10 @@ textarea:focus,
   outline-color: var(--primary-color) !important;
 }
 
-/* == Layout & Container == */
+/* == Layout & Container == 
+ * Diese Regeln definieren die grundlegende Struktur der Anwendung,
+ * einschließlich der Positionierung und des Aussehens der Hauptcontainer.
+ */
 .stApp,
 [data-testid="stAppViewContainer"],
 [data-testid="stAppViewBlock"],
@@ -116,7 +140,9 @@ textarea:focus,
   margin-bottom: 0rem !important;
 }
 
-/* == Typografie == */
+/* == Typografie == 
+ * Stilregeln für Text-Elemente wie Überschriften und Absätze.
+ */
 h1, h2, h3, h4 {
   font-weight: 600 !important;
   color: var(--text-color) !important;
@@ -132,7 +158,10 @@ h1, p {
   margin-bottom: 0rem !important;
 }
 
-/* == Logo-Styling == */
+/* == Logo-Styling == 
+ * Spezifische Stilregeln für das SparFuchs-Logo und zugehörige Elemente.
+ * Das Logo verwendet eine Kombination aus normaler Schrift und orangefarbener Hervorhebung.
+ */
 .logo-container {
   margin-bottom: 0px;
   display: flex;
@@ -165,7 +194,10 @@ h1, p {
   margin-top: 0px;
 }
 
-/* == Chat-Nachrichten == */
+/* == Chat-Nachrichten == 
+ * Stilregeln für die Chat-Nachrichten, die den Hauptteil der Benutzeroberfläche bilden.
+ * Diese Regeln definieren das Aussehen der Benutzernachrichten und KI-Antworten.
+ */
 .stChatMessage,
 [data-testid="stChatMessage"] {
   background-color: #ffffff !important;
@@ -267,7 +299,9 @@ div.stChatMessageContent,
   font-weight: 700 !important;
 }
 
-/* == Eingabeelemente == */
+/* == Eingabeelemente == 
+ * Stilregeln für Eingabefelder wie Textareas und Chat-Input.
+ */
 /* Chat-Eingabefeld */
 [data-testid="stChatInput"] {
   border-radius: var(--border-radius) !important;
@@ -347,7 +381,9 @@ div[data-testid="column"]:has(.stTextArea) {
   margin-top: 0rem !important;
 }
 
-/* == Buttons == */
+/* == Buttons == 
+ * Stilregeln für verschiedene Arten von Buttons in der Anwendung.
+ */
 /* Primär-Button */
 [data-testid="baseButton-primary"],
 button[kind="primary"] {
@@ -436,7 +472,9 @@ button[kind="secondary"]:hover {
   border-color: #ced4da;
 }
 
-/* == Prompt-Suggestions == */
+/* == Prompt-Suggestions == 
+ * Stilregeln für die Vorschlagsbuttons, die Nutzern Beispielanfragen anbieten.
+ */
 .prompt-suggestion-container {
   display: inline-block;
   margin: 5px;
@@ -497,7 +535,9 @@ button[kind="secondary"]:hover {
   background-color: var(--white) !important;
 }
 
-/* == Loading Animation == */
+/* == Loading Animation == 
+ * Stilregeln für Ladeanzeigen, die während der KI-Antwortgenerierung angezeigt werden.
+ */
 .loader-container {
   display: inline-flex;
   align-items: center;
@@ -553,7 +593,10 @@ button[kind="secondary"]:hover {
   100% { opacity: 0.8; }
 }
 
-/* == Media Queries == */
+/* == Media Queries == 
+ * Responsive Design-Regeln für verschiedene Bildschirmgrößen.
+ * Diese Regeln passen das Layout für Mobilgeräte an.
+ */
 @media (max-width: 768px) {
   /* Layout & Container */
   .main .block-container {
