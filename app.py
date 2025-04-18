@@ -40,6 +40,25 @@ st.markdown("""
 #MainMenu {visibility: hidden;}
 header {visibility: hidden;}
 footer {visibility: hidden;}
+
+/* Manage App Balken ausblenden */
+[data-testid="manage-app-button"],
+.stToolbar,
+.st-emotion-cache-h5rgaw,
+section[data-testid="stToolbar"],
+[data-testid="stToolbar"] {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Zusätzliche Sicherheit für alle festen Elemente am unteren Bildschirmrand */
+div[style*="position: fixed; bottom"] {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0px !important;
+    padding: 0px !important;
+    margin: 0px !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
