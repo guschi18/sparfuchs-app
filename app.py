@@ -947,17 +947,17 @@ if len([m for m in st.session_state.messages if m["role"] != "system"]) <= 2:
     
     cols = st.columns(3)
     with cols[1]:
-        if st.button("💰 Welche Backwaren sind bei Lidl im Angebot?", type="secondary"):
+        if st.button("💰 Welche Backwaren sind bei Lidl im Angebot?", type="secondary", use_container_width=True):
             st.session_state.preset_input = "Welche Backwaren sind bei Lidl im Angebot?"
             st.session_state.submit_text = "Welche Backwaren sind bei Lidl im Angebot?"
             st.rerun()
     with cols[0]:
-        if st.button("🥗 Gib mir 10 vegetarische Produkte, hauptsächlich bitte Gemüse", type="secondary"):
+        if st.button("🥗 Gib mir 10 vegetarische Produkte, hauptsächlich bitte Gemüse", type="secondary", use_container_width=True):
             st.session_state.preset_input = "Gib mir 10 vegetarische Produkte, hauptsächlich bitte Gemüse"
             st.session_state.submit_text = "Gib mir 10 vegetarische Produkte, hauptsächlich bitte Gemüse"
             st.rerun()
     with cols[2]:
-        if st.button("⚖️ Vergleiche Äpfel und Orangen", type="secondary"):
+        if st.button("⚖️ Vergleiche Äpfel und Orangen", type="secondary", use_container_width=True):
             st.session_state.preset_input = "Vergleiche Äpfel und Orangen"
             st.session_state.submit_text = "Vergleiche Äpfel und Orangen"
             st.rerun()

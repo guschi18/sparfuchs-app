@@ -421,6 +421,7 @@ button[kind="secondary"] {
   box-shadow: var(--secondary-shadow) !important;
   transition: all 0.3s ease !important;
   font-weight: 500 !important;
+  width: 100% !important; /* Immer volle Breite für alle Buttons */
 }
 
 button[kind="secondary"]:hover {
@@ -674,6 +675,39 @@ button[kind="secondary"]:hover {
     margin-bottom: 0 !important;
     height: auto !important;
     padding: 5px !important;
+    width: 100% !important; /* Immer volle Breite im mobilen Layout */
+    min-width: 100% !important; /* Garantiert mindestens volle Breite */
+    max-width: 100% !important; /* Begrenzt auf volle Breite */
+    box-sizing: border-box !important; /* Stellt sicher, dass Padding zur Breite zählt */
+  }
+  
+  /* Spaltengleichheit für die Vorschläge "Du kannst mich auch fragen:" */
+  [data-testid="column"] {
+    padding: 0 !important;
+    gap: 0 !important;
+    width: 100% !important; /* Gleiche Breite für alle Spalten */
+    flex: 1 1 0 !important; /* Alle Spalten gleich wachsen lassen */
+    min-width: 0 !important; /* Verhindert Überfluss */
+  }
+  
+  /* Buttons in den Vorschlagsspalten */
+  [data-testid="column"] button {
+    width: 100% !important;
+    min-height: 50px !important; /* Garantiert eine Mindesthöhe für alle Buttons */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: normal !important; /* Erlaubt Textumbruch */
+    height: auto !important; /* Höhe an Inhalt anpassen */
+  }
+
+  /* Zusätzliche CSS für die drei unteren Vorschlagsbuttons */
+  .element-container:has(button:contains("Vergleiche Äpfel")),
+  .element-container:has(button:contains("Backwaren")),
+  .element-container:has(button:contains("vegetarische Produkte")) {
+    width: 100% !important;
+    height: 100% !important;
   }
   
   /* Texteingabefeld-Abstand reduzieren - zwischen 1. und 2. rotem Pfeil */
