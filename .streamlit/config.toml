@@ -10,4 +10,4 @@ enableXsrfProtection = true
 enableCORS = false
 
 [client]
-toolbarMode = "auto" 
+toolbarMode = "minimal" 
