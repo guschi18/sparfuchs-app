@@ -559,38 +559,6 @@ def process_query(prompt):
     except Exception as e:
         return None, None, str(e)
 
-# Prompt-Vorschläge erstellen und anzeigen
-def display_prompt_suggestion(text, icon="✨"):
-    """
-    Zeigt einen Vorschlag für eine Benutzeranfrage als Button an.
-    
-    Args:
-        text (str): Der Text des Vorschlags
-        icon (str, optional): Ein Emoji-Icon für den Vorschlag. Standard: "✨"
-    """
-    # Erstelle einen Button mit dem Vorschlagstext
-    button_id = f"suggestion_{hash(text)}"
-    
-    # Erstelle HTML mit stilvollem Button ohne JavaScript
-    html = f"""
-    <div class="prompt-suggestion-container">
-        <button class="prompt-suggestion" id="{button_id}">
-            <span class="prompt-icon">{icon}</span> {text}
-        </button>
-    </div>
-    """
-    
-    # Füge den Button als HTML hinzu
-    st.markdown(html, unsafe_allow_html=True)
-    
-    # Füge den regulären Streamlit-Button hinzu, aber mache ihn unsichtbar
-    # Dieser dient nur dazu, die Aktion auszulösen
-    if st.button(text, key=button_id, label_visibility="collapsed"):
-        # Text ins Textfeld kopieren UND direkt Anfrage senden
-        st.session_state.preset_input = text
-        st.session_state.submit_text = text
-        # Löse Rerun aus, um die Verarbeitung zu starten
-        st.rerun()
 
 # Zusätzliche Funktion, die Vorschläge in einer Reihe anzeigt
 def display_suggestions_row(suggestions):
@@ -733,9 +701,6 @@ for message in [m for m in st.session_state.messages if m["role"] != "system"]:
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Container für den Reset-Button und chat_input
-chat_container = st.container()
-
 # Initialisiere eine Key-Zähler-Variable, wenn sie noch nicht existiert
 if "key_counter" not in st.session_state:
     st.session_state["key_counter"] = 0
@@ -764,7 +729,7 @@ with textfield_cols[1]:
 with textfield_cols[1]:
     current_key = f"custom_chat_input_{st.session_state.key_counter}"
     initial_value = st.session_state.get("preset_input", "")
-    user_input = st.text_area("Chat-Eingabe", value=initial_value, placeholder="Was möchtest du kaufen? (z.B. Obst, Nudeln, Fleisch, etc...)", 
+    user_input = st.text_area("Chat-Eingabe", value=initial_value, placeholder="Wonach suchst du? (Obst, Rezeptideen, Preisvergleiche, etc.. ) ", 
                           label_visibility="collapsed", key=current_key, height=95)
     
     # Verfolge Änderungen im Textfeld
@@ -821,10 +786,6 @@ if submitted_text:
         # Benutzernachricht zum Verlauf hinzufügen
         st.session_state.messages.append({"role": "user", "content": prompt})
         
-        # AI-Antwort generieren
-        message_placeholder = st.empty()
-        full_response = ""
-        
         try:
             # Hole systemnachricht und kontext mit unserer neuen Methode
             system_prompt, context_message, products_context = process_query(prompt)
@@ -854,6 +815,7 @@ if submitted_text:
                 
                 success = False
                 error_messages = []
+                full_response = ""  # Initialisierung der Variable vor der Verwendung
                 
                 # Gib dem System mehr Zeit, um die Anfrage zu verarbeiten
                 time.sleep(1.5)  # Erhöhte Verzögerung für bessere Stabilität
@@ -896,7 +858,15 @@ if submitted_text:
                             continue
                 
                 if not success:
-                    full_response = "Entschuldigung, ich konnte Ihre Anfrage nicht bearbeiten. Bitte versuchen Sie es später erneut."
+                    # Debug-Modus aktivieren (in Produktion später entfernen oder durch Umgebungsvariable steuern)
+                    debug_mode = True
+                    
+                    if debug_mode:
+                        # Detaillierte Fehlermeldungen anzeigen
+                        error_details = "\n\n".join(error_messages)
+                        full_response = f"Entschuldigung, ich konnte Ihre Anfrage nicht bearbeiten. Technische Details:\n\n{error_details}"
+                    else:
+                        full_response = "Entschuldigung, ich konnte Ihre Anfrage nicht bearbeiten. Bitte versuchen Sie es später erneut."
             
             # Nach dem API-Aufruf den Spinner entfernen
             spinner_placeholder.empty()

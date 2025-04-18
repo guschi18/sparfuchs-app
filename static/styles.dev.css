@@ -618,6 +618,13 @@ button[kind="secondary"]:hover {
     margin-top: 0 !important;
   }
   
+  /* Untertitel-Abstand reduzieren */
+  .logo-subtitle {
+    font-size: 16px;
+    margin-bottom: -15px !important;
+    margin-top: -2px !important;
+  }
+  
   /* Struktur & Abstände */
   .main > div:first-child {
     margin-top: -35px !important;
@@ -669,13 +676,21 @@ button[kind="secondary"]:hover {
     padding: 5px !important;
   }
   
+  /* Texteingabefeld-Abstand reduzieren - zwischen 1. und 2. rotem Pfeil */
   [data-testid="stTextArea"] {
     margin-bottom: 0 !important;
-    margin-top: 10px !important;
+    margin-top: 0 !important; /* Von 10px auf 0px reduziert */
+    min-height: 80px !important; /* Höhe leicht reduzieren */
   }
   
+  /* Textbereich innerhalb des Eingabefelds anpassen */
+  [data-testid="stTextArea"] textarea {
+    min-height: 80px !important; /* Höhe ebenfalls reduzieren */
+  }
+  
+  /* Button-Abstand reduzieren */
   [data-testid="baseButton-primary"] {
-    margin-top: 0 !important;
+    margin-top: -20px !important; /* Negativer Margin um den Button nach oben zu verschieben */
     margin-bottom: 0 !important;
     height: 40px !important;
   }
