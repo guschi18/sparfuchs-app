@@ -25,7 +25,15 @@ from datetime import datetime, timedelta
 import re
 from pathlib import Path
 
-# Deploy-Button, Menü und Header ausblenden
+# HINWEIS: st.set_page_config muss vor allen anderen st-Aufrufen stehen
+# Streamlit Seitenkonfiguration
+st.set_page_config(
+    page_title="SparFuchs.de", 
+    page_icon="🛒",
+    layout="centered"
+)
+
+# Deploy-Button, Menü und Header ausblenden (nach set_page_config)
 st.markdown("""
 <style>
 .stDeployButton {visibility: hidden;}
@@ -590,13 +598,6 @@ def display_suggestions_row(suggestions):
             st.session_state.submit_text = text
             # Löse Rerun aus, um die Verarbeitung zu starten
             st.rerun()
-
-# Streamlit Seitenkonfiguration
-st.set_page_config(
-    page_title="SparFuchs.de", 
-    page_icon="🛒",
-    layout="centered"
-)
 
 # CSS direkt am Anfang der Anwendung einfügen (KRITISCH: Dies muss vor allem anderen sein)
 st.markdown("""
