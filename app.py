@@ -25,6 +25,16 @@ from datetime import datetime, timedelta
 import re
 from pathlib import Path
 
+# Deploy-Button, Menü und Header ausblenden
+st.markdown("""
+<style>
+.stDeployButton {visibility: hidden;}
+#MainMenu {visibility: hidden;}
+header {visibility: hidden;}
+footer {visibility: hidden;}
+</style>
+""", unsafe_allow_html=True)
+
 # Umgebungsvariablen laden
 load_dotenv()
 
