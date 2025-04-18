@@ -957,7 +957,7 @@ if len([m for m in st.session_state.messages if m["role"] != "system"]) <= 2:
     st.markdown("<p style='margin-top: 20px; text-align: center; font-size: 14px; color: #666666;'>Du kannst mich auch fragen:</p>", unsafe_allow_html=True)
     
     cols = st.columns(3)
-    with cols[1]:
+    with cols[2]:
         if st.button("💰 Welche Backwaren sind bei Lidl im Angebot?", type="secondary", use_container_width=True):
             st.session_state.preset_input = "Welche Backwaren sind bei Lidl im Angebot?"
             st.session_state.submit_text = "Welche Backwaren sind bei Lidl im Angebot?"
@@ -967,7 +967,7 @@ if len([m for m in st.session_state.messages if m["role"] != "system"]) <= 2:
             st.session_state.preset_input = "Gib mir 10 vegetarische Produkte, hauptsächlich bitte Gemüse"
             st.session_state.submit_text = "Gib mir 10 vegetarische Produkte, hauptsächlich bitte Gemüse"
             st.rerun()
-    with cols[2]:
+    with cols[1]:
         if st.button("⚖️ Vergleiche Äpfel und Orangen", type="secondary", use_container_width=True):
             st.session_state.preset_input = "Vergleiche Äpfel und Orangen"
             st.session_state.submit_text = "Vergleiche Äpfel und Orangen"
