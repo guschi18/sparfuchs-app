@@ -136,7 +136,7 @@ if user_input:
                                 "X-Title": "SparFuchs.de"
                             },
                             temperature=0.2,  # Leicht erhöhte Temperatur für bessere Antworten
-                            max_tokens=4000,  # Erhöht, um vollständige Antworten zu ermöglichen
+                            max_tokens=8000,  # Erhöht, um vollständige Antworten zu ermöglichen
                             stream=True
                         )
                         
