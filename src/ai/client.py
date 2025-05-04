@@ -24,7 +24,7 @@ def init_client():
     load_dotenv()
     
     # API-Schlüssel überprüfen
-    api_key = os.getenv("OPENAI_API_KEY")
+    api_key = os.getenv("OPENROUTER_API_KEY")
     
     # Versuche verschiedene Methoden für die OpenAI-Client-Initialisierung
     # Methode 1: Client-Initialisierung mit explizitem HTTP-Client ohne Proxies
