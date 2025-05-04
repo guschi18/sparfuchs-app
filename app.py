@@ -78,6 +78,9 @@ if user_input:
     # Benutzernachricht zum Verlauf hinzufügen
     st.session_state.messages.append({"role": "user", "content": prompt})
     
+    # Setze submit_text zurück, um doppelte Verarbeitung nach rerun zu verhindern
+    st.session_state["submit_text"] = None 
+    
     try:
         # Hole systemnachricht und kontext
         system_prompt, context_message, products_context = process_query(prompt)
