@@ -8,7 +8,7 @@ Produktname,Kategorie,Unterkategorie,Preis_EUR,Startdatum,Enddatum,Supermarkt
 "Weihenstephan Joghurt mild versch. Sorten (1,5/3,5% Fett), 500-g",Lebensmittel,Milchprodukte/Joghurt,0.89,2025-05-05,2025-05-10,Rewe
 "Landliebe Konfitüre oder Frucht Creme versch. Sorten, 200-g",Lebensmittel,Brotaufstrich/Konfitüre,1.49,2025-05-05,2025-05-10,Rewe
 "Milka Tender Milch, 5 x 37-g (185g)",Lebensmittel,Süßwaren/Gebäck,1.99,2025-05-05,2025-05-10,Rewe
-"Ben & Jerry’s Ice Cream versch. Sorten, 465-ml",Lebensmittel,Tiefkühlkost/Eis,3.99,2025-05-05,2025-05-10,Rewe
+"Ben & Jerry's Ice Cream versch. Sorten, 465-ml",Lebensmittel,Tiefkühlkost/Eis,3.99,2025-05-05,2025-05-10,Rewe
 "Coppenrath & Wiese Sahne Rolle versch. Sorten, tiefgefroren, 350-g",Lebensmittel,Tiefkühlkost/Kuchen,2.59,2025-05-05,2025-05-10,Rewe
 LEGO Blumen versch. Ausführungen,Non-Food,Spielzeug,12.99,2025-05-05,2025-05-10,Rewe
 "Arla Buko Der Sahnige Frischkäse, 200-g",Lebensmittel,Milchprodukte/Frischkäse,0.99,2025-05-05,2025-05-10,Rewe
@@ -107,7 +107,7 @@ REWE Bio Ingwer oder Kurkuma Shot (150ml),Getränke,Säfte/Shots,1.29,2025-05-06
 "Corona Mexican Beer (versch. Sorten, 6x0,355l Sixpack)",Getränke,Alkoholische Getränke/Bier,5.99,2025-05-06,2025-05-11,Rewe
 "Monster Energy Drink (versch. Sorten, koffeinhaltig, 0,5l Dose)",Getränke,Energy Drinks,0.99,2025-05-06,2025-05-11,Rewe
 "Fuze Tea (versch. Sorten, 1,25l)",Getränke,Eistee,1.29,2025-05-06,2025-05-11,Rewe
-"Jack Daniel’s Tennessee Whiskey 40% Vol. oder Honey 35% Vol., je 0,7-l-Fl.",Getränke,Alkoholische Getränke,14.99,2025-04-22,2025-04-26,Rewe
+"Jack Daniel's Tennessee Whiskey 40% Vol. oder Honey 35% Vol., je 0,7-l-Fl.",Getränke,Alkoholische Getränke,14.99,2025-04-22,2025-04-26,Rewe
 "Puschkin Vodka 37,5% Vol., je 0,7-l-Fl.",Getränke,Alkoholische Getränke,5.99,2025-04-22,2025-04-26,Rewe
 "Fürst Bismarck Kornbrand 38% Vol., je 0,7-l-Fl.",Getränke,Alkoholische Getränke,7.99,2025-04-22,2025-04-26,Rewe
 "Mangaroca Batida de Coco 16% Vol., je 0,7-l-Fl.",Getränke,Alkoholische Getränke,7.99,2025-04-22,2025-04-26,Rewe
@@ -118,7 +118,7 @@ REWE Bio Ingwer oder Kurkuma Shot (150ml),Getränke,Säfte/Shots,1.29,2025-05-06
 "Frankreich/Rhone: La Vieille Ferme Rouge Vin de France (trocken), je 0,75-l-Fl.",Getränke,Wein,4.99,2025-04-22,2025-04-26,Rewe
 "Mosel: Moselland Akzente Elbling Riesling Qualitätswein (halbtrocken), je 0,75-l-Fl.",Getränke,Wein,3.99,2025-04-22,2025-04-26,Rewe
 "Delverde Pasta (versch. Ausformungen), je 500-g-Pckg.",Lebensmittel,Pasta,0.79,2025-04-22,2025-04-26,Rewe
-"Ben’s Original Express Reis (versch. Sorten), je 220-g-Btl.",Lebensmittel,Reis/Fertiggerichte,1.59,2025-04-22,2025-04-26,Rewe
+"Ben's Original Express Reis (versch. Sorten), je 220-g-Btl.",Lebensmittel,Reis/Fertiggerichte,1.59,2025-04-22,2025-04-26,Rewe
 "Pfanni Kartoffelgericht (versch. Sorten), je 400-g-Pckg.",Lebensmittel,Fertiggerichte,1.49,2025-04-22,2025-04-26,Rewe
 "Dr. Oetker Classic Brownies (462g) oder Zitronen Kuchen (525g), je Pckg.",Lebensmittel,Backzutaten,2.22,2025-04-22,2025-04-26,Rewe
 "Thomy Les Sauces Hollandaise (versch. Sorten), je 250-ml-Pckg.",Lebensmittel,Saucen/Konserven,0.79,2025-04-22,2025-04-26,Rewe
@@ -528,7 +528,7 @@ Italiamo Mascarpone e Gorgonzola (Je 200 g),Lebensmittel,Milchprodukte/Käse,2.4
 "Fischerstolz Kabeljau Rückenfilets (Je 250 g)",Lebensmittel,Fisch,4.39,2025-05-08,2025-05-10,Lidl
 "Grillmeister Hähnchen Grilltasche Chili-Cheese (Je 320 g)",Lebensmittel,Fleisch/Geflügel,2.99,2025-05-08,2025-05-10,Lidl
 "Grillmeister Schweine-Sommersteaks (Mariniert in versch. Sorten, Je 1 kg)",Lebensmittel,Fleisch,6.66,2025-05-08,2025-05-10,Lidl
-"Metzgerfrisch Hähnchen-Minischnitte „Cornflakes-Panade“ (Paniert, Je 540 g)",Lebensmittel,Fleisch/Geflügel,4.99,2025-05-08,2025-05-10,Lidl
+"Metzgerfrisch Hähnchen-Minischnitte (Paniert, Je 540 g)",Lebensmittel,Fleisch/Geflügel,4.99,2025-05-08,2025-05-10,Lidl
 "Metzgerfrisch Frisches Putengulasch (Mariniert, Je 750 g)",Lebensmittel,Fleisch/Geflügel,4.29,2025-05-08,2025-05-10,Lidl
 "Metzgerfrisch Premium Lamm-Medaillons (In Würzmarinade, Ca. 240 g, kg-Preis = 19.99)",Lebensmittel,Fleisch,4.8,2025-05-08,2025-05-10,Lidl
 "Fischerstolz Ofenlachs XXL (Versch. Sorten, Je 3x 125 g)",Tiefkühlkost,Fisch,7.49,2025-05-08,2025-05-10,Lidl
@@ -547,7 +547,7 @@ Italiamo Mascarpone e Gorgonzola (Je 200 g),Lebensmittel,Milchprodukte/Käse,2.4
 "Pfanner Eistee (Versch. Sorten, Je 2 l)",Getränke,Eistee,1.19,2025-05-08,2025-05-10,Lidl
 "Pepsi (Versch. Sorten, Koffeinhaltig, Je 1,25 l, zzgl. -.25 Pfand, Lidl Plus)",Getränke,Softdrinks,0.88,2025-05-08,2025-05-10,Lidl
 "Ömür Hirtenkäse (55 % Fett i. Tr., Je 1,5 kg, Abtropfgewicht: 800 g, Kühlung)",Kühlung,Käse,6.49,2025-05-08,2025-05-10,Lidl
-"Bailey’s The Original Irish Cream Likör (17 % vol, Je 0,7 l)",Getränke,Alkoholische Getränke/Likör,9.99,2025-05-08,2025-05-10,Lidl
+"Bailey's The Original Irish Cream Likör (17 % vol, Je 0,7 l)",Getränke,Alkoholische Getränke/Likör,9.99,2025-05-08,2025-05-10,Lidl
 "Omo Vollwaschmittel Flüssig XXXL (Je 100 Waschladungen)",Non-Food,Haushalt/Waschmittel,12.99,2025-05-08,2025-05-10,Lidl
 "Kotanyi Gewürze (Versch. Sorten, Je 53/45/42/40 g, Lidl Plus)",Lebensmittel,Gewürze,1.79,2025-05-08,2025-05-10,Lidl
 "Grillmeister Schweine-Bauchscheiben (Gewürzt in versch. Sorten, Je 700 g)",Lebensmittel,Fleisch,4.39,2025-05-09,2025-05-10,Lidl
@@ -565,7 +565,7 @@ GARDENLINE Muttertagspflanzen (versch. Gefäße ca. 20-30 cm),Non-Food,Pflanzen/
 ASIA GREEN GARDEN Süße Grüße (Konfekt versch. Sorten) 50-g-Packung,Lebensmittel,Süßwaren,1.11,2025-05-05,2025-05-10,Aldi
 ASIA GREEN GARDEN Asiatische Snack-Spezialität (versch. Sorten) 150-g-Beutel,Lebensmittel,Snacks,1.29,2025-05-05,2025-05-10,Aldi
 ASIA GREEN GARDEN Fernöstliche Suppe (versch. Sorten) 400-ml-Dose,Lebensmittel,Suppen/Fertiggerichte,0.99,2025-05-05,2025-05-10,Aldi
-Lil Rose/Lil Blanc (versch. Sorten z.T. alkoholfrei) 0,75-L-Flasche,Getränke,Wein/Sekt,1.49,2025-05-05,2025-05-10,Aldi
+"Lil Rose/Lil Blanc (versch. Sorten z.T. alkoholfrei) 0,75-L-Flasche",Getränke,Wein/Sekt,1.49,2025-05-05,2025-05-10,Aldi
 MEINE KUCHENWELT Herztorte Himbeer 600-g-Packung,Lebensmittel,Kuchen/Backwaren,3.99,2025-05-05,2025-05-10,Aldi
 Kulturheidelbeeren Klasse 1 200-g-Schale,Lebensmittel,Obst,1.55,2025-05-05,2025-05-10,Aldi
 Tafeläpfel Klasse 1 2-kg-Beutel,Lebensmittel,Obst,2.89,2025-05-05,2025-05-10,Aldi
@@ -586,13 +586,13 @@ Dornfelder Spätburgunder Rheinhessen QbA (halbtrocken) 1-L-Flasche,Getränke,Al
 RAMON LOPEZ MURILLO Rioja Reserva DOC (trocken) 0.75-L-Flasche,Getränke,Alkoholische Getränke/Wein,4.49,2025-05-05,2025-05-10,Aldi
 COLLECTION WÜRTTEMBERG Trollinger mit Lemberger Württemberg QbA (feinherb) 1-L-Flasche,Getränke,Alkoholische Getränke/Wein,4.29,2025-05-05,2025-05-10,Aldi
 BADEN Spätburgunder QbA (feinherb) 0.75-L-Flasche,Getränke,Alkoholische Getränke/Wein,2.69,2025-05-05,2025-05-10,Aldi
-RIO D‘ORO Apfelsaft naturtrüb (100% Direktsaft) 1-L-Packung,Getränke,Alkoholfreie Getränke/Saft,1.39,2025-05-05,2025-05-10,Aldi
-RIO D‘ORO Bio-Orangensaft (aus Konzentrat) 1-L-Packung,Getränke,Alkoholfreie Getränke/Saft,2.65,2025-05-05,2025-05-10,Aldi
-RIO D‘ORO Mehrfrucht-Premium-Direktsaft (versch. Sorten) 1-L-Packung,Getränke,Alkoholfreie Getränke/Saft,2.19,2025-05-05,2025-05-10,Aldi
-RIO D‘ORO Fruchtsaftgetränk (versch. Sorten) 10x0.2-L-Packung,Getränke,Alkoholfreie Getränke/Saft,1.99,2025-05-05,2025-05-10,Aldi
-RIO D‘ORO Orangensaft (aus Konzentrat) 1-L-Flasche,Getränke,Alkoholfreie Getränke/Saft,2.19,2025-05-05,2025-05-10,Aldi
-RIO D‘ORO Orangen-Nektar (aus Konzentrat) 1.5-L-Flasche,Getränke,Alkoholfreie Getränke/Nektar,1.99,2025-05-05,2025-05-10,Aldi
-RIO D‘ORO Apfelsaft klar (aus Konzentrat) 1-L-Flasche,Getränke,Alkoholfreie Getränke/Saft,1.09,2025-05-05,2025-05-10,Aldi
+RIO D'ORO Apfelsaft naturtrüb (100% Direktsaft) 1-L-Packung,Getränke,Alkoholfreie Getränke/Saft,1.39,2025-05-05,2025-05-10,Aldi
+RIO D'ORO Bio-Orangensaft (aus Konzentrat) 1-L-Packung,Getränke,Alkoholfreie Getränke/Saft,2.65,2025-05-05,2025-05-10,Aldi
+RIO D'ORO Mehrfrucht-Premium-Direktsaft (versch. Sorten) 1-L-Packung,Getränke,Alkoholfreie Getränke/Saft,2.19,2025-05-05,2025-05-10,Aldi
+RIO D'ORO Fruchtsaftgetränk (versch. Sorten) 10x0.2-L-Packung,Getränke,Alkoholfreie Getränke/Saft,1.99,2025-05-05,2025-05-10,Aldi
+RIO D'ORO Orangensaft (aus Konzentrat) 1-L-Flasche,Getränke,Alkoholfreie Getränke/Saft,2.19,2025-05-05,2025-05-10,Aldi
+RIO D'ORO Orangen-Nektar (aus Konzentrat) 1.5-L-Flasche,Getränke,Alkoholfreie Getränke/Nektar,1.99,2025-05-05,2025-05-10,Aldi
+RIO D'ORO Apfelsaft klar (aus Konzentrat) 1-L-Flasche,Getränke,Alkoholfreie Getränke/Saft,1.09,2025-05-05,2025-05-10,Aldi
 MARIO COLLINA Chardonnay Garda DOC (trocken) 0.75-L-Flasche,Getränke,Alkoholische Getränke/Wein,2.19,2025-05-05,2025-05-10,Aldi
 MARIO COLLINA Primitivo Rosato Apulien IGT (halbtrocken) 0.75-L-Flasche,Getränke,Alkoholische Getränke/Wein,2.29,2025-05-05,2025-05-10,Aldi
 Vino de Espana (Weiß/Rosé/Rot trocken) 3-L-Bag-in-Box,Getränke,Alkoholische Getränke/Wein,4.99,2025-05-05,2025-05-10,Aldi
@@ -619,7 +619,7 @@ Sanella Streichfett (400g),Lebensmittel,Milchprodukte/Fette,1.29,2025-05-05,2025
 TANTE FANNY Flammkuchenteig XXL (260g),Lebensmittel,Teigwaren/Fertigteige,1.49,2025-05-05,2025-05-10,Aldi
 "COOLBACK Gewürzbutter-Baguette XXL (versch. Sorten, 350g)",Lebensmittel,Backwaren/Tiefkühl,1.79,2025-05-05,2025-05-10,Aldi
 "ERGÜLLÜ Brotaufstrich (versch. Sorten, 125g/200g)",Lebensmittel,Brotaufstriche,1.99,2025-05-05,2025-05-10,Aldi
-TILLMAN’S Hähnchenschnitte „Cordon bleu“ XXL (625g),Lebensmittel,Fleisch/Geflügel/Tiefkühl,4.99,2025-05-05,2025-05-10,Aldi
+TILLMAN'S Hähnchenschnitte „Cordon bleu" XXL (625g),Lebensmittel,Fleisch/Geflügel/Tiefkühl,4.99,2025-05-05,2025-05-10,Aldi
 "LYTTOS Hirtenkäse in Würfeln (versch. Sorten, 350g)",Lebensmittel,Milchprodukte/Käse,1.99,2025-05-05,2025-05-10,Aldi
 "LYSELL Fischröllchen (versch. Sorten, 90g ATG/125g)",Lebensmittel,Fisch/Konserven,1.69,2025-05-05,2025-05-10,Aldi
 "LANGNESE Magnum Stieleis (versch. Sorten, 6er, 600ml)",Lebensmittel,Eis/Tiefkühl,2.79,2025-05-05,2025-05-10,Aldi
@@ -629,7 +629,7 @@ LANDFREUDE Bunte Eier (6er),Lebensmittel,Eier,1.69,2025-05-05,2025-05-10,Aldi
 "EICHETTI Crispy Cups (versch. Sorten, 100g)",Lebensmittel,Süßwaren/Eiskonfekt,1.49,2025-05-05,2025-05-10,Aldi
 "WAGNER Piccolinis (versch. Sorten, 270g)",Lebensmittel,Pizza/Tiefkühl,1.99,2025-05-05,2025-05-10,Aldi
 "MILKA Tafelschokolade (versch. Sorten, 87g-100g)",Lebensmittel,Süßwaren/Schokolade,1.29,2025-05-05,2025-05-10,Aldi
-"SUN SNACKS Kartoffel-Ringe/Dolphy’s (versch. Sorten, 100g)",Lebensmittel,Snacks/Knabberartikel,0.99,2025-05-05,2025-05-10,Aldi
+"SUN SNACKS Kartoffel-Ringe/Dolphy's (versch. Sorten, 100g)",Lebensmittel,Snacks/Knabberartikel,0.99,2025-05-05,2025-05-10,Aldi
 "FUNNY-FRISCH Spezialität (versch. Sorten, 75g/100g)",Lebensmittel,Snacks/Knabberartikel,1.99,2025-05-05,2025-05-10,Aldi
 "WESTMINSTER Cold Brew Tea (versch. Sorten, 50g)",Getränke,Tee,1.29,2025-05-05,2025-05-10,Aldi
 "GEROLSTEINER Mineralwasser (versch. Sorten, 1.5L)",Getränke,Wasser,0.79,2025-05-05,2025-05-10,Aldi
@@ -637,7 +637,7 @@ LANDFREUDE Bunte Eier (6er),Lebensmittel,Eier,1.69,2025-05-05,2025-05-10,Aldi
 "LIPTON Eistee (versch. Sorten, 1.25L)",Getränke,Eistee,1.11,2025-05-05,2025-05-10,Aldi
 "Coca-Cola (versch. Sorten, 1.25L)",Getränke,Softdrinks,0.99,2025-05-05,2025-05-10,Aldi
 "MONSTER Energydrink (versch. Sorten, 0.5L)",Getränke,Energydrinks,0.89,2025-05-05,2025-05-10,Aldi
-TRADER JOE’S Nuss-Variation (200g),Lebensmittel,Snacks/Nüsse,2.29,2025-05-05,2025-05-10,Aldi
+TRADER JOE'S Nuss-Variation (200g),Lebensmittel,Snacks/Nüsse,2.29,2025-05-05,2025-05-10,Aldi
 "HARIBO Balla-Stixx/Spaghetti (versch. Sorten, 175g/200g)",Lebensmittel,Süßwaren/Fruchtgummi,1.29,2025-05-05,2025-05-10,Aldi
 "Haribo (Gummibärchen etc., versch. Sorten, 160g/175g)",Lebensmittel,Süßwaren/Fruchtgummi,0.79,2025-05-05,2025-05-10,Aldi
 "HARIBO Kiosk-Dose (versch. Sorten, 650g)",Lebensmittel,Süßwaren/Fruchtgummi,3.49,2025-05-05,2025-05-10,Aldi
@@ -653,7 +653,7 @@ BISCOTTO Shortbread Fingers (200g),Lebensmittel,Süßwaren/Gebäck,1.99,2025-05-
 "HOME CREATION Duftspray (versch. Sorten, 250ml)",Haushalt,Raumduft,1.99,2025-05-05,2025-05-10,Aldi
 "CHOCEUR Feine belgische Pralinenmischung (versch. Motive, 250g)",Lebensmittel,Süßwaren/Pralinen,3.99,2025-05-05,2025-05-10,Aldi
 STORCK merci Finest Selection (400g),Lebensmittel,Süßwaren/Schokolade,5.99,2025-05-05,2025-05-10,Aldi
-PIZZ’AH Herzpizza Margherita (320g),Lebensmittel,Pizza/Tiefkühl,1.99,2025-05-05,2025-05-10,Aldi
+PIZZ'AH Herzpizza Margherita (320g),Lebensmittel,Pizza/Tiefkühl,1.99,2025-05-05,2025-05-10,Aldi
 "MILKA Pralinés (versch. Sorten, 110g)",Lebensmittel,Süßwaren/Pralinen,1.79,2025-05-05,2025-05-10,Aldi
 "MEINE KUCHENWELT Gefüllte Windbeutel (versch. Sorten, 400g)",Lebensmittel,Kuchen/Gebäck/Tiefkühl,3.99,2025-05-05,2025-05-10,Aldi
 "CHOCEUR Pralinen (versch. Sorten, 180g)",Lebensmittel,Süßwaren/Pralinen,3.49,2025-05-05,2025-05-10,Aldi
@@ -704,7 +704,7 @@ Tafeltrauben hell,Obst & Gemüse,Trauben,1.59,2025-05-08,2025-05-10,Aldi
 Saftorangen,Obst & Gemüse,Zitrusfrüchte,1.89,2025-05-08,2025-05-10,Aldi
 Avocados,Obst & Gemüse,Exotische Früchte,1.69,2025-05-08,2025-05-10,Aldi
 Kopfsalat mit Wurzelballen,Obst & Gemüse,Salat,1.29,2025-05-08,2025-05-10,Aldi
-Kleine Speisekartoffeln „Drillinge“,Obst & Gemüse,Kartoffeln,1.49,2025-05-08,2025-05-10,Aldi
+Kleine Speisekartoffeln „Drillinge",Obst & Gemüse,Kartoffeln,1.49,2025-05-08,2025-05-10,Aldi
 GARDENLINE Fairtrade-Rosen,Blumen & Pflanzen,Schnittblumen,1.99,2025-05-08,2025-05-10,Aldi
 GARDENLINE Spraynelken,Blumen & Pflanzen,Schnittblumen,1.99,2025-05-08,2025-05-10,Aldi
 GARDENLINE Germini,Blumen & Pflanzen,Schnittblumen,1.99,2025-05-08,2025-05-10,Aldi
@@ -756,7 +756,7 @@ IGLO Backfisch-/Fischstäbchen XXL (728g/840g),Lebensmittel,Tiefkühlkost/Fisch,
 STORCK Toffifee (625g),Lebensmittel,Süßwaren,4.99,2025-05-08,2025-05-10,Aldi
 "STORCK nimm2 (versch. Sorten, 240g/300g)",Lebensmittel,Süßwaren,1.39,2025-05-08,2025-05-10,Aldi
 STORCK Knoppers minis (220g),Lebensmittel,Süßwaren/Gebäck,1.99,2025-05-08,2025-05-10,Aldi
-STORCK Super Dickmann’s (250g),Lebensmittel,Süßwaren,1.69,2025-05-08,2025-05-10,Aldi
+STORCK Super Dickmann's (250g),Lebensmittel,Süßwaren,1.69,2025-05-08,2025-05-10,Aldi
 "FRANKEN BRUNNEN Fruit 2 go (versch. Sorten, 0,75L, zzgl. Pfand)",Getränke,Nicht-alkoholisch,0.79,2025-05-08,2025-05-10,Aldi
 "FLIRTEA Eistee (versch. Sorten, 0,33L Dose, zzgl. Pfand)",Getränke,Nicht-alkoholisch/Eistee,0.45,2025-05-08,2025-05-10,Aldi
 "PAULANER Spezi (versch. Sorten, 6x0,33L Dose, zzgl. Pfand)",Getränke,Nicht-alkoholisch/Limonade,3.49,2025-05-08,2025-05-10,Aldi
@@ -774,7 +774,7 @@ GARDENLINE Muttertags-Strauß (50cm),Non-Food,Pflanzen/Blumen,7.99,2025-05-09,20
 "DR. OETKER Die Ofenfrische Pizza (versch. Sorten, 390g/410g)",Lebensmittel,Tiefkühlkost/Pizza,1.88,2025-05-10,2025-05-10,Aldi
 "MILSANI Fruchtbuttermilch-Dessert (versch. Sorten, 200g)",Lebensmittel,Milchprodukte/Desserts,0.45,2025-05-10,2025-05-10,Aldi
 "TUC Cracker (versch. Sorten, 100g)",Lebensmittel,Snacks/Gebäck,0.69,2025-05-10,2025-05-10,Aldi
-"GRANT’S Triple Wood Blended Scotch Whisky (40% Vol., 0,7L)",Getränke,Alkoholisch/Spirituosen,8.88,2025-05-10,2025-05-10,Aldi
+"GRANT'S Triple Wood Blended Scotch Whisky (40% Vol., 0,7L)",Getränke,Alkoholisch/Spirituosen,8.88,2025-05-10,2025-05-10,Aldi
 "WONNEMEYER Frühstücksbackwaren (versch. Sorten, 330g/340g)",Lebensmittel,Backwaren,1.59,2025-05-06,2025-05-11,Aldi 
 "GRANDESSA Konfitüre (Erdbeere, 450g)",Lebensmittel,Brotaufstrich,1.29,2025-05-06,2025-05-11,Aldi 
 "BARISSIMO Caffè Crema & Aroma/Espresso Cremoso (Ganze Bohnen, 1kg)",Lebensmittel,Kaffee,11.99,2025-05-06,2025-05-11,Aldi 
@@ -802,7 +802,7 @@ Fresh Quality Obstsalate oder geschnittenes Obst (3 Schalen),Lebensmittel,Obst (
 Marokko Kulturheidelbeeren (700g Schale),Lebensmittel,Obst,6.0,2025-05-05,2025-05-10,EDEKA
 Deutschland Erdbeeren (400g Schale),Lebensmittel,Obst,2.99,2025-05-05,2025-05-10,EDEKA
 Spanien / Italien Honigmelonen (Stück),Lebensmittel,Obst,2.49,2025-05-05,2025-05-10,EDEKA
-Italien Tafeläpfel „Pink Lady“ (1kg Kartonschale),Lebensmittel,Obst,2.49,2025-05-05,2025-05-10,EDEKA
+Italien Tafeläpfel „Pink Lady" (1kg Kartonschale),Lebensmittel,Obst,2.49,2025-05-05,2025-05-10,EDEKA
 EDEKA Herzstücke WWF-Bananen (1 kg),Lebensmittel,Obst,1.49,2025-05-05,2025-05-10,EDEKA
 Henglein Frischer Blätterteig (275g Packung),Lebensmittel,Backzutaten (gekühlt),0.99,2025-05-05,2025-05-10,EDEKA
 EDEKA Bio WWF-Bananen (1 kg),Lebensmittel,Obst (Bio),1.69,2025-05-05,2025-05-10,EDEKA
