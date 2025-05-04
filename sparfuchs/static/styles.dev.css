@@ -1,0 +1,837 @@
+/**
+ * SparFuchs.de - Hauptstildatei
+ * 
+ * Diese CSS-Datei enthält alle Stilregeln für die SparFuchs.de Streamlit-Anwendung.
+ * Sie ist in mehrere Abschnitte unterteilt, um die verschiedenen Komponenten und
+ * deren visuelle Darstellung zu organisieren.
+ *
+ * Hinweis: Diese Datei wird von der Anwendung in eine minimierte Version (styles.min.css)
+ * kompiliert, um die Ladezeiten zu optimieren.
+ */
+
+/* == Globale Stile & Variablen == 
+ * Hier werden die CSS-Variablen definiert, die im gesamten Design verwendet werden.
+ * Dies ermöglicht eine einfache Änderung des Farbschemas und anderer Designelemente.
+ */
+ :root {
+  --text-color: #2A2A2A;
+  --bg-color: #E8E0D0;
+  --white: #ffffff;
+  --primary-color: #28A745;
+  --secondary-color: #FF6600;
+  --border-color: #E0E0E0;
+  --border-radius: 10px;
+  --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  --hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --primary-shadow: 0 2px 5px rgba(52, 199, 89, 0.3);
+  --primary-hover-shadow: 0 4px 8px rgba(52, 199, 89, 0.4);
+  --secondary-shadow: 0 2px 5px rgba(255, 102, 0, 0.3);
+  --secondary-hover-shadow: 0 4px 8px rgba(255, 102, 0, 0.4);
+}
+
+/* Import der Google Fonts - Poppins wird als Hauptschriftart verwendet */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* == Resets & Basis-Styling == 
+ * Grundlegende Stilregeln, die auf die gesamte Anwendung angewendet werden.
+ * Dies stellt sicher, dass das Design konsistent auf verschiedenen Browsern angezeigt wird.
+ */
+html, body, .stApp, [class*="css"] {
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-color);
+  background-color: var(--bg-color) !important;
+}
+
+/* Verstecke Streamlit Footer und Hilfstexte 
+ * Diese Regeln entfernen unerwünschte Streamlit-Standardelemente, 
+ * um ein saubereres Design zu erhalten.
+ */
+footer,
+[data-testid="InputFooterHelperText"],
+[data-testid="InputInstructions"],
+[data-testid="InputHelpText"],
+[data-testid="stChatInputFooter"],
+.streamlit-footer,
+.stTextInput + div small,
+.stTextInput + small,
+.stTextInput ~ small,
+small.st-emotion-cache-16txtl3,
+.st-emotion-cache-16txtl3 {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  opacity: 0 !important;
+}
+
+/* Focus-Styling für alle Elemente */
+:focus {
+  outline-color: var(--primary-color) !important;
+}
+
+textarea:focus,
+[data-testid="stForm"] [data-baseweb="textarea"]:focus-within,
+[data-baseweb="textarea"]:focus,
+[data-baseweb="textarea"]:focus-within,
+[data-baseweb="base-input"]:focus,
+[data-baseweb="base-input"]:focus-within {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 1px var(--primary-color) !important;
+  outline-color: var(--primary-color) !important;
+}
+
+/* == Layout & Container == 
+ * Diese Regeln definieren die grundlegende Struktur der Anwendung,
+ * einschließlich der Positionierung und des Aussehens der Hauptcontainer.
+ */
+.stApp,
+[data-testid="stAppViewContainer"],
+[data-testid="stAppViewBlock"],
+.stApp > header,
+.stApp > [class*='block-container'] {
+  background-color: var(--bg-color) !important;
+}
+
+.main .block-container {
+  padding: 0 25px !important;
+  max-width: 700px;
+  margin: 0 auto;
+  background: transparent;
+}
+
+.chat-container {
+  background-color: transparent !important;
+  border-radius: var(--border-radius) !important;
+}
+
+/* Hauptcontainer nach oben verschieben */
+.main > div:first-child {
+  margin-top: -35px !important;
+  padding-top: 0 !important;
+}
+
+[data-testid="stAppViewContainer"] {
+  padding-top: 0 !important;
+  margin-top: -25px !important;
+}
+
+.stApp > [class*='block-container'] {
+  padding-top: 0 !important;
+  margin-top: -15px !important;
+}
+
+.main .block-container > div:first-child {
+  margin-bottom: 0 !important;
+  margin-top: -20px !important;
+  padding-top: 0 !important;
+}
+
+.main .block-container > div:first-child + div {
+  margin-top: -20px !important;
+}
+
+[data-testid="stAppViewContainer"] > div:first-child {
+  margin-top: -15px !important;
+  padding-top: 0 !important;
+}
+
+.element-container {
+  margin-bottom: 0rem !important;
+}
+
+/* == Typografie == 
+ * Stilregeln für Text-Elemente wie Überschriften und Absätze.
+ */
+h1, h2, h3, h4 {
+  font-weight: 600 !important;
+  color: var(--text-color) !important;
+}
+
+h1 {
+  font-size: 26px !important;
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+}
+
+h1, p {
+  margin-bottom: 0rem !important;
+}
+
+/* == Logo-Styling == 
+ * Spezifische Stilregeln für das SparFuchs-Logo und zugehörige Elemente.
+ * Das Logo verwendet eine Kombination aus normaler Schrift und orangefarbener Hervorhebung.
+ */
+.logo-container {
+  margin-bottom: 0px;
+  display: flex;
+  align-items: center;
+}
+
+.logo-main {
+  font-size: 38px !important;
+  font-weight: 800 !important;
+  color: var(--text-color) !important;
+  text-shadow: 0 0 1px var(--text-color) !important;
+  letter-spacing: -0.02em !important;
+  display: inline-block !important;
+}
+
+#orange-text {
+  font-size: 38px !important;
+  font-weight: 800 !important;
+  color: #FF6600 !important;
+  text-shadow: 0 0 1px #FF6600 !important;
+  letter-spacing: -0.02em !important;
+  -webkit-text-stroke: 0.5px #FF6600 !important;
+  display: inline-block !important;
+}
+
+.logo-subtitle {
+  font-size: 18px;
+  color: #666666;
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+/* == Chat-Nachrichten == 
+ * Stilregeln für die Chat-Nachrichten, die den Hauptteil der Benutzeroberfläche bilden.
+ * Diese Regeln definieren das Aussehen der Benutzernachrichten und KI-Antworten.
+ */
+.stChatMessage,
+[data-testid="stChatMessage"] {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  border-radius: var(--border-radius) !important;
+  padding: 18px !important;
+  border: 1px solid #ffffff !important;
+  box-shadow: var(--box-shadow);
+  margin-bottom: 20px !important;
+  color: #333 !important;
+  transition: all 0.3s ease;
+}
+
+.stChatMessage:hover {
+  box-shadow: var(--hover-shadow);
+}
+
+.stChatMessage.user {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  border: 1px solid #ffffff !important;
+}
+
+/* Weitere Selektoren für Streamlit-Chat-Nachrichten */
+div[data-testid="stChatMessage"],
+[data-testid="stChatMessage"] > div,
+.stChatMessage > div,
+div.stChatMessage,
+.element-container div[data-testid="stChatMessage"],
+.element-container .stChatMessage,
+div[class*="stChatMessage"],
+section[data-testid="stChatMessageContainer"] div,
+div[data-type="ai-assistant"] {
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
+}
+
+/* Inhalte der Chat-Nachrichten */
+[data-testid="stChatMessageContent"],
+div[data-testid="stChatMessageContent"],
+.stChatMessageContent,
+div.stChatMessageContent,
+[data-testid="stChatMessage"] > div > div,
+.stChatMessage > div > div {
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
+}
+
+/* Text-Formatierung innerhalb der Chat-Nachrichten */
+.stMarkdown,
+[data-testid="stMarkdownContainer"],
+[data-testid="stChatMessageContent"],
+.stChatMessage p,
+.stChatMessage span,
+.stChatMessage div,
+.stChatMessage li,
+.stChatMessage a,
+.stChatMessage code,
+[data-testid="stMarkdownContainer"] p,
+[data-testid="stMarkdownContainer"] span,
+[data-testid="stMarkdownContainer"] div,
+[data-testid="stMarkdownContainer"] li,
+[data-testid="stMarkdownContainer"] a,
+[data-testid="stMarkdownContainer"] code,
+[data-testid="stMarkdownContainer"] *,
+[data-testid="stChatMessageContent"] *,
+.main .block-container [data-testid="stChatMessage"] *,
+.main .block-container [data-testid="stChatMessageContent"] *,
+.element-container .stMarkdownContainer p,
+.element-container .stMarkdownContainer span {
+  color: #000 !important;
+  font-weight: 500 !important;
+}
+
+[data-testid="stChatMessage"] [data-testid="stMarkdownContainer"] > p,
+[data-testid="stChatMessage"] .stMarkdown > p {
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  margin-bottom: 12px !important;
+}
+
+[data-testid="stChatMessage"] p {
+  margin-bottom: 6px !important;
+}
+
+/* Hervorgehobener Text */
+[data-testid="stChatMessage"] strong,
+[data-testid="stMarkdownContainer"] strong,
+.stMarkdown strong {
+  color: var(--primary-color) !important;
+  font-weight: 700 !important;
+}
+
+/* Metainformationen - Gültig vom und Supermarkt */
+[data-testid="stChatMessage"] strong.meta-info,
+[data-testid="stMarkdownContainer"] strong.meta-info,
+.stMarkdown strong.meta-info {
+  color: #000 !important;
+  font-weight: 700 !important;
+}
+
+/* == Eingabeelemente == 
+ * Stilregeln für Eingabefelder wie Textareas und Chat-Input.
+ */
+/* Chat-Eingabefeld */
+[data-testid="stChatInput"] {
+  border-radius: var(--border-radius) !important;
+  overflow: hidden !important;
+  background-color: var(--white) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: var(--box-shadow) !important;
+  display: flex !important;
+  margin-bottom: 0 !important;
+}
+
+[data-testid="stChatInput"] > div,
+[data-testid="stForm"] [data-baseweb="input"] div,
+.stChatInput div,
+.stChatInput {
+  background-color: var(--white) !important;
+  flex-grow: 1 !important;
+  margin-bottom: 0 !important;
+}
+
+[data-testid="stChatInput"] input {
+  color: var(--text-color) !important;
+  background-color: var(--white) !important;
+  padding-left: 15px !important;
+  border: none !important;
+}
+
+[data-testid="stChatInput"] input::placeholder {
+  color: #BBB !important;
+}
+
+/* Textareas */
+[data-testid="stTextArea"] {
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--border-radius) !important;
+  background-color: var(--white) !important;
+  padding: 0 !important;
+  box-shadow: var(--box-shadow) !important;
+  max-width: 100% !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+[data-testid="stTextArea"] > div {
+  background-color: var(--white) !important;
+}
+
+[data-testid="stTextArea"] textarea {
+  padding: 12px 15px !important;
+  color: #0d0d0c !important;
+  background-color: var(--white) !important;
+  min-height: 100px !important;
+  resize: vertical !important;
+  font-size: 18px !important;
+  font-weight: 500 !important;
+}
+
+[data-testid="stTextArea"] textarea::placeholder {
+  color: #0d0d0c !important;
+  font-size: 18px !important;
+  font-weight: 500 !important;
+}
+
+[data-testid="stTextArea"]:focus-within {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 1px var(--primary-color) !important;
+  outline: none !important;
+}
+
+[data-testid="stTextArea"] textarea:focus {
+  box-shadow: none !important;
+  outline: none !important;
+  border-color: transparent !important;
+}
+
+div[data-testid="column"]:has(.stTextArea) {
+  margin-top: 0rem !important;
+}
+
+/* == Buttons == 
+ * Stilregeln für verschiedene Arten von Buttons in der Anwendung.
+ */
+/* Primär-Button */
+[data-testid="baseButton-primary"],
+button[kind="primary"] {
+  margin-top: 10px !important;
+  height: 45px !important;
+  font-size: 24px !important;
+  background-color: var(--primary-color) !important;
+  border-radius: var(--border-radius) !important;
+  color: white !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: var(--primary-shadow) !important;
+  max-width: 100% !important;
+  transition: all 0.3s ease !important;
+  font-weight: 600 !important;
+}
+
+[data-testid="baseButton-primary"]:hover,
+button[kind="primary"]:hover {
+  background-color: #218838 !important;
+  box-shadow: var(--primary-hover-shadow) !important;
+  transform: translateY(-2px);
+}
+
+/* Sekundär-Button */
+[data-testid="baseButton-secondary"],
+button[kind="secondary"] {
+  margin-top: 10px !important;
+  max-width: 100% !important;
+  background-color: #F8F9FA !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--border-radius) !important;
+  color: var(--text-color) !important;
+  font-size: 14px !important;
+  box-shadow: var(--secondary-shadow) !important;
+  transition: all 0.3s ease !important;
+  font-weight: 500 !important;
+  width: 100% !important; /* Immer volle Breite für alle Buttons */
+}
+
+button[kind="secondary"]:hover {
+  transform: translateY(-2px);
+  background-color: #E55C00 !important;
+  box-shadow: var(--secondary-hover-shadow) !important;
+}
+
+/* Chat-Submit-Button */
+[data-testid="stChatInput"] button,
+[data-testid="stChatInput"] [data-testid="baseButton-primaryFormSubmit"] {
+  background-color: var(--text-color) !important;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0 !important;
+  color: white !important;
+  min-width: 50px !important;
+  height: 100% !important;
+  padding: 10px !important;
+  border: none !important;
+}
+
+[data-testid="stChatInput"] button:hover,
+[data-testid="stChatInput"] [data-testid="baseButton-primaryFormSubmit"]:hover {
+  background-color: var(--primary-color) !important;
+  border: none !important;
+}
+
+[data-testid="stChatInput"] button svg,
+[data-testid="stChatInput"] [data-testid="baseButton-primaryFormSubmit"] svg {
+  fill: white !important;
+  color: white !important;
+}
+
+/* Chat-Reset-Button */
+.chat-reset-button {
+  border-radius: var(--border-radius);
+  background-color: #f8f9fa;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  padding: 8px 12px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.chat-reset-button:hover {
+  background-color: #e9ecef;
+  border-color: #ced4da;
+}
+
+/* == Prompt-Suggestions == 
+ * Stilregeln für die Vorschlagsbuttons, die Nutzern Beispielanfragen anbieten.
+ */
+.prompt-suggestion-container {
+  display: inline-block;
+  margin: 5px;
+  background: #FFFFFF;
+}
+
+.prompt-suggestion {
+  background: var(--white);
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin: 10px 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #121111;
+  display: inline-block;
+  box-shadow: var(--hover-shadow);
+  animation: fadeIn 0.5s ease;
+}
+
+.prompt-suggestion:hover {
+  background: #E6F9E6;
+  border-color: #C5E8C5;
+  transform: scale(1.05);
+  box-shadow: var(--hover-shadow);
+}
+
+.prompt-icon {
+  color: var(--primary-color);
+  margin-right: 5px;
+  font-size: 16px;
+  transform: scale(1);
+  transition: transform 0.3s ease;
+}
+
+.prompt-suggestion:hover .prompt-icon {
+  transform: scale(1.1);
+}
+
+/* == Sidebar == */
+[data-testid="stSidebar"] {
+  background: var(--white);
+  border-right: 1px solid var(--border-color) !important;
+}
+
+[data-testid="stSidebar"] h2 {
+  color: var(--text-color);
+  font-size: 20px !important;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* == Alerts == */
+.stAlert {
+  border-radius: var(--border-radius) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: var(--box-shadow) !important;
+  background-color: var(--white) !important;
+}
+
+/* == Loading Animation == 
+ * Stilregeln für Ladeanzeigen, die während der KI-Antwortgenerierung angezeigt werden.
+ */
+.loader-container {
+  display: inline-flex;
+  align-items: center;
+}
+
+.loading-text, 
+.loading-dots {
+  animation: pulse 1.5s infinite;
+}
+
+.search-spinner-box {
+  text-align: center;
+  margin-bottom: 12px;
+  font-weight: bold;
+  color: var(--secondary-color);
+  background-color: #FFF8F0;
+  padding: 8px;
+  border-radius: var(--border-radius);
+  border: 1px solid #FFE0C0;
+  box-shadow: 0 2px 4px rgba(255, 102, 0, 0.1);
+}
+
+.search-icon {
+  margin-right: 8px;
+}
+
+/* == Footer == */
+.app-footer {
+  position: fixed;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  color: #999999;
+}
+
+/* == Animationen == */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+/* == Media Queries == 
+ * Responsive Design-Regeln für verschiedene Bildschirmgrößen.
+ * Diese Regeln passen das Layout für Mobilgeräte an.
+ */
+@media (max-width: 768px) {
+  /* Layout & Container */
+  .main .block-container {
+    padding: 0 15px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: -120px !important;
+  }
+  
+  /* Typografie */
+  h1 {
+    font-size: 22px !important;
+    margin-top: 0 !important;
+    margin-bottom: 5px !important;
+  }
+  
+  .logo-text {
+    font-size: 22px;
+    margin-top: 0 !important;
+  }
+  
+  /* Untertitel-Abstand reduzieren */
+  .logo-subtitle {
+    font-size: 16px;
+    margin-bottom: -15px !important;
+    margin-top: -2px !important;
+  }
+  
+  /* Struktur & Abstände */
+  .main > div:first-child {
+    margin-top: -100px !important;
+    padding-top: 0 !important;
+  }
+  
+  [data-testid="stAppViewContainer"] {
+    padding-top: 0 !important;
+    margin-top: -80px !important;
+  }
+  
+  .stApp > [class*='block-container'] {
+    padding-top: 0 !important;
+    margin-top: -60px !important;
+  }
+  
+  .main .block-container > div:first-child {
+    margin-bottom: 0 !important;
+    margin-top: -50px !important;
+    padding-top: 0 !important;
+  }
+  
+  .main .block-container > div:first-child + div {
+    margin-top: -40px !important;
+  }
+  
+  [data-testid="stAppViewContainer"] > div:first-child {
+    margin-top: -50px !important;
+    padding-top: 0 !important;
+  }
+  
+  /* Zusätzliche Anpassung für Body und App-Container */
+  body, .stApp {
+    padding-top: 0 !important;
+    margin-top: 0 !important; 
+  }
+  
+  /* Entferne jeglichen Abstand am oberen Rand */
+  .stApp [data-testid="stHeader"] {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    visibility: hidden !important;
+    position: absolute !important;
+  }
+  
+  /* Chat-Komponenten */
+  .stChatMessage {
+    margin-bottom: 0 !important;
+    padding: 8px !important;
+  }
+  
+  .element-container {
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  
+  /* Button-Anpassungen */
+  [data-testid="baseButton-secondary"] {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    height: auto !important;
+    padding: 5px !important;
+    width: 100% !important; /* Immer volle Breite im mobilen Layout */
+    min-width: 100% !important; /* Garantiert mindestens volle Breite */
+    max-width: 100% !important; /* Begrenzt auf volle Breite */
+    box-sizing: border-box !important; /* Stellt sicher, dass Padding zur Breite zählt */
+  }
+  
+  /* Spaltengleichheit für die Vorschläge "Du kannst mich auch fragen:" */
+  [data-testid="column"] {
+    padding: 0 !important;
+    gap: 0 !important;
+    width: 100% !important; /* Gleiche Breite für alle Spalten */
+    flex: 1 1 0 !important; /* Alle Spalten gleich wachsen lassen */
+    min-width: 0 !important; /* Verhindert Überfluss */
+  }
+  
+  /* Buttons in den Vorschlagsspalten */
+  [data-testid="column"] button {
+    width: 100% !important;
+    min-height: 50px !important; /* Garantiert eine Mindesthöhe für alle Buttons */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: normal !important; /* Erlaubt Textumbruch */
+    height: auto !important; /* Höhe an Inhalt anpassen */
+  }
+
+  /* Zusätzliche CSS für die drei unteren Vorschlagsbuttons */
+  .element-container:has(button:contains("Vergleiche Äpfel")),
+  .element-container:has(button:contains("Backwaren")),
+  .element-container:has(button:contains("vegetarische Produkte")) {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  
+  /* Texteingabefeld-Abstand reduzieren - zwischen 1. und 2. rotem Pfeil */
+  [data-testid="stTextArea"] {
+    margin-bottom: 0 !important;
+    margin-top: 0 !important; /* Von 10px auf 0px reduziert */
+    min-height: 80px !important; /* Höhe leicht reduzieren */
+  }
+  
+  /* Textbereich innerhalb des Eingabefelds anpassen */
+  [data-testid="stTextArea"] textarea {
+    min-height: 80px !important; /* Höhe ebenfalls reduzieren */
+  }
+  
+  /* Button-Abstand reduzieren */
+  [data-testid="baseButton-primary"] {
+    margin-top: -20px !important; /* Negativer Margin um den Button nach oben zu verschieben */
+    margin-bottom: 0 !important;
+    height: 40px !important;
+  }
+  
+  /* Layout-Details */
+  [data-testid="column"] {
+    padding: 0 !important;
+    gap: 0 !important;
+  }
+  
+  [data-testid="stChatMessageContent"] {
+    padding: 3px !important;
+  }
+  
+  .chat-container {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  [data-testid="stChatInput"] {
+    margin: 0 !important;
+  }
+  
+  div[style*="position: fixed; bottom"] {
+    bottom: 2px !important;
+  }
+  
+  /* Allgemeine Abstandsreduzierung */
+  div, p, span, section {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+  
+  .stChatMessage + div {
+    margin-top: -5px !important;
+  }
+  
+  /* Reset-Button-Positionierung */
+  #reset_chat, [data-testid="baseButton-secondary"] {
+    margin-top: -5px !important;
+    position: relative !important;
+    z-index: 10 !important;
+  }
+  
+  #reset_chat {
+    margin-top: 0 !important;
+  }
+  
+  button#reset_chat {
+    margin-top: 0 !important;
+  }
+  
+  [data-testid="baseButton-primary"] + div, 
+  [id="reset_chat"] {
+    margin-top: 0 !important;
+  }
+  
+  /* Abstände zwischen Elementen */
+  .main .block-container > div:nth-child(1) {
+    margin-bottom: -25px !important;
+  }
+  
+  h3[style*="text-align: center"] {
+    margin-top: -20px !important;
+  }
+  
+  [data-testid="baseButton-primary"] + div + div h3, 
+  [data-testid="baseButton-primary"] ~ h3 {
+    margin-top: -20px !important;
+    padding-top: 0 !important;
+  }
+  
+  .element-container + .element-container {
+    margin-top: -10px !important;
+  }
+  
+  .element-container:has([data-testid="baseButton-primary"]) + .element-container {
+    margin-top: -20px !important;
+  }
+  
+  /* Spezifische Abstände für bestimmte Elemente */
+  div:has(> div > .stChatInput), 
+  div:has(> span:contains("Suche nach")), 
+  div[class*="stChatMessageContent"], 
+  .stAlert, 
+  div[data-testid="stChatInput"] {
+    margin-bottom: 10px !important;
+  }
+  
+  /* Prompt-Suggestion-Anpassungen */
+  .prompt-suggestion {
+    margin: 2px !important;
+    padding: 5px 8px !important;
+  }
+} 

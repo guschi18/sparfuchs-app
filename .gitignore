@@ -1,3 +1,11 @@
+# Ignoriere alles im Root-Verzeichnis
+/*
+# Außer dem sparfuchs Ordner
+!/sparfuchs/
+# Und außer .gitignore selbst (wichtig, damit die Regeln angewendet werden)
+!/.gitignore
+
+# Bestehende Regeln beibehalten
 # Umgebungsvariablen
 .env
 .env.*
