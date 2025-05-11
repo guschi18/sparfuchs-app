@@ -851,7 +851,7 @@ button[kind="secondary"]:hover {
 
   /* Innenabstand für die Button-Gruppe des Segmented Controls */
 div[data-testid="stElementContainer"][class*="st-key-market_segment_control"] div[data-testid="stButtonGroup"] {
-  padding-left: 9px !important;
+  padding-left: 20px !important;
 }
 
 } 
