@@ -156,8 +156,8 @@ def display_welcome_suggestions():
             
         with col2:        
             display_suggestions_row([
-                 ("Welche Obst Angebote gibt es aktuell bei Aldi?", "🍎"),
-                ("Gibt es bei Aldi Reis, Nudeln oder Kartoffeln im Angebot?", "🔍")
+                 ("Welche Obst Angebote gibt es aktuell?", "🍎"),
+                ("Wo sind Nudeln, Kartoffeln und Reis im Angebot?", "🔍")
             ])
 
 def display_followup_suggestions():
@@ -169,9 +169,9 @@ def display_followup_suggestions():
         
         cols = st.columns(3)
         with cols[2]:
-            if st.button("💰 Welche Backwaren sind bei Lidl im Angebot?", type="secondary", use_container_width=True):
-                st.session_state.preset_input = "Welche Backwaren sind bei Lidl im Angebot?"
-                st.session_state.submit_text = "Welche Backwaren sind bei Lidl im Angebot?"
+            if st.button("💰 Welche Backwaren sind im Angebot?", type="secondary", use_container_width=True):
+                st.session_state.preset_input = "Welche Backwaren sind im Angebot?"
+                st.session_state.submit_text = "Welche Backwaren sind im Angebot?"
                 st.rerun()
         with cols[0]:
             if st.button("🥗 Gib mir 10 vegetarische Produkte, hauptsächlich bitte Gemüse", type="secondary", use_container_width=True):

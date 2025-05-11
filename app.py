@@ -33,6 +33,7 @@ from src.ai.client import init_client, get_available_models
 from src.ai.context import process_query
 from src.ai.hallucination import detect_hallucinations
 from src.utils.helpers import initialize_session_state, ensure_directories, copy_csv_if_missing
+from src.ui.market_toggles import render_market_toggles
 
 # Stelle sicher, dass die erforderlichen Verzeichnisse existieren
 ensure_directories()
@@ -55,6 +56,9 @@ client = init_client()
 
 # Logo und Seitentitel anzeigen
 display_logo()
+
+# Render market toggles and get selected markets
+selected_markets = render_market_toggles()
 
 # Chat-Container anzeigen und Spinner-Platzhalter erhalten
 spinner_placeholder = display_chat_container()
@@ -82,8 +86,8 @@ if user_input:
     st.session_state["submit_text"] = None 
     
     try:
-        # Hole systemnachricht und kontext
-        system_prompt, context_message, products_context = process_query(prompt)
+        # Hole systemnachricht und kontext, unter Berücksichtigung der ausgewählten Märkte
+        system_prompt, context_message, products_context = process_query(prompt, selected_markets)
         
         # Erstelle die Nachrichtenliste mit garantierter Systemnachricht
         messages_with_context = [system_prompt, context_message]

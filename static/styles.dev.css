@@ -311,6 +311,7 @@ div.stChatMessageContent,
   box-shadow: var(--box-shadow) !important;
   display: flex !important;
   margin-bottom: 0 !important;
+  
 }
 
 [data-testid="stChatInput"] > div,
@@ -320,6 +321,7 @@ div.stChatMessageContent,
   background-color: var(--white) !important;
   flex-grow: 1 !important;
   margin-bottom: 0 !important;
+  
 }
 
 [data-testid="stChatInput"] input {

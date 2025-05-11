@@ -77,9 +77,10 @@ def get_products_context():
     
     return context
 
-def get_filtered_products_context(user_query):
+def get_filtered_products_context(user_query: str, selected_markets: list[str]):
     """
-    Filtert die Produktdaten basierend auf der Benutzeranfrage und erstellt einen optimierten Kontext.
+    Filtert die Produktdaten basierend auf der Benutzeranfrage und den ausgewählten Supermärkten
+    und erstellt einen optimierten Kontext.
     
     Die Funktion analysiert die Benutzeranfrage semantisch, um relevante Produkte zu identifizieren,
     und erstellt einen optimierten Kontext für die KI. Sie berücksichtigt dabei:
@@ -89,6 +90,7 @@ def get_filtered_products_context(user_query):
     
     Args:
         user_query (str): Die Anfrage des Benutzers
+        selected_markets (list[str]): Eine Liste der ausgewählten Supermärkte. Wenn leer, werden alle berücksichtigt.
         
     Returns:
         str: Optimierter Kontext mit gefilterten Produktinformationen
@@ -123,13 +125,6 @@ def get_filtered_products_context(user_query):
     
     # Normalisiere den Suchbegriff
     user_query_lower = user_query.lower()
-    
-    # Supermarkt filtern
-    supermarkt_filter = None
-    if "aldi" in user_query_lower and "lidl" not in user_query_lower:
-        supermarkt_filter = "Aldi"
-    elif "lidl" in user_query_lower and "aldi" not in user_query_lower:
-        supermarkt_filter = "Lidl"
     
     # Extrahiere alle Wörter mit mindestens 3 Zeichen als potenzielle Suchbegriffe
     query_words = [word for word in re.findall(r'\b\w+\b', user_query_lower) if len(word) >= 3]
@@ -203,12 +198,14 @@ def get_filtered_products_context(user_query):
         if filtered_df.empty:
             return get_products_context()
             
-        # Nach Supermarkt filtern, wenn angegeben
-        if supermarkt_filter and not filtered_df.empty:
-            temp_df = filtered_df[filtered_df['Supermarkt'] == supermarkt_filter]
-            # Nur filtern, wenn Ergebnisse vorhanden sind
-            if not temp_df.empty:
-                filtered_df = temp_df
+        # NEU: Nach ausgewählten Supermärkten filtern, wenn welche ausgewählt wurden
+        if selected_markets: # Prüft, ob die Liste nicht leer ist
+            filtered_df = filtered_df[filtered_df['Supermarkt'].isin(selected_markets)]
+            
+            # Wenn nach dem Filtern keine Produkte mehr übrig sind, geben wir einen Hinweis zurück,
+            # anstatt den gesamten Kontext.
+            if filtered_df.empty:
+                return f"Keine Produkte in den ausgewählten Supermärkten ({', '.join(selected_markets)}) gefunden, die zur Anfrage '{user_query}' passen."
     
     # Alle Produkte einbeziehen, wenn keine spezifische Kategorie oder Produkt erwähnt wird
     else:

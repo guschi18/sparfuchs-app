@@ -1,0 +1,6 @@
+[theme]
+primaryColor = "#FF6600"
+backgroundColor = "#F0F2F6" # Standard Streamlit Light Background
+secondaryBackgroundColor = "#E0E2E6" # Slightly darker for sidebar/widgets
+textColor = "#262730" # Standard dark text
+font = "sans serif" 

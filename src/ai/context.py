@@ -70,7 +70,7 @@ def get_system_prompt():
     
     return system_prompt
 
-def process_query(prompt):
+def process_query(prompt: str, selected_markets: list[str]):
     """
     Verarbeitet eine Benutzeranfrage und bereitet den Kontext für die KI-Antwort vor.
     
@@ -79,6 +79,7 @@ def process_query(prompt):
     
     Args:
         prompt (str): Die Anfrage des Benutzers
+        selected_markets (list[str]): Die vom Benutzer ausgewählten Supermärkte.
         
     Returns:
         tuple: (system_prompt, context_message, products_context)
@@ -90,8 +91,8 @@ def process_query(prompt):
         # Systemprompt
         system_prompt = get_system_prompt()
         
-        # Kontext aus der CSV-Datei holen (gefiltert basierend auf der Anfrage)
-        products_context = get_filtered_products_context(prompt)
+        # Kontext aus der CSV-Datei holen (gefiltert basierend auf der Anfrage und ausgewählten Märkten)
+        products_context = get_filtered_products_context(prompt, selected_markets)
         
         # Erweitere die Systemnachricht mit dem aktuellen Kontext
         context_message = {
