@@ -9,6 +9,17 @@
  * kompiliert, um die Ladezeiten zu optimieren.
  */
 
+/* Verstecke Streamlit Standard-UI-Elemente */
+.stDeployButton,
+#MainMenu,
+header {
+  display: none !important;
+}
+
+footer {
+  visibility: hidden !important; /* Beibehalten, falls spezifisch so gewollt */
+}
+
 /* == Globale Stile & Variablen == 
  * Hier werden die CSS-Variablen definiert, die im gesamten Design verwendet werden.
  * Dies ermöglicht eine einfache Änderung des Farbschemas und anderer Designelemente.
@@ -192,6 +203,7 @@ h1, p {
   color: #666666;
   margin-bottom: 0px;
   margin-top: 0px;
+  padding-left: 8px;
 }
 
 /* == Chat-Nachrichten == 
@@ -836,4 +848,21 @@ button[kind="secondary"]:hover {
     margin: 2px !important;
     padding: 5px 8px !important;
   }
+
+  /* Innenabstand für die Button-Gruppe des Segmented Controls */
+div[data-testid="stElementContainer"][class*="st-key-market_segment_control"] div[data-testid="stButtonGroup"] {
+  padding-left: 9px !important;
+}
+
 } 
+
+/* == Benutzerdefinierte Stile für SparFuchs Komponenten == */
+
+/* Styling für das spezifische st.segmented_control mit Key "market_segment_control" */
+
+/* Innenabstand für die Button-Gruppe des Segmented Controls */
+div[data-testid="stElementContainer"][class*="st-key-market_segment_control"] div[data-testid="stButtonGroup"] {
+  padding-top: 10px !important;
+}
+
+/* == Ende der benutzerdefinierten Stile für SparFuchs Komponenten == */ 

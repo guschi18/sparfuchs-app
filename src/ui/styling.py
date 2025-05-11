@@ -59,16 +59,6 @@ def apply_base_styles():
         layout="centered"
     )
 
-    # Deploy-Button, Menü und Header ausblenden (nach set_page_config)
-    st.markdown("""
-    <style>
-    .stDeployButton {visibility: hidden;}
-    #MainMenu {visibility: hidden;}
-    header {visibility: hidden;}
-    footer {visibility: hidden;}
-    </style>
-    """, unsafe_allow_html=True)
-
     # Einige grundlegende Stile sofort anwenden
     st.markdown("""
     <style>
