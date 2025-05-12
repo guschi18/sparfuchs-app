@@ -11,6 +11,31 @@ from pathlib import Path
 
 # Konstanten
 CSV_FILE_PATH = Path("data/Angebote.csv")
+RECIPE_CSV_FILE_PATH = Path("data/More_Rezepte.csv")
+
+@st.cache_data
+def load_recipes():
+    """
+    Lädt die Rezeptdaten aus der CSV-Datei.
+
+    Die Funktion ist mit @st.cache_data dekoriert, um Mehrfachladungen zu vermeiden.
+
+    Returns:
+        DataFrame: Ein Pandas DataFrame mit den Rezeptdaten oder ein leeres DataFrame, 
+                   wenn die Datei nicht gefunden wurde oder leer ist.
+    """
+    try:
+        df = pd.read_csv(RECIPE_CSV_FILE_PATH)
+        if df.empty:
+            st.warning(f"Die Rezept-CSV-Datei '{RECIPE_CSV_FILE_PATH}' ist leer.")
+            return pd.DataFrame()
+        return df
+    except FileNotFoundError:
+        st.error(f"Die Rezept-CSV-Datei '{RECIPE_CSV_FILE_PATH}' wurde nicht gefunden. Bitte stelle sicher, dass die Datei existiert.")
+        return pd.DataFrame()
+    except Exception as e:
+        st.error(f"Fehler beim Laden der Rezept-CSV-Datei '{RECIPE_CSV_FILE_PATH}': {str(e)}")
+        return pd.DataFrame()
 
 @st.cache_data
 def load_csv_data():

@@ -14,6 +14,7 @@ sparfuchs/
     │   ├── __init__.py
     │   ├── layout.py       # Layout-Funktionen
     │   └── styling.py      # CSS-Verarbeitung
+    │   └── market_toggles.py  # st.segmented_control
     ├── data/               # Datenverarbeitung
     │   ├── __init__.py
     │   └── product_data.py # CSV-Ladelogik

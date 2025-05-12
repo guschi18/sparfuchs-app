@@ -85,21 +85,9 @@ def get_available_models():
     # Vordefinierte Liste der bekannten Modelle, die wir bevorzugt verwenden
     return [
         {
-            "id": "google/gemini-2.0-flash-exp:free",
-            "name": "Gemini 2.0 Flash Experimental (Free)",
+            "id": "x-ai/grok-3-mini-beta",
+            "name": "xAI: Grok 3 Mini Beta",
             "context_length": 4000,
             "is_free": True
-        },
-        {
-            "id": "google/gemini-1.5-pro:latest",
-            "name": "Gemini 1.5 Pro",
-            "context_length": 2000,
-            "is_free": False
-        },
-        {
-            "id": "anthropic/claude-3-5-sonnet",
-            "name": "Claude 3.5 Sonnet",
-            "context_length": 2000,
-            "is_free": False
         }
     ] 

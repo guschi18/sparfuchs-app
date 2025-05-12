@@ -4,7 +4,9 @@ Kontextgenerierung für KI-Anfragen.
 Dieses Modul enthält Funktionen für die Erstellung von optimierten Kontexten
 für KI-Anfragen basierend auf Benutzeranfragen und Produktdaten.
 """
-from ..data.product_data import get_filtered_products_context
+import re
+from ..data.product_data import get_filtered_products_context, load_recipes
+import pandas as pd
 
 def get_system_prompt():
     """
@@ -70,7 +72,7 @@ def get_system_prompt():
     
     return system_prompt
 
-def process_query(prompt: str, selected_markets: list[str]):
+def process_query(prompt: str, selected_markets: list[str], recipe_mode: bool):
     """
     Verarbeitet eine Benutzeranfrage und bereitet den Kontext für die KI-Antwort vor.
     
@@ -80,6 +82,7 @@ def process_query(prompt: str, selected_markets: list[str]):
     Args:
         prompt (str): Die Anfrage des Benutzers
         selected_markets (list[str]): Die vom Benutzer ausgewählten Supermärkte.
+        recipe_mode (bool): Gibt an, ob der Rezeptfinder-Modus aktiv ist.
         
     Returns:
         tuple: (system_prompt, context_message, products_context)
@@ -94,10 +97,52 @@ def process_query(prompt: str, selected_markets: list[str]):
         # Kontext aus der CSV-Datei holen (gefiltert basierend auf der Anfrage und ausgewählten Märkten)
         products_context = get_filtered_products_context(prompt, selected_markets)
         
-        # Erweitere die Systemnachricht mit dem aktuellen Kontext
+        # Rezeptkontext hinzufügen, wenn der Modus aktiv ist
+        recipe_context = ""
+        if recipe_mode:
+            recipes_df = load_recipes()
+            if not recipes_df.empty:
+                # Extrahiere Schlüsselwörter aus dem Prompt (mind. 3 Zeichen)
+                prompt_lower = prompt.lower()
+                keywords = re.findall(r'\b\w{3,}\b', prompt_lower)
+                
+                filtered_recipes_df = pd.DataFrame() # Initialisiere leeren DataFrame
+
+                if keywords:
+                    # Annahme: Die relevanten Spalten heißen 'Rezeptname' und 'Zutaten'
+                    # Passe dies bei Bedarf an die tatsächlichen Spaltennamen in More_Rezepte.csv an.
+                    search_columns = ['Rezeptname', 'Zutaten'] 
+                    # Stelle sicher, dass die Spalten im DataFrame existieren
+                    existing_search_columns = [col for col in search_columns if col in recipes_df.columns]
+
+                    if existing_search_columns:
+                        mask = pd.Series(False, index=recipes_df.index)
+                        for keyword in keywords:
+                            keyword_mask = pd.Series(False, index=recipes_df.index)
+                            for col in existing_search_columns:
+                                # Prüfe, ob die Spalte String-Typ ist, bevor .str verwendet wird
+                                if pd.api.types.is_string_dtype(recipes_df[col]):
+                                     keyword_mask = keyword_mask | recipes_df[col].str.contains(keyword, case=False, na=False)
+                            mask = mask | keyword_mask
+                        filtered_recipes_df = recipes_df[mask]
+
+                # Nur wenn gefilterte Rezepte gefunden wurden, füge sie zum Kontext hinzu
+                if not filtered_recipes_df.empty:
+                    recipe_context += "\n\nZUSÄTZLICHE INFORMATIONEN: RELEVANTE REZEPTE (basierend auf Anfrage)\n"
+                    recipe_context += "Wenn der Benutzer nach Rezepten, Kochideen oder ähnlichem fragt, nutze die folgenden Rezeptdaten, da sie zur Anfrage passen könnten:\n\n"
+                    recipe_context += filtered_recipes_df.to_string(index=False, header=True)
+                    recipe_context += "\n\nENDE DER REZEPTINFORMATIONEN\n"
+                # Optional: Hinweis hinzufügen, wenn keine *relevanten* Rezepte gefunden wurden?
+                # else:
+                #     recipe_context = "\n\n(Rezeptmodus ist aktiv, aber keine zur Anfrage passenden Rezepte gefunden.)"
+            else:
+                recipe_context = "\n\n(Rezeptmodus ist aktiv, aber es konnten keine Rezeptdaten geladen werden.)"
+
+        # Erweitere die Systemnachricht mit dem aktuellen Kontext (Angebote + ggf. gefilterte Rezepte)
         context_message = {
             "role": "system", 
-            "content": f"Hier sind die aktuellen Produktinformationen. Du DARFST NUR diese Produkte in deinen Antworten verwenden und KEINE anderen:\n\n{products_context}\n\n" +
+            "content": f"Hier sind die aktuellen Produktinformationen (Angebote). Du DARFST NUR diese Produkte in deinen Antworten verwenden und KEINE anderen:\n\n{products_context}\n\n"
+            f"{recipe_context}" # Rezeptkontext hier einfügen
             "WICHTIG: DENKE AKTIV und GRÜNDLICH über die Anfrage und Produktkategorien nach. " +
             "Erkenne semantische Beziehungen zwischen verschiedenen Produktbezeichnungen und Kategorien. " +
             "Wenn z.B. ein 'GUT BIO Bio-Pasta' Produkt in den Daten enthalten ist und jemand nach 'Nudeln' fragt, " +

@@ -33,7 +33,7 @@ from src.ai.client import init_client, get_available_models
 from src.ai.context import process_query
 from src.ai.hallucination import detect_hallucinations
 from src.utils.helpers import initialize_session_state, ensure_directories, copy_csv_if_missing
-from src.ui.market_toggles import render_market_toggles
+from src.ui.market_toggles import render_market_toggles, render_recipe_toggle
 
 # Stelle sicher, dass die erforderlichen Verzeichnisse existieren
 ensure_directories()
@@ -63,6 +63,9 @@ selected_markets = render_market_toggles()
 # Chat-Container anzeigen und Spinner-Platzhalter erhalten
 spinner_placeholder = display_chat_container()
 
+# More-Rezeptfinder Toggle anzeigen (vor dem Chat-Input)
+recipe_mode = render_recipe_toggle()
+
 # Chat-Eingabefeld erstellen und Benutzereingabe erhalten
 user_input = create_chat_input()
 
@@ -86,8 +89,8 @@ if user_input:
     st.session_state["submit_text"] = None 
     
     try:
-        # Hole systemnachricht und kontext, unter Berücksichtigung der ausgewählten Märkte
-        system_prompt, context_message, products_context = process_query(prompt, selected_markets)
+        # Hole systemnachricht und kontext, unter Berücksichtigung der ausgewählten Märkte und des Rezept-Modus
+        system_prompt, context_message, products_context = process_query(prompt, selected_markets, recipe_mode)
         
         # Erstelle die Nachrichtenliste mit garantierter Systemnachricht
         messages_with_context = [system_prompt, context_message]

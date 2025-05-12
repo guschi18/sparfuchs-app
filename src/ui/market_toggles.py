@@ -31,6 +31,21 @@ def render_market_toggles() -> list[str]:
     # Wenn keine Auswahl getroffen wird, könnte es None zurückgeben, stelle also sicher, dass es eine Liste ist.
     return selected_markets if selected_markets is not None else []
 
+def render_recipe_toggle() -> bool:
+    """
+    Rendert einen Toggle-Schalter für den "More-Rezeptfinder".
+
+    Returns:
+        bool: True, wenn der Toggle aktiviert ist, sonst False.
+    """
+    # Platziere den Toggle direkt, ohne zusätzliche Spalten für die Zentrierung
+    recipe_mode = st.toggle(
+        "More-Rezeptfinder", 
+        key="recipe_mode", 
+        help="Aktiviere diesen Schalter, um die KI nach Rezepten aus der More-Datenbank suchen zu lassen."
+    )
+    return recipe_mode
+
 if __name__ == '__main__':
     # Beispielverwendung beim direkten Ausführen dieser Datei
     st.set_page_config(layout="wide") # Optional: Verwende ein breites Layout für bessere Sichtbarkeit der Zentrierung
