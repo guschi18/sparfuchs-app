@@ -1,10 +1,10 @@
 # SparFuchs.de
 
-SparFuchs.de ist ein KI-gestützter Assistent für Supermarkt-Angebote. Die Anwendung ermöglicht Nutzern, aktuelle Angebote von Aldi und Lidl per Chat-Interface abzufragen.
+SparFuchs.de ist ein KI-gestützter Assistent für Supermarkt-Angebote. Die Anwendung ermöglicht Nutzern, aktuelle Angebote von Aldi, Lidl, Rewe, Edeka und Penny per Chat-Interface abzufragen.
 
 ## Funktionen
 
-- **KI-gestützte Produktsuche**: Finde Angebote durch natürlichsprachliche Anfragen
+- **KI-gestützte Produktsuche**: Finde Angebote von Aldi, Lidl, Rewe, Edeka und Penny durch natürlichsprachliche Anfragen
 - **Semantische Suche**: Intelligente Erkennung von Produktkategorien und -beziehungen
 - **Preisvergleiche**: Vergleiche Preise zwischen verschiedenen Supermärkten
 - **Modernes UI**: Responsive Benutzeroberfläche mit Chat-Interface
