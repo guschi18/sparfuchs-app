@@ -8,6 +8,7 @@ SparFuchs.de ist ein KI-gestützter Assistent für Supermarkt-Angebote. Die Anwe
 - **Semantische Suche**: Intelligente Erkennung von Produktkategorien und -beziehungen
 - **Preisvergleiche**: Vergleiche Preise zwischen verschiedenen Supermärkten
 - **Modernes UI**: Responsive Benutzeroberfläche mit Chat-Interface
+- **Rezeptsuche**: Finde Rezepte aus der "More"-Datenbank (`data/More_Rezepte.csv`), aktivierbar über einen eigenen Schalter.
 
 ## Installation
 
@@ -44,13 +45,15 @@ sparfuchs/
 │   ├── styles.dev.css      # Entwicklungs-CSS
 │   └── styles.min.css      # Minimiertes CSS
 ├── data/                   # Datendateien
-│   └── Angebote.csv
+│   ├── Angebote.csv
+│   └── More_Rezepte.csv    # Rezepte-Datenbank (More)
 └── src/                    # Quellcode
     ├── __init__.py
     ├── ui/                 # UI-Komponenten
     │   ├── __init__.py
     │   ├── layout.py       # Layout-Funktionen
-    │   └── styling.py      # CSS-Verarbeitung
+    │   ├── styling.py      # CSS-Verarbeitung
+    │   └── market_toggles.py # UI-Element für Supermarkt-Auswahl und Rezept-Toggle
     ├── data/               # Datenverarbeitung
     │   ├── __init__.py
     │   └── product_data.py # CSV-Ladelogik
