@@ -51,6 +51,14 @@ def initialize_session_state(session_state):
     if "submit_text" not in session_state:
         session_state["submit_text"] = None
 
+    # Initialisiere den KI-Verarbeitungsstatus
+    if "ki_processing" not in session_state:
+        session_state["ki_processing"] = False
+
+    # Initialisiere den Prompt, der gerade verarbeitet wird
+    if "current_processing_prompt" not in session_state:
+        session_state["current_processing_prompt"] = None
+
 def add_simulated_delay(min_time=0.8, max_time=1.2):
     """
     Fügt eine simulierte Verzögerung hinzu, um menschlicheres Verhalten nachzuahmen.

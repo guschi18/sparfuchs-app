@@ -51,10 +51,13 @@ def display_chat_container():
     
     return spinner_placeholder
 
-def create_chat_input():
+def create_chat_input(disabled: bool = False):
     """
     Erstellt das Chat-Eingabefeld und den Submit-Button.
     
+    Args:
+        disabled (bool): Ob das Eingabefeld und der Button deaktiviert sein sollen.
+
     Returns:
         str: Der eingegebene Text, wenn vorhanden, sonst None
     """
@@ -68,22 +71,32 @@ def create_chat_input():
     # Textfeld in der mittleren Spalte
     with textfield_cols[1]:
         current_key = f"custom_chat_input_{st.session_state.key_counter}"
-        initial_value = st.session_state.get("preset_input", "")
-        user_input = st.text_area("Chat-Eingabe", 
-                                 value=initial_value, 
+        
+        text_area_value = ""  # Standardwert für das Textfeld
+        if disabled:  # Wenn das Feld deaktiviert ist (KI verarbeitet)
+            text_area_value = st.session_state.get("current_processing_prompt", "")
+        elif "preset_input" in st.session_state:  # Wenn das Feld aktiv ist und ein Vorschlag angeklickt wurde
+            text_area_value = st.session_state.get("preset_input", "")
+        # Ansonsten (Feld aktiv, kein Vorschlag) bleibt text_area_value leer, 
+        # was durch den key_counter-Mechanismus das Feld für eine neue Eingabe leert.
+
+        user_input_from_field = st.text_area("Chat-Eingabe", 
+                                 value=text_area_value, 
                                  placeholder="Wonach suchst du? (Obst, Rezeptideen, Preisvergleiche, etc.. ) ", 
                                  label_visibility="collapsed", 
                                  key=current_key, 
-                                 height=95)
+                                 height=95,
+                                 disabled=disabled)
         
-        # Verfolge Änderungen im Textfeld
-        if user_input and st.session_state.get("last_input_value") != user_input:
-            st.session_state["last_input_value"] = user_input
+        # Verfolge Änderungen im Textfeld nur, wenn es aktiv ist
+        if not disabled and user_input_from_field and st.session_state.get("last_input_value") != user_input_from_field:
+            st.session_state["last_input_value"] = user_input_from_field
         
-        # Preset-Wert nach Verwendung zurücksetzen
-        if "preset_input" in st.session_state:
-            # Setze den Text auch in last_input_value, um doppelte Verarbeitung zu vermeiden
-            st.session_state["last_input_value"] = st.session_state.get("preset_input", "")
+        # Preset-Wert nach Verwendung zurücksetzen, nur wenn Feld aktiv ist und preset verwendet wurde
+        if not disabled and "preset_input" in st.session_state and text_area_value == st.session_state.preset_input:
+            # Setze den Text auch in last_input_value, um doppelte Verarbeitung zu vermeiden, falls der Nutzer nichts ändert
+            if st.session_state.get("preset_input"): # Nur wenn preset_input nicht leer war
+                 st.session_state["last_input_value"] = st.session_state.get("preset_input", "")
             del st.session_state.preset_input
 
     # Button-Container - getrennte Spaltenreihe
@@ -95,16 +108,18 @@ def create_chat_input():
         submit_clicked = st.button("→", 
                                  type="primary", 
                                  use_container_width=True, 
-                                 key=f"submit_button_{st.session_state.key_counter}")
+                                 key=f"submit_button_{st.session_state.key_counter}",
+                                 disabled=disabled)
         
-        if submit_clicked and user_input and user_input.strip():
-            st.session_state["submit_text"] = user_input.strip()
-            return user_input.strip()
+        # Verwende user_input_from_field hier, da es den tatsächlichen Inhalt des Feldes widerspiegelt
+        if submit_clicked and user_input_from_field and user_input_from_field.strip():
+            st.session_state["submit_text"] = user_input_from_field.strip()
+            return user_input_from_field.strip()
         
         # Reset-Button direkt unter dem Send-Button platzieren (nur wenn es AI-Antworten gibt)
         has_ai_responses = any(message["role"] == "assistant" for message in st.session_state.messages)
         if has_ai_responses:
-            if st.button("🔄 Chat zurücksetzen", key="reset_chat", type="secondary", use_container_width=True):
+            if st.button("🔄 Chat zurücksetzen", key="reset_chat", type="secondary", use_container_width=True, disabled=disabled):
                 # System-Nachricht behalten, Rest löschen
                 system_message = st.session_state.messages[0]
                 st.session_state.messages = [system_message]
@@ -165,23 +180,23 @@ def display_followup_suggestions():
     Zeigt zusätzliche Vorschläge für Anfänger an.
     """
     if len([m for m in st.session_state.messages if m["role"] != "system"]) <= 2:
-        st.markdown("<p style='margin-top: 20px; text-align: center; font-size: 14px; color: #666666;'>Du kannst mich auch fragen:</p>", unsafe_allow_html=True)
+        st.markdown("<p style='margin-top: 20px; text-align: center; font-size: 14px; color: #666666;'>Wenn More-Rezeptfinder aktiviert ist, kannst mich auch fragen:</p>", unsafe_allow_html=True)
         
         cols = st.columns(3)
         with cols[2]:
-            if st.button("💰 Welche Backwaren sind im Angebot?", type="secondary", use_container_width=True):
-                st.session_state.preset_input = "Welche Backwaren sind im Angebot?"
-                st.session_state.submit_text = "Welche Backwaren sind im Angebot?"
+            if st.button("🥗 Ich suche ein Rezept mit Zucchini", type="secondary", use_container_width=True):
+                st.session_state.preset_input = "Ich suche ein Rezept mit Zucchini"
+                st.session_state.submit_text = "Ich suche ein Rezept mit Zucchini"
                 st.rerun()
         with cols[0]:
-            if st.button("🥗 Gib mir 10 vegetarische Produkte, hauptsächlich bitte Gemüse", type="secondary", use_container_width=True):
-                st.session_state.preset_input = "Gib mir 10 vegetarische Produkte, hauptsächlich bitte Gemüse"
-                st.session_state.submit_text = "Gib mir 10 vegetarische Produkte, hauptsächlich bitte Gemüse"
+            if st.button("🥘 Ich möchte gerne einen Auflauf mit Kartoffeln und Schinken essen", type="secondary", use_container_width=True):
+                st.session_state.preset_input = "Ich möchte gerne einen Auflauf mit Kartoffeln und Schinken essen"
+                st.session_state.submit_text = "Ich möchte gerne einen Auflauf mit Kartoffeln und Schinken essen"
                 st.rerun()
         with cols[1]:
-            if st.button("⚖️ Vergleiche Äpfel und Orangen", type="secondary", use_container_width=True):
-                st.session_state.preset_input = "Vergleiche Äpfel und Orangen"
-                st.session_state.submit_text = "Vergleiche Äpfel und Orangen"
+            if st.button("🍝 Gib mir bitte ein Rezept mit Hühnchen und Nudeln", type="secondary", use_container_width=True):
+                st.session_state.preset_input = "Gib mir bitte ein Rezept mit Hühnchen und Nudeln"
+                st.session_state.submit_text = "Gib mir bitte ein Rezept mit Hühnchen und Nudeln"
                 st.rerun()
 
 def display_footer():

@@ -67,60 +67,53 @@ spinner_placeholder = display_chat_container()
 recipe_mode = render_recipe_toggle()
 
 # Chat-Eingabefeld erstellen und Benutzereingabe erhalten
-user_input = create_chat_input()
+user_input_field_disabled = st.session_state.get('ki_processing', False)
+user_input = create_chat_input(disabled=user_input_field_disabled)
 
-# Wenn Benutzer eine Eingabe gemacht hat
-if user_input:
-    prompt = user_input
+# A. Verarbeitung einer NEUEN Benutzereingabe (wenn nicht schon KI verarbeitet)
+if user_input and not st.session_state.get('ki_processing', False):
+    st.session_state.current_processing_prompt = user_input
+    st.session_state.ki_processing = True
     
-    # Markiere, dass die erste Eingabe verarbeitet wurde
     st.session_state["is_first_input"] = False
-    
-    # Speichern der aktuellen Eingabe für Vergleich beim nächsten Mal
-    st.session_state["previous_input"] = prompt
-    
-    # Erhöhe den Key-Zähler, um beim nächsten Rendering ein leeres Eingabefeld zu erzeugen
+    st.session_state["previous_input"] = user_input
     st.session_state["key_counter"] += 1
+    st.session_state["submit_text"] = None  # Wichtig, um erneute Eingabe nach Rerun zu verhindern
     
-    # Benutzernachricht zum Verlauf hinzufügen
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    
-    # Setze submit_text zurück, um doppelte Verarbeitung nach rerun zu verhindern
-    st.session_state["submit_text"] = None 
-    
+    st.rerun()
+
+# B. KI-Verarbeitung durchführen, wenn der Status dafür gesetzt ist
+if st.session_state.get('ki_processing', False) and st.session_state.get("current_processing_prompt") is not None:
+    prompt = st.session_state.current_processing_prompt
+    full_response = "" # Initialisierung für den Fall, dass try fehlschlägt bevor full_response zugewiesen wird
+
     try:
         # Hole systemnachricht und kontext, unter Berücksichtigung der ausgewählten Märkte und des Rezept-Modus
         system_prompt, context_message, products_context = process_query(prompt, selected_markets, recipe_mode)
         
         # Erstelle die Nachrichtenliste mit garantierter Systemnachricht
+        # Die User-Nachricht ist bereits in st.session_state.messages
         messages_with_context = [system_prompt, context_message]
-        # Füge nur user und assistant Nachrichten hinzu
         messages_with_context.extend([m for m in st.session_state.messages if m["role"] != "system"])
         
         # Zeige Ladeanimation
         with spinner_placeholder:
-            # Zeige nur unsere benutzerdefinierte Meldung ohne den Standard-Spinner
             st.markdown("""
             <div class="search-spinner-box">
                 <div class="loader-container">
                     <span class="search-icon">🔍</span> 
-                    <span class="loading-text">Suche nach passenden Angeboten</span>
+                    <span class="loading-text">Suche läuft</span>
                     <span class="loading-dots">...</span>
                 </div>
             </div>
             """, unsafe_allow_html=True)
             
-            # Verfügbare Modellvarianten
             model_variants = get_available_models()
-            
             success = False
             error_messages = []
-            full_response = ""  # Initialisierung der Variable vor der Verwendung
             
-            # Gib dem System mehr Zeit, um die Anfrage zu verarbeiten
-            time.sleep(1.5)  # Erhöhte Verzögerung für bessere Stabilität
+            time.sleep(1.5) 
             
-            # Versuche jeden Modelltyp nacheinander
             for model in model_variants:
                 model_name = model["id"]
                 retry_count = 0
@@ -128,9 +121,8 @@ if user_input:
                 
                 while retry_count <= max_retries and not success:
                     try:
-                        # Zusätzliche Verzögerung zwischen Versuchen
                         if retry_count > 0:
-                            time.sleep(2)  # Längere Verzögerung bei weiteren Versuchen
+                            time.sleep(2)
                         
                         stream = client.chat.completions.create(
                             model=model_name,
@@ -142,45 +134,40 @@ if user_input:
                                 "HTTP-Referer": "https://sparfuchs.streamlit.app/",
                                 "X-Title": "SparFuchs.de"
                             },
-                            temperature=0.2,  # Leicht erhöhte Temperatur für bessere Antworten
-                            max_tokens=12000,  # Erhöht, um vollständige Antworten zu ermöglichen
+                            temperature=0.2,
+                            max_tokens=12000,
                             stream=True
                         )
                         
+                        response_content_parts = []
                         for chunk in stream:
                             content = chunk.choices[0].delta.content
                             if content is not None:
-                                full_response += content
+                                response_content_parts.append(content)
+                        full_response = "".join(response_content_parts) # full_response hier zusammensetzen
                         
                         success = True
-                        break  # Bei Erfolg Schleife beenden
+                        break 
                     except Exception as e:
                         error_messages.append(f"Fehler mit {model_name}: {str(e)}")
                         retry_count += 1
-                        continue
                 
-                # Wenn ein Modell erfolgreich war, breche die Schleife ab
                 if success:
                     break
             
             if not success:
-                # Debug-Modus aus Umgebungsvariable auslesen
                 debug_mode = os.getenv("DEBUG", "False").lower() in ["true", "1", "t", "yes"]
-                
                 if debug_mode:
-                    # Detaillierte Fehlermeldungen anzeigen
                     error_details = "\n\n".join(error_messages)
                     full_response = f"Entschuldigung, ich konnte Ihre Anfrage nicht bearbeiten. Technische Details:\n\n{error_details}"
                 else:
                     full_response = "Entschuldigung, ich konnte Ihre Anfrage nicht bearbeiten. Bitte versuchen Sie es später erneut."
         
-        # Nach dem API-Aufruf den Spinner entfernen
         spinner_placeholder.empty()
         
     except Exception as e:
-        # Debug-Modus aus Umgebungsvariable auslesen
+        spinner_placeholder.empty() # Sicherstellen, dass Spinner auch bei äußerem Fehler geleert wird
         debug_mode = os.getenv("DEBUG", "False").lower() in ["true", "1", "t", "yes"]
-        
         if debug_mode:
             full_response = f"Entschuldigung, ein unerwarteter Fehler ist aufgetreten: {str(e)}"
         else:
@@ -188,46 +175,41 @@ if user_input:
     
     # Überprüfe, ob die Antwort halluzinierte Produkte enthält
     df = load_csv_data()
-    
-    # Prüfe, ob es sich um eine Kategorie-Anfrage handelt
     is_category_query = False
     kategorie_begriffe = ["getränke", "obst", "gemüse", "lebensmittel", "produkte", "angebote", "tiefkühlkost", 
                           "backwaren", "milchprodukte", "fleisch", "wurst", "kategorie", "alle"]
-    
     produkt_begriffe = ["rum", "vodka", "whiskey", "whisky", "bier", "wein", "sekt", "chips", "schokolade", "kaffee", 
                        "nudeln", "reis", "milch", "käse", "joghurt", "fleisch", "wurst", "gemüse", "obst",
                        "cola", "fanta", "sprite", "limonade", "wasser", "havana"]
-    
     is_product_query = False
     for begriff in produkt_begriffe:
-        if begriff in prompt.lower():
+        if begriff in prompt.lower(): # prompt ist hier definiert
             is_product_query = True
             break
-    
     for begriff in kategorie_begriffe:
-        if begriff in prompt.lower():
+        if begriff in prompt.lower(): # prompt ist hier definiert
             is_category_query = True
             break
     
-    # Wenn es eine Kategorie-Anfrage oder Produktanfrage ist und keine offensichtlichen Fehler vorliegen, 
-    # überspringen wir die Halluzinationsprüfung
-    if (is_category_query or is_product_query) and not ("kein" in full_response.lower() and "nicht" in full_response.lower()):
-        # Halluzinationsprüfung überspringen
-        pass
-    else:
+    if not (recipe_mode or ((is_category_query or is_product_query) and not ("kein" in full_response.lower() and "nicht" in full_response.lower()))):
         if detect_hallucinations(full_response, df):
-            # Ersetze die Antwort durch eine Warnung
             full_response = (
                 "Entschuldigung, ich kann zu dieser Anfrage keine genauen Informationen finden. "
                 "Ich kann nur Informationen zu Produkten geben, die tatsächlich in den aktuellen Angeboten von Aldi und Lidl vorhanden sind.\n\n"
                 "**Hinweis:** Bitte versuchen Sie eine andere Anfrage zu Produkten, die in den aktuellen Angeboten enthalten sein könnten."
             )
     
-    # Nur erfolgreiche Antworten zum Verlauf hinzufügen
-    if full_response:
+    # Benutzernachricht zum Chat hinzufügen, direkt vor der KI-Antwort
+    if st.session_state.get("current_processing_prompt"): # Sicherstellen, dass der Prompt noch da ist
+        st.session_state.messages.append({"role": "user", "content": st.session_state.current_processing_prompt})
+
+    if full_response: # Auch Fehlerantworten werden hinzugefügt, um den Nutzer zu informieren
         st.session_state.messages.append({"role": "assistant", "content": full_response})
     
-    # Nach der Antwortgenerierung die Seite neu laden, um den aktualisierten Chat anzuzeigen
+    # Verarbeitung abgeschlossen
+    if "current_processing_prompt" in st.session_state:
+        del st.session_state.current_processing_prompt
+    st.session_state.ki_processing = False
     st.rerun()
 
 # Vorschläge anzeigen

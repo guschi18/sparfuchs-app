@@ -855,6 +855,7 @@ div[data-testid="stElementContainer"][class*="st-key-market_segment_control"] di
   padding-left: 20px !important;
 }
 
+
 } 
 
 /* == Benutzerdefinierte Stile für SparFuchs Komponenten == */
@@ -867,4 +868,12 @@ div[data-testid="stElementContainer"][class*="st-key-market_segment_control"] di
 }
 
 /* == Ende der benutzerdefinierten Stile für SparFuchs Komponenten == */ 
+
+/* Tooltip für den More-Rezeptfinder Toggle vergrößern */
+.stTooltipContent {
+    min-height: 35px; /* Passen Sie diesen Wert bei Bedarf an */
+    display: flex; /* Hilft, den Inhalt vertikal zu zentrieren, falls gewünscht */
+    padding-bottom: 20px;
+    
+}
 
