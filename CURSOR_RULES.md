@@ -73,16 +73,30 @@ Beachte die folgende Struktur und die Verantwortlichkeiten der Module:
 
 - **`app.py`**: Haupt-Einstiegspunkt der Streamlit-Anwendung. Orchestriert UI und Logik.
 - **`src/`**: Kernlogik der Anwendung.
-  - **`ui/`**: Verantwortlich für UI-Komponenten (`layout.py`, Nutzung von `st.chat_message`, `st.session_state`) und Styling (`styling.py`). Nutzt Streamlit-Elemente.
-  - **`data/`**: Lädt und verarbeitet Produktdaten aus der CSV (`product_data.py`). Beinhaltet Logik für semantische Suche, Kategorisierung und Preisberechnung unter Berücksichtigung von Mengen/Einheiten.
+  - **`ui/`**: Verantwortlich für UI-Komponenten und Styling.
+    - `layout.py`: Definiert die Hauptstruktur und das Layout der Streamlit-UI-Elemente.
+    - `styling.py`: Lädt und wendet benutzerdefinierte CSS-Stile an (z.B. aus `static/`).
+    - `market_toggles.py`: Beinhaltet UI-Logik für die Auswahl von Supermärkten und das Umschalten der Rezeptfunktion.
+    - (Nutzt Streamlit-Elemente wie `st.chat_message`, `st.session_state` innerhalb dieser Module.)
+  - **`data/`**: Verantwortlich für das Laden und die Vorverarbeitung von Daten.
+    - `product_data.py`: Lädt und verarbeitet Produktdaten aus `Angebote.csv` und potenziell Rezeptdaten aus `More_Rezepte.csv`. Beinhaltet Logik für semantische Suche (falls hier implementiert oder vorbereitet), Kategorisierung und Preisberechnung unter Berücksichtigung von Mengen/Einheiten.
   - **`ai/`**: Beinhaltet die gesamte KI-Logik:
-    - `client.py`: Kommunikation mit der OpenRouter API.
-    - `context.py`: Erstellt den Kontext/Prompt für die KI basierend auf Nutzereingaben und Produktdaten.
-    - `hallucination.py`: Logik zur Erkennung von KI-Halluzinationen.
-  - **`utils/`**: Allgemeine Hilfsfunktionen (`helpers.py`).
-- **`data/`**: Speicherort für Datendateien, primär `Angebote.csv`. Enthält Angebote für Aldi, Lidl, Rewe, Edeka, Penny.
-- **`static/`**: Statische Dateien wie CSS.
-- **`.env`**: Speichert Umgebungsvariablen (z.B. `OPENAI_API_KEY`). **Wichtig:** Darf nicht versioniert werden.
+    - `client.py`: Kommunikation mit der OpenRouter API (oder anderen LLM-APIs).
+    - `context.py`: Erstellt den Kontext/Prompt für die KI basierend auf Nutzereingaben, Produktdaten und ggf. Rezeptinformationen.
+    - `hallucination.py`: Logik zur Erkennung und potenziellen Minderung von KI-Halluzinationen.
+  - **`utils/`**: Allgemeine Hilfsfunktionen.
+    - `helpers.py`: Diverse allgemeine Hilfsfunktionen, die in verschiedenen Teilen der Anwendung genutzt werden.
+    - `ingredient_parser.py`: Spezialisierte Funktion zum Parsen und Verarbeiten von Zutatenlisten aus Nutzereingaben oder Rezepten.
+- **`data/`**: Speicherort für Datendateien.
+  - `Angebote.csv`: Enthält Produktangebote für Aldi, Lidl, Rewe, Edeka, Penny.
+  - `More_Rezepte.csv`: Enthält eine Datenbank mit Rezepten.
+- **`static/`**: Statische Dateien.
+  - `styles.dev.css`: CSS-Datei für die Entwicklungsumgebung.
+  - `styles.min.css`: Minimierte CSS-Datei, typischerweise für Produktion oder zur Optimierung.
+- **`.env`**: Speichert Umgebungsvariablen (z.B. `OPENAI_API_KEY`, API-Endpunkte). **Wichtig:** Darf nicht versioniert werden (sollte in `.gitignore` stehen).
+- **`requirements.txt`**: Listet alle Python-Paketabhängigkeiten des Projekts auf, die für die Ausführung benötigt werden.
+- **`README.md`**: Haupt-Dokumentationsdatei des Projekts. Enthält typischerweise eine Projektbeschreibung, Installationsanweisungen und Nutzungshinweise.
+- **`__init__.py` (in `src/` und Unterverzeichnissen)**: Kennzeichnen die Verzeichnisse als Python-Pakete, was Importe innerhalb des Projekts ermöglicht. Können leer sein oder Initialisierungscode für das Paket enthalten.
 
 ## Kernkonzepte & Domain
 

@@ -8,7 +8,7 @@ SparFuchs.de ist ein KI-gestützter Assistent für Supermarkt-Angebote. Die Anwe
 - **Semantische Suche**: Intelligente Erkennung von Produktkategorien und -beziehungen
 - **Preisvergleiche**: Vergleiche Preise zwischen verschiedenen Supermärkten
 - **Modernes UI**: Responsive Benutzeroberfläche mit Chat-Interface
-- **Rezeptsuche**: Finde Rezepte aus der "More"-Datenbank (`data/More_Rezepte.csv`), aktivierbar über einen eigenen Schalter.
+- **Rezeptsuche mit Angebotsintegration**: Finde Rezepte (aus `data/More_Rezepte.csv`) und erhalte automatisch passende Angebote für die benötigten Zutaten.
 
 ## Installation
 
@@ -19,7 +19,7 @@ SparFuchs.de ist ein KI-gestützter Assistent für Supermarkt-Angebote. Die Anwe
    ```
 3. Erstelle eine `.env` Datei im Hauptverzeichnis mit folgendem Inhalt:
    ```
-   OPENAI_API_KEY=dein_openrouter_api_key_hier
+   OPENROUTER_API_KEY=dein_openrouter_api_key_hier
    ```
 4. Stelle sicher, dass die Produktdaten-CSV im `data/` Verzeichnis vorhanden ist.
 
@@ -64,7 +64,8 @@ sparfuchs/
     │   └── hallucination.py # Hallucinationserkennung
     └── utils/              # Hilfsfunktionen
         ├── __init__.py
-        └── helpers.py      # Allgemeine Hilfsfunktionen
+        ├── helpers.py      # Allgemeine Hilfsfunktionen
+        └── ingredient_parser.py # Parser für Zutatenlisten
 ```
 
 ## Lizenz
