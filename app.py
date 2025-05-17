@@ -92,9 +92,11 @@ if st.session_state.get('ki_processing', False) and st.session_state.get("curren
         system_prompt, context_message, products_context = process_query(prompt, selected_markets, recipe_mode)
         
         # Erstelle die Nachrichtenliste mit garantierter Systemnachricht
-        # Die User-Nachricht ist bereits in st.session_state.messages
         messages_with_context = [system_prompt, context_message]
+        # Füge bisherige Nachrichten hinzu (ohne alte Systemnachrichten)
         messages_with_context.extend([m for m in st.session_state.messages if m["role"] != "system"])
+        # Füge die AKTUELLE Benutzernachricht hinzu, damit die KI weiß, was gerade gefragt wurde
+        messages_with_context.append({"role": "user", "content": prompt})
         
         # Zeige Ladeanimation
         with spinner_placeholder:
