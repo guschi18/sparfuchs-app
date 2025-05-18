@@ -97,8 +97,10 @@ def get_recipe_system_prompt():
                    "1. Gib zuerst den **Rezeptnamen** an (Markdown Fett). " +
                    "2. Liste dann die **Zutaten** auf (Markdown Liste). " +
                    "3. Beschreibe danach die **Zubereitung** in klaren Schritten (Markdown nummerierte Liste). " +
-                   "4. Nutze Markdown nur für die Rezept-Formatierung (Rezeptname, Zutaten, Zubereitung). " +
-                   "5. FÜGE NACH DEM REZEPT EINEN ABSCHNITT '\n\n**PASSENDE ANGEBOTE FÜR HAUPTZUTATEN:**\n' HINZU (Markdown Fett für die Überschrift). " +
+                   "4. NEU: Gib direkt unter der Zubereitung die **Nährwerte** an, falls vorhanden, mit der Überschrift \'**Nährwerte:**\' (Markdown Fett) gefolgt von den Nährwertangaben als normaler Text. " +
+                   "5. NEU: Falls ein **Videolink** vorhanden ist (im Kontext als \'Video: URL\'), zeige diesen direkt unter den Nährwerten an (oder unter der Zubereitung, falls keine Nährwerte vorhanden sind). Formatiere ihn als: **Video:** <a href=\\\"URL\\\" target=\\\"_blank\\\">Video zum Rezept</a>. Das Label \'**Video:**\' (Markdown Fett) soll dem Link vorangestellt werden. Der anklickbare Text des Links ist immer \'Video zum Rezept\'. " +
+                   "6. Nutze Markdown nur für die Rezept-Formatierung (Rezeptname, Zutaten, Zubereitung, Nährwerte-Überschrift, Video-Überschrift). Der Videolink selbst ist HTML. " +
+                   "7. FÜGE NACH DEM VIDEOKLINK (oder Nährwerten/Zubereitung, falls die vorherigen Elemente nicht vorhanden sind) EINEN ABSCHNITT \'\\n\\n**PASSENDE ANGEBOTE FÜR HAUPTZUTATEN:**\\n\' HINZU (Markdown Fett für die Überschrift). " +
                    "   WICHTIG: Liste die gefundenen Angebote für die Hauptzutaten des Rezepts EXAKT im folgenden HTML-Format auf. Verwende KEIN Markdown für die Angebote selbst: " +
                    "   Für jedes Angebot verwende: " +
                    "   \n**PRODUKTNAME DES ANGEBOTS** (Details): PREIS €<br>" +
@@ -117,6 +119,8 @@ def get_recipe_system_prompt():
                    "1. Kartoffeln kochen, pellen und in Scheiben schneiden.\n" +
                    "2. Zwiebel fein würfeln.\n" +
                    "3. Gemüsebrühe, Essig, Öl, Salz und Pfeffer verrühren und über die Kartoffeln geben.\n" +
+                   "\n**Nährwerte:** Ca. 300 kcal pro Portion (Beispielwert)\n" +
+                   "\n**Video:** <a href=\\\"https://beispiel.video/kartoffelsalat\\\" target=\\\"_blank\\\">Video zum Rezept</a>\n" +
                    "\n\n**PASSENDE ANGEBOTE FÜR HAUPTZUTATEN:**\n" +
                    "\n**Speisefrühkartoffeln festkochend** (1,5 kg): 2,79 €<br>" +
                    "\n<strong class=\"meta-info\">Gültig:</strong> 24.07.2024 bis 26.07.2024<br>" +
@@ -212,6 +216,10 @@ def process_query(prompt: str, selected_markets: list[str], recipe_mode: bool):
                             all_main_ingredients_from_found_recipes.update(current_recipe_main_ingredients)
                         if 'Zubereitung' in row and pd.notna(row['Zubereitung']):
                             part += f"Zubereitung: {row['Zubereitung']}\n"
+                        if 'Nährwerte' in row and pd.notna(row['Nährwerte']):
+                            part += f"Nährwerte: {row['Nährwerte']}\n"
+                        if 'Video' in row and pd.notna(row['Video']):
+                            part += f"Video: {row['Video']}\n"
                         
                         # Angebotssuche für die Hauptzutaten DIESES Rezepts (optional, wenn man Angebote pro Rezept will)
                         # Für diese Implementierung suchen wir global für alle gefundenen Rezepte weiter unten.
