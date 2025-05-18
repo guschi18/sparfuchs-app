@@ -200,22 +200,27 @@ def display_followup_suggestions():
         # Die Buttons selbst werden über 'disabled' gesteuert.
         st.markdown("<p class='recipe-finder-hint'>Wenn More-Rezeptfinder aktiviert ist, kannst mich auch fragen:</p>", unsafe_allow_html=True)
         
+        tooltip_message = "Aktiviere den More-Rezeptfinder um die Funktion zu nutzen"
+
         cols = st.columns(3)
         with cols[2]:
             # Button deaktivieren, wenn der recipe_finder_active False ist
-            if st.button("🥗 Ich suche ein Rezept mit Zucchini", type="secondary", use_container_width=True, disabled=not recipe_finder_active):
+            # Tooltip hinzufügen, wenn der Button deaktiviert ist
+            if st.button("🥗 Ich suche ein Rezept mit Zucchini", type="secondary", use_container_width=True, disabled=not recipe_finder_active, help=tooltip_message if not recipe_finder_active else None):
                 st.session_state.preset_input = "Ich suche ein Rezept mit Zucchini"
                 st.session_state.submit_text = "Ich suche ein Rezept mit Zucchini"
                 st.rerun()
         with cols[0]:
             # Button deaktivieren, wenn der recipe_finder_active False ist
-            if st.button("🥘 Ich möchte gerne einen Auflauf mit Kartoffeln und Schinken essen", type="secondary", use_container_width=True, disabled=not recipe_finder_active):
+            # Tooltip hinzufügen, wenn der Button deaktiviert ist
+            if st.button("🥘 Ich möchte gerne einen Auflauf mit Kartoffeln und Schinken essen", type="secondary", use_container_width=True, disabled=not recipe_finder_active, help=tooltip_message if not recipe_finder_active else None):
                 st.session_state.preset_input = "Ich möchte gerne einen Auflauf mit Kartoffeln und Schinken essen"
                 st.session_state.submit_text = "Ich möchte gerne einen Auflauf mit Kartoffeln und Schinken essen"
                 st.rerun()
         with cols[1]:
             # Button deaktivieren, wenn der recipe_finder_active False ist
-            if st.button("🍝 Gib mir bitte ein Rezept mit Hühnchen und Nudeln", type="secondary", use_container_width=True, disabled=not recipe_finder_active):
+            # Tooltip hinzufügen, wenn der Button deaktiviert ist
+            if st.button("🍝 Gib mir bitte ein Rezept mit Hühnchen und Nudeln", type="secondary", use_container_width=True, disabled=not recipe_finder_active, help=tooltip_message if not recipe_finder_active else None):
                 st.session_state.preset_input = "Gib mir bitte ein Rezept mit Hühnchen und Nudeln"
                 st.session_state.submit_text = "Gib mir bitte ein Rezept mit Hühnchen und Nudeln"
                 st.rerun()
