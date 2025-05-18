@@ -158,7 +158,7 @@ def display_welcome_suggestions():
     Zeigt Vorschläge für neue Benutzer an.
     """
     if len([m for m in st.session_state.messages if m["role"] != "system"]) == 0:
-        st.markdown("<h3 style='margin-top: 30px; text-align: center; color: #2A2A2A; font-size: 18px;'>👋 Willkommen! Hier sind einige Vorschläge:</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 class='welcome-header'>👋 Willkommen! Hier sind einige Vorschläge:</h3>", unsafe_allow_html=True)
         
         # Neue Methode ohne JavaScript-Abhängigkeit
         col1, col2 = st.columns(2)
@@ -180,7 +180,7 @@ def display_followup_suggestions():
     Zeigt zusätzliche Vorschläge für Anfänger an.
     """
     if len([m for m in st.session_state.messages if m["role"] != "system"]) <= 2:
-        st.markdown("<p style='margin-top: 20px; text-align: center; font-size: 14px; color: #666666;'>Wenn More-Rezeptfinder aktiviert ist, kannst mich auch fragen:</p>", unsafe_allow_html=True)
+        st.markdown("<p class='recipe-finder-hint'>Wenn More-Rezeptfinder aktiviert ist, kannst mich auch fragen:</p>", unsafe_allow_html=True)
         
         cols = st.columns(3)
         with cols[2]:

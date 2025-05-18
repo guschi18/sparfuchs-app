@@ -174,6 +174,8 @@ h1, p {
  * Das Logo verwendet eine Kombination aus normaler Schrift und orangefarbener Hervorhebung.
  */
 .logo-container {
+  margin-top: 0px;
+  padding-top: 0px;
   margin-bottom: 0px;
   display: flex;
   align-items: center;
@@ -875,5 +877,45 @@ div[data-testid="stElementContainer"][class*="st-key-market_segment_control"] di
     display: flex; /* Hilft, den Inhalt vertikal zu zentrieren, falls gewünscht */
     padding-bottom: 20px;
     
+}
+
+/* Standard-Styling für den Hinweis */
+.recipe-finder-hint {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #666666;
+}
+
+/* Anpassungen für mobile Ansichten */
+@media (max-width: 768px) { /* Typischer Breakpoint für Tablets und Smartphones */
+  .recipe-finder-hint {
+    font-size: 12px; /* Kleinere Schriftgröße für mobile Geräte */
+    margin-top: 25px; /* Etwas weniger Abstand oben */
+    padding-top: 25px;
+    padding-bottom: 0px !important;
+    margin-bottom: 0px !important;
+    /* Weitere Anpassungen hier, z.B. padding, line-height etc. */
+  }
+}
+
+/* Standard-Styling für den Willkommens-Header */
+.welcome-header {
+  margin-top: 30px;
+  text-align: center;
+  color: #2A2A2A;
+  font-size: 14px;
+}
+
+/* Anpassungen für mobile Ansichten */
+@media (max-width: 768px) { /* Typischer Breakpoint für Tablets und Smartphones */
+  .welcome-header {
+    font-size: 1.2rem !important; /* Kleinere Schriftgröße für mobile Ansicht */
+    text-align: center;
+    margin-top: 0px !important; /* Reduzierter oberer Rand */
+    padding-top: 0px !important;
+    margin-bottom: 0px !important; /* Reduzierter unterer Rand */
+    padding-bottom: 0px !important;
+  }
 }
 

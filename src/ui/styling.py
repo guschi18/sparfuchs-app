@@ -22,33 +22,41 @@ def apply_modern_supermarket_style():
     dev_css_path = static_dir / "styles.dev.css"
     min_css_path = static_dir / "styles.min.css"
     
-    # CSS-Datei einlesen, minimieren und speichern
+    css_to_apply = ""
+
+    # CSS-Datei einlesen
     if dev_css_path.exists():
         with open(dev_css_path, "r", encoding="utf-8") as f:
-            css_content = f.read()
+            css_to_apply = f.read()
         
-        # Einfache CSS-Minimierung
-        css_content = re.sub(r'/\*.*?\*/', '', css_content, flags=re.DOTALL)  # Kommentare entfernen
-        css_content = re.sub(r'\s+', ' ', css_content)  # Mehrfach-Leerzeichen zu einem reduzieren
-        css_content = css_content.strip()
+        # Einfache CSS-Minimierung (optional, da Browser das auch handhaben)
+        # css_to_apply = re.sub(r'/\*.*?\*/', '', css_to_apply, flags=re.DOTALL)  # Kommentare entfernen
+        # css_to_apply = re.sub(r'\s+', ' ', css_to_apply)  # Mehrfach-Leerzeichen
+        # css_to_apply = css_to_apply.strip()
         
-        # Speichern der minimierten CSS-Datei
-        with open(min_css_path, "w", encoding="utf-8") as f:
-            f.write(css_content)
+        # Es ist nicht zwingend notwendig, die minimierte Version separat zu speichern,
+        # es sei denn, es gibt einen bestimmten Grund dafür (z.B. Performance-Analyse).
+        # Streamlit selbst hat keinen direkten Mechanismus, um zwischen dev und min CSS zu wechseln.
+        # with open(min_css_path, "w", encoding="utf-8") as f:
+        #     f.write(css_to_apply) # Speichere die (ggf. minimierte) CSS
+
     elif min_css_path.exists():
-        # Wenn keine dev-CSS, aber min-CSS existiert, verwende die vorhandene min-CSS
+        # Fallback, falls nur die minimierte Version existiert
         with open(min_css_path, "r", encoding="utf-8") as f:
-            css_content = f.read()
+            css_to_apply = f.read()
     else:
-        # Fallback: Leere CSS verwenden
-        css_content = ""
+        # Fallback: Leere CSS verwenden, wenn keine Datei gefunden wird
+        # Dies verhindert einen Fehler, falls die CSS-Datei fehlt.
+        st.warning("Keine CSS-Datei (styles.dev.css oder styles.min.css) im 'static'-Ordner gefunden.")
+        css_to_apply = ""
     
-    # CSS auf die App anwenden
-    st.markdown(f"<style>{css_content}</style>", unsafe_allow_html=True)
+    # CSS auf die App anwenden, nur wenn css_to_apply nicht leer ist
+    if css_to_apply:
+        st.markdown(f"<style>{css_to_apply}</style>", unsafe_allow_html=True)
 
 def apply_base_styles():
     """
-    Wendet grundlegende Streamlit-Seitenkonfiguration und Basis-Stile an.
+    Wendet grundlegende Streamlit-Seitenkonfiguration an.
     
     Diese Funktion sollte vor allen anderen st-Aufrufen ausgeführt werden.
     """
@@ -58,35 +66,5 @@ def apply_base_styles():
         page_icon="🛒",
         layout="centered"
     )
-
-    # Einige grundlegende Stile sofort anwenden
-    st.markdown("""
-    <style>
-    /* Container sind weiß mit beigen Seitenrändern */
-    .main .block-container {
-        background-color: #ffffff !important;
-        border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        margin: 0 auto;
-        max-width: 800px;
-        padding: 20px;
-    }
-
-    /* Hintergrund der App bleibt beige */
-    body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stAppViewBlock"] {
-        background-color: #E8E0D0 !important;
-    }
-
-    /* Chat-Nachrichten haben beige Hintergründe für einheitliches Design */
-    .stChatMessage, 
-    [data-testid="stChatMessage"] {
-        background-color: #F2EEE5 !important;
-        border: 1px solid #E0D8C8 !important;
-        color: #333 !important;
-    }
-    .stChatMessage.user {
-        background-color: #F7F3EA !important;
-        border: 1px solid #E5DFD0 !important;
-    }
-    </style>
-    """, unsafe_allow_html=True) 
+    # Der st.markdown-Aufruf für Basis-Stile wurde entfernt.
+    # Diese Stile müssen in static/styles.dev.css enthalten sein. 

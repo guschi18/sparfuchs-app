@@ -57,11 +57,11 @@ client = init_client()
 # Logo und Seitentitel anzeigen
 display_logo()
 
-# Render market toggles and get selected markets
-selected_markets = render_market_toggles()
-
 # Chat-Container anzeigen und Spinner-Platzhalter erhalten
 spinner_placeholder = display_chat_container()
+
+# Render market toggles and get selected markets
+selected_markets = render_market_toggles()
 
 # More-Rezeptfinder Toggle anzeigen (vor dem Chat-Input)
 recipe_mode = render_recipe_toggle()
