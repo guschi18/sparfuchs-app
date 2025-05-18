@@ -88,6 +88,7 @@ def get_available_models():
             "id": "x-ai/grok-3-mini-beta",
             "name": "xAI: Grok 3 Mini Beta",
             "context_length": 4000,
-            "is_free": True
+            "is_free": True,
+            "provider": { "sort": "throughput", "name": "OpenRouter"}
         }
     ] 
