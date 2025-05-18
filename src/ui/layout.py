@@ -123,6 +123,18 @@ def create_chat_input(disabled: bool = False):
                 # System-Nachricht behalten, Rest löschen
                 system_message = st.session_state.messages[0]
                 st.session_state.messages = [system_message]
+                
+                # Supermarktauswahl zurücksetzen, indem der Key aus dem Session State gelöscht wird.
+                if "market_segment_control" in st.session_state:
+                    del st.session_state.market_segment_control
+                
+                # More-Rezeptfinder Toggle zurücksetzen, indem der Key aus dem Session State gelöscht wird.
+                if "recipe_mode" in st.session_state:
+                    del st.session_state.recipe_mode
+                
+                # Inkrementiere die Key-Version für das Market-Toggle, um ein Neuladen zu erzwingen
+                st.session_state.market_toggle_key_version = st.session_state.get("market_toggle_key_version", 0) + 1
+                
                 st.rerun()
     
     # Wenn ein voreingestellter Text zur Verarbeitung vorhanden ist

@@ -17,13 +17,17 @@ def render_market_toggles() -> list[str]:
     col1, col2, col3 = st.columns([1, 3, 1]) # Du kannst diese Verhältnisse anpassen
 
     with col2: # Platziere das Segmented Control in der mittleren Spalte
+        # Hole die aktuelle Key-Version. Initialisiere, falls nicht vorhanden (sollte durch helpers.py geschehen).
+        key_version = st.session_state.get("market_toggle_key_version", 0)
+        market_toggle_key = f"market_segment_control_{key_version}"
+
         selected_markets = st.segmented_control(
             "Supermärkte auswählen", # Label ist leer gemäß Originalcode
             options=MARKETS,
-            selection_mode="multi", # Annahme: "multi" ist der gewünschte Modus
-            key="market_segment_control",
+            default=[], # Expliziten Standardwert auf leere Liste setzen
+            selection_mode="multi",
+            key=market_toggle_key, # Dynamischer Key
             label_visibility="collapsed" # Label ausblenden
-            # default=MARKETS # Aktiviere diese Zeile, wenn standardmäßig alle Märkte ausgewählt sein sollen
         )
 
     # st.segmented_control gibt bereits eine Liste der ausgewählten Optionen zurück
@@ -40,7 +44,8 @@ def render_recipe_toggle() -> bool:
     """
     # Platziere den Toggle direkt, ohne zusätzliche Spalten für die Zentrierung
     recipe_mode = st.toggle(
-        "More-Rezeptfinder", 
+        "More-Rezeptfinder",
+        value=st.session_state.get("recipe_mode", False), # Explizit den Wert setzen, Default auf False wenn Key nicht existiert
         key="recipe_mode", 
         help="Aktiviere diesen Schalter, um die KI nach Rezepten aus der More-Datenbank suchen zu lassen."
     )

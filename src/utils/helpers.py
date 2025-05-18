@@ -59,6 +59,10 @@ def initialize_session_state(session_state):
     if "current_processing_prompt" not in session_state:
         session_state["current_processing_prompt"] = None
 
+    # Initialisiere eine Versionsnummer für den Market-Toggle-Key, um Reset zu erzwingen
+    if "market_toggle_key_version" not in session_state:
+        session_state["market_toggle_key_version"] = 0
+
 def add_simulated_delay(min_time=0.8, max_time=1.2):
     """
     Fügt eine simulierte Verzögerung hinzu, um menschlicheres Verhalten nachzuahmen.
